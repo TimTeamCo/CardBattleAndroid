@@ -4,11 +4,18 @@ using UnityEngine.UI;
 
 public class MainScreen : MonoBehaviour
 {
+    [SerializeField] private Button _playerNameButton;
     [SerializeField] private Text _playerName;
     [SerializeField] private Text _playerID;
     private void Start()
     {
+        _playerNameButton.onClick.AddListener(OnClickNickname);
         UpdateData();
+    }
+
+    private void OnClickNickname()
+    {
+        
     }
 
     private void UpdateData()
@@ -40,5 +47,4 @@ public class MainScreen : MonoBehaviour
 
         return playerText;
     }
-
 }

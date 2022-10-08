@@ -2,9 +2,9 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Calculator.UI
+namespace TTCalculator.UI
 {
-    public class ArmyPanels : MonoBehaviour
+    public class ArmyPanelView : MonoBehaviour
     {
         public Text mText;
         static string b;
@@ -19,18 +19,18 @@ namespace Calculator.UI
             SetTitlePanel();
         }
 
-        public void ChangeText(Calculator.Units.Units.IUnit a)
+        public void ChangeText(PlayerHand a)
         {
-            SetNumberUnits(a);
+            //SetNumberUnits(a);
         }
         private void SetTitlePanel()
         {
             mText.text = gameObject.name;
         }
 
-        static public void SetNumberUnits(Calculator.Units.Units.IUnit a)
+        static public void SetNumberUnits(PlayerHand a)
         {
-           // b = Convert.ToString(a.Count);
+           //  b = Convert.ToString(a.Count);
             
         }
         

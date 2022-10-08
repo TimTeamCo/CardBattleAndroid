@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Calculator.UI
+namespace TTCalculator.UI
 {
     public class ChangeNu : MonoBehaviour
     {

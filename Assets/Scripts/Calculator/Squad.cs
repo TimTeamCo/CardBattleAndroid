@@ -1,12 +1,19 @@
-﻿namespace Calculator
-{
-    public class Squad
-    {
-        public int Count;
+﻿using System.Collections.Generic;
 
-        public Squad()
+namespace TTCalculator
+    {
+        public class Squad
         {
-            Count = 10;
+            private List<Unit> _units = new List<Unit>();
+            public int _count;
+            
+            public Squad(Unit unit, int count)
+            {
+                _count = count;
+                for (int i = 0; i < _count; i++)
+                {
+                    _units.Add(unit);
+                }
+            }
         }
     }
-}

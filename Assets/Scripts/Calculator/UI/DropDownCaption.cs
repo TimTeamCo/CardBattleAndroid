@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Calculator.UI
+namespace TTCalculator.UI
 {
     public class DropDownCaption : MonoBehaviour
     {

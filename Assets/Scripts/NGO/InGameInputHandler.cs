@@ -7,7 +7,6 @@ namespace NGO
         public void OnReProvided(IInGameInputHandler previousProvider)
         { }
 
-        public void OnPlayerInput(ulong playerId, SampleNetworkObject selectedIcon)
-        { }
+        // public void OnPlayerInput(ulong playerId, SampleNetworkObject selectedIcon) { }
     }
 }

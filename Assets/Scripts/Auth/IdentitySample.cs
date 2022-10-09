@@ -1,6 +1,8 @@
-﻿public class IdentitySample : IIdentity
+﻿using TTAuth;
+
+public class IdentitySample : IIdentity
 {
-    public SubIdentity GetSubIdentity(IIdentityType identityType)
+    public SubIdentity GetSubIdentity(Auth.IIdentityType identityType)
     {
         return null;
     }

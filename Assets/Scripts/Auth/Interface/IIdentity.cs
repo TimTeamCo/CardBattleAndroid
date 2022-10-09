@@ -1,10 +1,7 @@
-public interface IIdentity : IProvidable<IIdentity>
+namespace TTAuth
 {
-    SubIdentity GetSubIdentity(IIdentityType identityType);
-}
-
-public enum IIdentityType
-{
-    Local = 0,
-    Auth,
+    public interface IIdentity : IProvidable<IIdentity>
+    {
+        SubIdentity GetSubIdentity(Auth.IIdentityType identityType);
+    }
 }

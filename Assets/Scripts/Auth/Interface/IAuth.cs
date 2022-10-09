@@ -1,5 +1,8 @@
-﻿public interface IAuth
+﻿namespace TTAuth
 {
-    void Subscribe();
-    void SignInAnonymous();
+    public interface IAuth
+    {
+        void Subscribe();
+        void SignInAnonymous();
+    }
 }

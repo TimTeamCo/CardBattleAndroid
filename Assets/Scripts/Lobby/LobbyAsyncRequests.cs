@@ -167,9 +167,13 @@ namespace TTLobbyLogic
             void OnLobbyJoined(Lobby response)
             {
                 if (response == null)
+                {
                     onFailure?.Invoke();
+                }
                 else
+                {
                     onSuccess?.Invoke(response);
+                }
             }
         }
         

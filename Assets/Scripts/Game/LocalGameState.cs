@@ -6,14 +6,14 @@ namespace TTGame
     public enum GameState
     {
         Menu = 1,
-        Searching = 2,
-        Game = 3,
+        Game = 2,
+        Loading = 4,
     }
     
     [Serializable]
     public class LocalGameState : Observed<LocalGameState>
     {
-        GameState state = GameState.Menu;
+        GameState state = GameState.Loading;
 
         public GameState State
         {

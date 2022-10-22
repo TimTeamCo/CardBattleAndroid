@@ -13,14 +13,18 @@ namespace TTInfrastructure
         private void Awake()
         {
             if (observed == null)
+            {
                 return;
+            }
             BeginObserving(observed);
         }
         
         private void OnDestroy()
         {
             if (observed == null)
+            {
                 return;
+            }
             EndObserving();
         }
         

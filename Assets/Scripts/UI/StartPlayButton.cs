@@ -5,6 +5,6 @@ public class StartPlayButton : MonoBehaviour
 {
     public void ToJoinOrCreate()
     {
-        Locator.Get.Messenger.OnReceiveMessage(MessageType.QuickJoin, GameState.Searching);
+        Locator.Get.Messenger.OnReceiveMessage(MessageType.QuickJoin, GameState.Game);
     }
 }

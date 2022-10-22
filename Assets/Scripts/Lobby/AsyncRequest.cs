@@ -47,6 +47,25 @@ namespace TTLobbyLogic
                 onComplete?.Invoke(result);
             }
         }
+        public async void DoRequest<T>(Task<T> task, Action<T> onComplete, Action onFaile)
+        {
+            T result = default;
+            string currentTrace = Environment.StackTrace;
+            try
+            {   
+                result = await task;
+            }
+            catch (Exception e)
+            {
+                ParseServiceException(e);
+                UnityEngine.Debug.LogError($"AsyncRequest threw an exception. Call stack before async call:\n{currentTrace}\n");
+                throw;
+            }
+            finally
+            {   
+                onComplete?.Invoke(result);
+            }
+        }
         
         protected abstract void ParseServiceException(Exception e);
     }

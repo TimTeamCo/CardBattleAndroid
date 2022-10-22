@@ -53,6 +53,16 @@ namespace TTLobbyLogic
             var task = Lobbies.Instance.QuickJoinLobbyAsync(joinRequest);
             AsyncRequestLobby.Instance.DoRequest(task, onComplete);
         }
+        public static void QuickJoinLobbyAsyncTT(string requesterUASId, Dictionary<string, PlayerDataObject> localUserData, Action<Lobby> onComplete, Action onFaile)
+        {
+            var joinRequest = new QuickJoinLobbyOptions
+            {
+                Player = new Player(id: requesterUASId, data: localUserData)
+            };
+
+            var task = Lobbies.Instance.QuickJoinLobbyAsync(joinRequest);
+            AsyncRequestLobby.Instance.DoRequest(task, onComplete);
+        }
         
         public static void LeaveLobbyAsync(string requesterUASId, string lobbyId, Action onComplete)
         {

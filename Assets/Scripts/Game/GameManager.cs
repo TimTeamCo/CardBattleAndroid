@@ -70,13 +70,17 @@ namespace TTGame
             m_localUser.DisplayName = "New Player";
             Locator.Get.Messenger.Subscribe(this);
             BeginObservers();
+            SetGameState(GameState.Menu);
         }
 
         private void OnAuthSignIn()
         {
             Debug.Log("Signed in.");
             m_localUser.ID = Locator.Get.Identity.GetSubIdentity(Auth.IIdentityType.Auth).GetContent("id");
+            Debug.Log($"m_localUser.ID {m_localUser.ID}.");
+
             m_localUser.DisplayName = NameGenerator.GetName(m_localUser.ID);
+            Debug.Log($"m_localUser.DisplayName {m_localUser.DisplayName}.");
             // The local LobbyUser object will be hooked into UI before the LocalLobby is populated during lobby join,
             // so the LocalLobby must know about it already when that happens.
             m_localLobby.AddPlayer(m_localUser);
@@ -104,14 +108,7 @@ namespace TTGame
         {
             if (type == MessageType.CreateLobbyRequest)
             {
-                LobbyData createLobbyData = (LobbyData) msg;
-                LobbyAsyncRequests.Instance.CreateLobbyAsync(createLobbyData.LobbyName, createLobbyData.MaxPlayerCount,
-                    createLobbyData.Private, m_localUser, (r) =>
-                    {
-                        ToLocalLobby.Convert(r, m_localLobby);
-                        OnCreatedLobby();
-                    },
-                    OnFailedJoin);
+                CreateLobby(msg);
             }
             else if (type == MessageType.JoinLobbyRequest)
             {
@@ -140,15 +137,22 @@ namespace TTGame
             }
             else if (type == MessageType.QuickJoin)
             {
+                Debug.Log($"create or join to lobby");
                 //create or join to lobby
-                LobbyAsyncRequests.Instance.QuickJoinLobbyAsync(m_localUser, m_lobbyColorFilter, (r) =>
+                LobbyAsyncRequests.Instance.QuickJoinLobbyAsync(m_localUser, m_lobbyColorFilter, (lobby) =>
                     {
                         {
-                            ToLocalLobby.Convert(r, m_localLobby);
+                            ToLocalLobby.Convert(lobby, m_localLobby);
                         }
                         OnJoinedLobby();
                     },
-                    OnFailedJoin);
+                    () =>
+                    {
+                        Debug.Log("Can't join to lobby");
+                        //create lobby
+                        LobbyData m_ServerRequestData = new LobbyData { LobbyName = "New Lobby", MaxPlayerCount = 2 };
+                        CreateLobby(m_ServerRequestData);
+                    });
             }
             else if (type == MessageType.RenameRequest)
             {
@@ -205,10 +209,22 @@ namespace TTGame
                 SetUserLobbyState();
             }
         }
-        
+
+        private void CreateLobby(object msg)
+        {
+            LobbyData createLobbyData = (LobbyData) msg;
+            LobbyAsyncRequests.Instance.CreateLobbyAsync(createLobbyData.LobbyName, createLobbyData.MaxPlayerCount,
+                createLobbyData.Private, m_localUser, (r) =>
+                {
+                    ToLocalLobby.Convert(r, m_localLobby);
+                    OnCreatedLobby();
+                },
+                OnFailedJoin);
+        }
+
         private void SetGameState(GameState state)
         {
-            bool isLeavingLobby = (state == GameState.Menu || state == GameState.Searching) && m_LocalGameState.State == GameState.Game;
+            bool isLeavingLobby = (state == GameState.Menu || state == GameState.Loading) && m_LocalGameState.State == GameState.Game;
             m_LocalGameState.State = state;
             if (isLeavingLobby)
             {
@@ -232,6 +248,7 @@ namespace TTGame
         
         private void OnCreatedLobby()
         {
+            Debug.Log("Create Lobby");
             m_localUser.IsHost = true;
             OnJoinedLobby();
         }
@@ -296,11 +313,13 @@ namespace TTGame
         // Back to Join menu if we fail to join for whatever reason.
         private void OnFailedJoin()
         {
+            Debug.Log("FailedJoin");
             SetGameState(GameState.Menu);
         }
         
         private void OnJoinedLobby()
         {
+            Debug.Log("Join Lobby");
             LobbyAsyncRequests.Instance.BeginTracking(m_localLobby.LobbyID);
             m_lobbyContentHeartbeat.BeginTracking(m_localLobby, m_localUser);
             SetUserLobbyState();

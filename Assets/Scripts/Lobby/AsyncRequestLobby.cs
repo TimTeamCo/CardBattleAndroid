@@ -20,11 +20,18 @@ namespace TTLobbyLogic
         protected override void ParseServiceException(Exception e)
         {
             if (!(e is LobbyServiceException))
+            {
                 return;
+            }
             var lobbyEx = e as LobbyServiceException;
-            if (lobbyEx.Reason == LobbyExceptionReason.RateLimited) // We have other ways of preventing players from hitting the rate limit, so the developer-facing 429 error is sufficient here.
+            // We have other ways of preventing players from hitting the rate limit, so the developer-facing 429 error is sufficient here.
+            if (lobbyEx.Reason == LobbyExceptionReason.RateLimited) 
+            {
                 return;
-            Locator.Get.Messenger.OnReceiveMessage(MessageType.DisplayErrorPopup, $"Lobby Error: {lobbyEx.Message} ({lobbyEx.InnerException.Message})"); // Lobby error type, then HTTP error type.
+            }
+            
+            // Lobby error type, then HTTP error type.
+            Locator.Get.Messenger.OnReceiveMessage(MessageType.DisplayErrorPopup, $"Lobby Error: {lobbyEx.Message} ({lobbyEx.InnerException.Message})");
         }
     }
 }

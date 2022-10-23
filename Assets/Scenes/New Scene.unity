@@ -1939,7 +1939,8 @@ MonoBehaviour:
   - {fileID: 2064910615}
   - {fileID: 959193479}
   - {fileID: 247115408}
-  m_LocalLobbyObservers: []
+  m_LocalLobbyObservers:
+  - {fileID: 214438785}
   m_LocalUserObservers:
   - {fileID: 1222414190}
   m_LobbyServiceObservers: []

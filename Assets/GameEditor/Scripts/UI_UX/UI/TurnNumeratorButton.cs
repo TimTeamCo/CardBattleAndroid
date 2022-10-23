@@ -21,15 +21,19 @@ namespace TTBattle.UI
         internal int attackNumerator = 1;
         private bool IsChargedMagePlayer1;
         private bool IsChargedMagePlayer2;
+        public MapCellScrip MapCellPl1;
+        public MapCellScrip MapCellPl2;
 
         public void MakeTurn()
         {
+            MapCellPl1 = Player1Panel.GetComponent<MapScript>().playerMapCell;
+            MapCellPl2 = Player2Panel.GetComponent<MapScript>().playerMapCell;
             SetObjectReferences();
             SetNewTurnCount();
             attackNumerator++;
             _squadAttackScript.GetComponent<SquadAttack>().Attack(
                 startBattle._player1.GetUnitChoice(_PlayerAttackerDropdown.value),
-                startBattle._player2.GetUnitChoice(_PlayerDeffenderDropdown.value), this);
+                startBattle._player2.GetUnitChoice(_PlayerDeffenderDropdown.value), this, MapCellPl1, MapCellPl2);
             SetArmyPanelsValues();
             _changeArmys.GetComponent<ChangeArmys>().DoChangeArmys();
 

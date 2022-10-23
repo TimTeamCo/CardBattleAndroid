@@ -528,6 +528,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 391052447}
   m_CullTransparentMesh: 1
+--- !u!114 &490266962 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4957478298820687839, guid: e66cfe70be244784e986233280477dba, type: 3}
+  m_PrefabInstance: {fileID: 1925029200}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1fcef44217d45644b82d8f8c7f1b6d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &572687447
 GameObject:
   m_ObjectHideFlags: 0
@@ -1804,7 +1815,508 @@ PrefabInstance:
       propertyPath: m_Name
       value: Battle
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 308044179687844684, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: id
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 308044179687844684, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.b
+      value: 0.8901961
+      objectReference: {fileID: 0}
+    - target: {fileID: 308044179687844684, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.g
+      value: 0.98039216
+      objectReference: {fileID: 0}
+    - target: {fileID: 308044179687844684, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.r
+      value: 0.8901961
+      objectReference: {fileID: 0}
+    - target: {fileID: 308044179687844684, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _mageInfluence
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 308044179687844684, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _assasinInfluence
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 308044179687844684, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _warriorInfluence
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 1244002464697696997, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: id
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 1244002464697696997, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.b
+      value: 0.8509804
+      objectReference: {fileID: 0}
+    - target: {fileID: 1244002464697696997, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.g
+      value: 0.9529412
+      objectReference: {fileID: 0}
+    - target: {fileID: 1244002464697696997, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1244002464697696997, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _mageInfluence
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1244002464697696997, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _assasinInfluence
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 1244002464697696997, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _warriorInfluence
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1610290181173201654, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: MapCellAttacker
+      value: 
+      objectReference: {fileID: 2115053540}
+    - target: {fileID: 1610290181173201654, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: MapCellDeffender
+      value: 
+      objectReference: {fileID: 490266962}
+    - target: {fileID: 2009542867731857019, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: id
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2009542867731857019, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.b
+      value: 0.6313726
+      objectReference: {fileID: 0}
+    - target: {fileID: 2009542867731857019, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.g
+      value: 0.96862745
+      objectReference: {fileID: 0}
+    - target: {fileID: 2009542867731857019, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2009542867731857019, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _mageInfluence
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2009542867731857019, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _assasinInfluence
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 2009542867731857019, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _warriorInfluence
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2845973150314476039, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: id
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 2845973150314476039, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2845973150314476039, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.g
+      value: 0.3647059
+      objectReference: {fileID: 0}
+    - target: {fileID: 2845973150314476039, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.r
+      value: 0.3882353
+      objectReference: {fileID: 0}
+    - target: {fileID: 2845973150314476039, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _mageInfluence
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 2845973150314476039, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _assasinInfluence
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2845973150314476039, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _warriorInfluence
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3014456347209909898, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: id
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3014456347209909898, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.b
+      value: 0.7921569
+      objectReference: {fileID: 0}
+    - target: {fileID: 3014456347209909898, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.g
+      value: 0.9882353
+      objectReference: {fileID: 0}
+    - target: {fileID: 3014456347209909898, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.r
+      value: 0.9882353
+      objectReference: {fileID: 0}
+    - target: {fileID: 3014456347209909898, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _mageInfluence
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3014456347209909898, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _assasinInfluence
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 3014456347209909898, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _warriorInfluence
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3662332557563887133, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4269914682430578168, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4517603561661945668, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: id
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4517603561661945668, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.b
+      value: 0.38039216
+      objectReference: {fileID: 0}
+    - target: {fileID: 4517603561661945668, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.g
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4517603561661945668, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.r
+      value: 0.25882354
+      objectReference: {fileID: 0}
+    - target: {fileID: 4517603561661945668, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _mageInfluence
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4517603561661945668, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _assasinInfluence
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4517603561661945668, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _warriorInfluence
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 4683357524711719385, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: id
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4683357524711719385, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4683357524711719385, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.g
+      value: 0.89411765
+      objectReference: {fileID: 0}
+    - target: {fileID: 4683357524711719385, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.r
+      value: 0.8117647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4683357524711719385, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _mageInfluence
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 4683357524711719385, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _assasinInfluence
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4683357524711719385, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _warriorInfluence
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4803473742920206180, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4803473742920206180, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _selectColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816031264755805683, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: id
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816031264755805683, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.b
+      value: 0.78431374
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816031264755805683, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.g
+      value: 0.96862745
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816031264755805683, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.r
+      value: 0.7647059
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816031264755805683, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _mageInfluence
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816031264755805683, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _assasinInfluence
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816031264755805683, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _warriorInfluence
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 4957478298820687839, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: id
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4957478298820687839, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.b
+      value: 0.9098039
+      objectReference: {fileID: 0}
+    - target: {fileID: 4957478298820687839, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.g
+      value: 0.8901961
+      objectReference: {fileID: 0}
+    - target: {fileID: 4957478298820687839, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.r
+      value: 0.8745098
+      objectReference: {fileID: 0}
+    - target: {fileID: 4957478298820687839, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _mageInfluence
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4957478298820687839, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _assasinInfluence
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4957478298820687839, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _warriorInfluence
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5086244505460238572, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: id
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5086244505460238572, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.b
+      value: 0.92941177
+      objectReference: {fileID: 0}
+    - target: {fileID: 5086244505460238572, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.g
+      value: 0.9607843
+      objectReference: {fileID: 0}
+    - target: {fileID: 5086244505460238572, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.r
+      value: 0.72156864
+      objectReference: {fileID: 0}
+    - target: {fileID: 5086244505460238572, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _mageInfluence
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5086244505460238572, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _assasinInfluence
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5086244505460238572, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _warriorInfluence
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 5311525882441098954, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: id
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5311525882441098954, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.b
+      value: 0.85882354
+      objectReference: {fileID: 0}
+    - target: {fileID: 5311525882441098954, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.g
+      value: 0.83137256
+      objectReference: {fileID: 0}
+    - target: {fileID: 5311525882441098954, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.r
+      value: 0.80784315
+      objectReference: {fileID: 0}
+    - target: {fileID: 5311525882441098954, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _mageInfluence
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5311525882441098954, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _assasinInfluence
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5311525882441098954, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _warriorInfluence
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5452968594096011289, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: id
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5452968594096011289, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.b
+      value: 0.9607843
+      objectReference: {fileID: 0}
+    - target: {fileID: 5452968594096011289, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.g
+      value: 0.9529412
+      objectReference: {fileID: 0}
+    - target: {fileID: 5452968594096011289, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.r
+      value: 0.9490196
+      objectReference: {fileID: 0}
+    - target: {fileID: 5452968594096011289, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _mageInfluence
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5452968594096011289, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _assasinInfluence
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5452968594096011289, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _warriorInfluence
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5617782701633437161, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: id
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5617782701633437161, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.b
+      value: 0.61960787
+      objectReference: {fileID: 0}
+    - target: {fileID: 5617782701633437161, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.g
+      value: 0.7882353
+      objectReference: {fileID: 0}
+    - target: {fileID: 5617782701633437161, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.r
+      value: 0.9019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 5617782701633437161, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _mageInfluence
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5617782701633437161, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _assasinInfluence
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 5617782701633437161, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _warriorInfluence
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6073227610995258830, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: id
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6073227610995258830, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6073227610995258830, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.g
+      value: 0.87058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 6073227610995258830, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.r
+      value: 0.87058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 6073227610995258830, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _mageInfluence
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 6073227610995258830, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _assasinInfluence
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6073227610995258830, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _warriorInfluence
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7004916863425863114, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: id
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 7004916863425863114, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7004916863425863114, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.g
+      value: 0.5686275
+      objectReference: {fileID: 0}
+    - target: {fileID: 7004916863425863114, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.r
+      value: 0.5764706
+      objectReference: {fileID: 0}
+    - target: {fileID: 7004916863425863114, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _mageInfluence
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 7004916863425863114, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _assasinInfluence
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7004916863425863114, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _warriorInfluence
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7984799905734660028, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: id
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7984799905734660028, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.b
+      value: 0.5058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 7984799905734660028, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.g
+      value: 0.4627451
+      objectReference: {fileID: 0}
+    - target: {fileID: 7984799905734660028, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _usualColor.r
+      value: 0.43137255
+      objectReference: {fileID: 0}
+    - target: {fileID: 7984799905734660028, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _mageInfluence
+      value: -30
+      objectReference: {fileID: 0}
+    - target: {fileID: 7984799905734660028, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _assasinInfluence
+      value: -30
+      objectReference: {fileID: 0}
+    - target: {fileID: 7984799905734660028, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: _warriorInfluence
+      value: -30
+      objectReference: {fileID: 0}
+    - target: {fileID: 8345232331046280084, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.602875
+      objectReference: {fileID: 0}
+    - target: {fileID: 8345232331046280084, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.38725746
+      objectReference: {fileID: 0}
+    - target: {fileID: 8345232331046280084, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 141
+      objectReference: {fileID: 0}
+    - target: {fileID: 8345232331046280084, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 114
+      objectReference: {fileID: 0}
+    - target: {fileID: 8345232331046280084, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -49.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8345232331046280084, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 47
+      objectReference: {fileID: 0}
+    - target: {fileID: 8735495525377718857, guid: e66cfe70be244784e986233280477dba, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 8735495525377718857, guid: e66cfe70be244784e986233280477dba, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e66cfe70be244784e986233280477dba, type: 3}
 --- !u!1 &1950147769
 GameObject:
@@ -1964,3 +2476,14 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2012125513}
   m_CullTransparentMesh: 1
+--- !u!114 &2115053540 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7984799905734660028, guid: e66cfe70be244784e986233280477dba, type: 3}
+  m_PrefabInstance: {fileID: 1925029200}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1fcef44217d45644b82d8f8c7f1b6d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

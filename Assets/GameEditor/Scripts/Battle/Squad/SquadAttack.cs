@@ -9,15 +9,18 @@ namespace TTBattle
 {
     public class SquadAttack: MonoBehaviour
     {
-        public void Attack(Squad attacker, Squad deffender, TurnNumeratorButton _turnNumeratorButton)
+        public void Attack(Squad attacker, Squad deffender, TurnNumeratorButton _turnNumeratorButton, MapCellScrip attackerMapCell, MapCellScrip deffenderMapCell)
         {
+            int WarrriorInfluence;
+            int AssasinInfluence;
+            int MageInfluence;
             if (attacker._unit is Warrior)
             {
                 if (deffender._unit is Warrior)
                 {
-                    deffender.Count = ((deffender._unit.Health * deffender.Count - (attacker._unit.Attack *  attacker.Count)) /
-                                        deffender._unit.Health);
-                    attacker.Count = ((attacker._unit.Health *  attacker.Count - (deffender._unit.Attack * deffender.Count)) / attacker._unit.Health);
+                    deffender.Count =  (int) Math.Floor(((deffender._unit.Health * deffenderMapCell._warriorInfluence * deffender.Count - (attacker._unit.Attack * attackerMapCell._warriorInfluence *  attacker.Count)) /
+                                                         deffender._unit.Health * deffenderMapCell._warriorInfluence));
+                    attacker.Count =  (int) Math.Floor(((attacker._unit.Health * attackerMapCell._warriorInfluence * attacker.Count - (deffender._unit.Attack * deffenderMapCell._warriorInfluence * deffender.Count)) / attacker._unit.Health * attackerMapCell._warriorInfluence));
                 }
 
                 if (deffender._unit is Assasin)

@@ -4,6 +4,7 @@ using TTAuth;
 using TTGame;
 using Unity.Services.Authentication;
 using Unity.Services.Lobbies.Models;
+using UnityEngine;
 
 namespace TTLobbyLogic
 {
@@ -100,7 +101,7 @@ namespace TTLobbyLogic
             if (!m_rateLimitHost.CanCall())
             {
                 onFailure?.Invoke();
-                UnityEngine.Debug.LogWarning("Create Lobby hit the rate limit.");
+                Debug.LogWarning("Create Lobby hit the rate limit.");
                 return;
             }
 
@@ -125,7 +126,7 @@ namespace TTLobbyLogic
                 (lobbyId == null && lobbyCode == null))
             {
                 onFailure?.Invoke();
-                UnityEngine.Debug.LogWarning("Join Lobby hit the rate limit.");
+                Debug.LogWarning("Join Lobby hit the rate limit.");
                 return;
             }
 
@@ -156,7 +157,7 @@ namespace TTLobbyLogic
             if (!m_rateLimitQuickJoin.CanCall())
             {
                 onFailure?.Invoke();
-                UnityEngine.Debug.LogWarning("Quick Join Lobby hit the rate limit.");
+                Debug.LogWarning("Quick Join Lobby hit the rate limit.");
                 return;
             }
 
@@ -187,7 +188,7 @@ namespace TTLobbyLogic
             {
                 onListRetrieved?.Invoke(null);
                 m_rateLimitQuery.EnqueuePendingOperation(() => { RetrieveLobbyListAsync(onListRetrieved, onError, limitToColor); });
-                UnityEngine.Debug.LogWarning("Retrieve Lobby list hit the rate limit. Will try again soon...");
+                Debug.LogWarning("Retrieve Lobby list hit the rate limit. Will try again soon...");
                 return;
             }
 
@@ -222,7 +223,7 @@ namespace TTLobbyLogic
             if (!m_rateLimitQuery.CanCall())
             {
                 onComplete?.Invoke(null);
-                UnityEngine.Debug.LogWarning("Retrieve Lobby hit the rate limit.");
+                Debug.LogWarning("Retrieve Lobby hit the rate limit.");
                 return;
             }
             LobbyAPIInterface.GetLobbyAsync(lobbyId, OnGet);

@@ -44,6 +44,8 @@ namespace TTGame
         private RelayUtpSetup m_relaySetup;
         private RelayUtpClient m_relayClient;
 
+        private bool gameReady;
+
         //Rather than a setter, this is usable in-editor. It won't accept an enum, however.
         public void SetLobbyColorFilter(int color)
         {
@@ -54,6 +56,8 @@ namespace TTGame
 
         private void Awake()
         {
+            StartCoroutine(LoadResources());
+            
             // Do some arbitrary operations to instantiate singletons.
 #pragma warning disable IDE0059 // Unnecessary assignment of a value
             var unused = Locator.Get;
@@ -63,6 +67,12 @@ namespace TTGame
             Application.wantsToQuit += OnWantToQuit;
         }
 
+        private IEnumerator LoadResources()
+        {
+            yield return new WaitUntil(() => gameReady);
+            SetGameState(GameState.Menu);
+        }
+
         private void Start()
         {
             m_localLobby = new LocalLobby {State = LobbyState.Lobby};
@@ -70,7 +80,6 @@ namespace TTGame
             m_localUser.DisplayName = "New Player";
             Locator.Get.Messenger.Subscribe(this);
             BeginObservers();
-            SetGameState(GameState.Menu);
         }
 
         private void OnAuthSignIn()
@@ -84,6 +93,7 @@ namespace TTGame
             // The local LobbyUser object will be hooked into UI before the LocalLobby is populated during lobby join,
             // so the LocalLobby must know about it already when that happens.
             m_localLobby.AddPlayer(m_localUser);
+            gameReady = true;
         }
 
         private void BeginObservers()
@@ -342,10 +352,12 @@ namespace TTGame
             if (m_localUser.IsHost)
             {
                 m_relaySetup = gameObject.AddComponent<RelayUtpSetupHost>();
+                Debug.Log("Relay Host");
             }
             else
             {
                 m_relaySetup = gameObject.AddComponent<RelayUtpSetupClient>();
+                Debug.Log("Relay Client");
             }
             m_relaySetup.BeginRelayJoin(m_localLobby, m_localUser, OnRelayConnected);
 
@@ -363,6 +375,7 @@ namespace TTGame
                 m_relayClient = client;
                 if (m_localUser.IsHost)
                 {
+                    Debug.Log("Host is now ...");
                     CompleteRelayConnection();
                 }
                 else

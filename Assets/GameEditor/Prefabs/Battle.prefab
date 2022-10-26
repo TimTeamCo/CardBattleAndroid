@@ -413,6 +413,7 @@ GameObject:
   - component: {fileID: 220050946543304552}
   - component: {fileID: 220050946543304553}
   - component: {fileID: 4019739056948717998}
+  - component: {fileID: 3120742213476035102}
   m_Layer: 5
   m_Name: Player1
   m_TagString: Army
@@ -527,6 +528,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startMapCell: {fileID: 7984799905734660028}
   playerMapCell: {fileID: 5514232065545314957}
+  uintsInfluence:
+  - 0
+  - 0
+  - 0
+--- !u!114 &3120742213476035102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 220050946543304556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eae7bc59ab1542c78ac4ba31fd29e14b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerMapCell: {fileID: 7984799905734660028}
+  _isAttacker: 0
+  _unitsInfluence:
+  - 0
+  - 0
+  - 0
 --- !u!1 &220050946552370127
 GameObject:
   m_ObjectHideFlags: 0
@@ -738,6 +761,7 @@ GameObject:
   - component: {fileID: 220050946663923738}
   - component: {fileID: 967124077893690561}
   - component: {fileID: 1610290181173201654}
+  - component: {fileID: 5500217683146431314}
   m_Layer: 5
   m_Name: Numerator
   m_TagString: Untagged
@@ -888,16 +912,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2eb6590d31e46e2835599a7155828c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _PlayerAttackerDropdown: {fileID: 220050947684765295}
-  _PlayerDeffenderDropdown: {fileID: 220050947151770623}
-  Calculator: {fileID: 220050948477549738}
-  Player1Panel: {fileID: 220050946543304556}
-  Player2Panel: {fileID: 220050947944954259}
-  Numerator: {fileID: 220050946663923742}
+  _playerAttackerDropdown: {fileID: 0}
+  _playerDeffenderDropdown: {fileID: 0}
+  _calculator: {fileID: 0}
+  _player1Panel: {fileID: 0}
+  _player2Panel: {fileID: 0}
+  _numerator: {fileID: 0}
   _squadAttackScript: {fileID: 2031615023199235171}
   _changeArmys: {fileID: 4829605875852096544}
-  MapCellAttacker: {fileID: 0}
-  MapCellDeffender: {fileID: 0}
+  _mapCellPl1: {fileID: 0}
+  _mapCellPl2: {fileID: 0}
+--- !u!114 &5500217683146431314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 220050946663923742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eae7bc59ab1542c78ac4ba31fd29e14b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerMapCell: {fileID: 0}
+  _isAttacker: 0
+  _unitsInfluence:
+  - 0
+  - 0
+  - 0
 --- !u!1 &220050946738300857
 GameObject:
   m_ObjectHideFlags: 0
@@ -4632,6 +4674,7 @@ GameObject:
   - component: {fileID: 220050947944954269}
   - component: {fileID: 220050947944954264}
   - component: {fileID: 7373231117319861050}
+  - component: {fileID: 6858653911485979153}
   m_Layer: 5
   m_Name: Player2
   m_TagString: Army
@@ -4746,6 +4789,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startMapCell: {fileID: 7984799905734660028}
   playerMapCell: {fileID: 7442018930853693325}
+  uintsInfluence:
+  - 0
+  - 0
+  - 0
+--- !u!114 &6858653911485979153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 220050947944954259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eae7bc59ab1542c78ac4ba31fd29e14b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerMapCell: {fileID: 7984799905734660028}
+  _isAttacker: 0
+  _unitsInfluence:
+  - 0
+  - 0
+  - 0
 --- !u!1 &220050947991205521
 GameObject:
   m_ObjectHideFlags: 0
@@ -6537,6 +6602,8 @@ MonoBehaviour:
   Player1Panel: {fileID: 220050946543304556}
   Player2Panel: {fileID: 220050947944954259}
   Numerator: {fileID: 220050946663923742}
+  _player1: {fileID: 0}
+  _player2: {fileID: 0}
 --- !u!1 &220050948496303320
 GameObject:
   m_ObjectHideFlags: 0
@@ -6952,6 +7019,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startMapCell: {fileID: 7984799905734660028}
   playerMapCell: {fileID: 0}
+  uintsInfluence:
+  - 0
+  - 0
+  - 0
 --- !u!1001 &50270229625985323
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7960,11 +8031,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4335034e666818c4699539aa8e48f618, type: 3}
---- !u!224 &6214467987583720317 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 1115271463230149279, guid: 4335034e666818c4699539aa8e48f618, type: 3}
-  m_PrefabInstance: {fileID: 6432271429697292770}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &7442018930853693325 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4468512016117796463, guid: 4335034e666818c4699539aa8e48f618, type: 3}
@@ -7976,6 +8042,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1fcef44217d45644b82d8f8c7f1b6d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &6214467987583720317 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1115271463230149279, guid: 4335034e666818c4699539aa8e48f618, type: 3}
+  m_PrefabInstance: {fileID: 6432271429697292770}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6860441039314899877
 PrefabInstance:
   m_ObjectHideFlags: 0

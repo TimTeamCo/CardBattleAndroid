@@ -2,7 +2,7 @@
 
 namespace TTBattle.UI
 {
-    public class ChangeArmys : MonoBehaviour
+    public class ChangePlayers : MonoBehaviour
     {
         [SerializeField] public GameObject Army1;
         [SerializeField] public GameObject Army2; 
@@ -23,10 +23,10 @@ namespace TTBattle.UI
         private void ChangeArmysCount()
         {
             Army1.GetComponent<ArmyPanelCountUnitsWiew>();
-            _player1 = Battle.GetComponent<StartBattle>()._player1;
-            _player2 = Battle.GetComponent<StartBattle>()._player2;
-            Battle.GetComponent<StartBattle>()._player1 = _player2;
-            Battle.GetComponent<StartBattle>()._player2 = _player1;
+            _player1 = Battle.GetComponent<StartBattle>()._player1._playerHand;
+            _player2 = Battle.GetComponent<StartBattle>()._player2._playerHand;
+            Battle.GetComponent<StartBattle>()._player1._playerHand = _player2;
+            Battle.GetComponent<StartBattle>()._player2._playerHand = _player1;
             Battle.GetComponent<StartBattle>().SetArmysUnitsCount();
         }
 

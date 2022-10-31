@@ -117,10 +117,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1fcef44217d45644b82d8f8c7f1b6d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Map: {fileID: 0}
   id: 0
   NextCell: []
-  _selectColor: {r: 0.23529412, g: 0.18743323, b: 1, a: 0.92156863}
+  _heilightColor: {r: 0.41176474, g: 0.16470589, b: 0.15294118, a: 0.61960787}
   _usualColor: {r: 0.9433962, g: 0.9047873, b: 0.0658597, a: 1}
+  _activeCellColor: {r: 0.41176474, g: 0.16470589, b: 0.15294118, a: 1}
   _warriorInfluence: 0
   _assasinInfluence: 0
   _mageInfluence: 0
+  uintsInfluence:
+  - 0
+  - 0
+  - 0

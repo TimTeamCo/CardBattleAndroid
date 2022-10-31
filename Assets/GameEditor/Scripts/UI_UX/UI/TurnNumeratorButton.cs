@@ -36,7 +36,6 @@ namespace TTBattle.UI
                 startBattle._player2.GetUnitChoice(_PlayerDeffenderDropdown.value), this, MapCellPl1, MapCellPl2);
             SetArmyPanelsValues();
             _changeArmys.GetComponent<ChangeArmys>().DoChangeArmys();
-
         }
 
         private void SetArmyPanelsValues()

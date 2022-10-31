@@ -1,19 +1,13 @@
-﻿using TTBattle.UI;
-using UnityEngine;
-
-namespace TTBattle
+﻿namespace TTBattle
 {
-    public class Player : MonoBehaviour
+    public class Player
     {
         public PlayerHand _playerHand;
-        public bool _chooser;
         public float[] _unitsInfluence = new float [3];
-        void Awake()
+
+        public Player()
         {
             _playerHand = new PlayerHand();
-                //_unitsInfluence = _playerMapCell.uintsInfluence;
         }
-        
-        
     }
 }

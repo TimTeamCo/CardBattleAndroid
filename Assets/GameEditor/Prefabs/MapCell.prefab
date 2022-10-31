@@ -120,9 +120,9 @@ MonoBehaviour:
   Map: {fileID: 0}
   id: 0
   NextCell: []
-  _heilightColor: {r: 0.41176474, g: 0.16470589, b: 0.15294118, a: 0.61960787}
+  _selectedCellColor: {r: 1, g: 0.2, b: 0, a: 0.8627451}
   _usualColor: {r: 0.9433962, g: 0.9047873, b: 0.0658597, a: 1}
-  _activeCellColor: {r: 0.41176474, g: 0.16470589, b: 0.15294118, a: 1}
+  _activeChoiseColor: {r: 0.6156863, g: 0.21176471, b: 0.16470589, a: 0.47058824}
   _warriorInfluence: 0
   _assasinInfluence: 0
   _mageInfluence: 0

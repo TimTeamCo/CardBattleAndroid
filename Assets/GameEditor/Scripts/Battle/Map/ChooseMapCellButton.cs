@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace TTBattle.UI
@@ -12,12 +11,11 @@ namespace TTBattle.UI
 
         public void PressedButton()
         {
-            ChangeChoosers();
+            ChangePlayersRoles();
         }
 
-        private void ChangeChoosers()
+        private void ChangePlayersRoles()
         {
-            _player._chooser = !_player._chooser;
         }
     }
 }

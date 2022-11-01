@@ -5,6 +5,7 @@ namespace TTBattle.UI
 {
     public class ArmyPanel : MonoBehaviour
     {
+        public string _name;
         [SerializeField] public Dropdown _unitDropdown;
         [SerializeField] private Text _playerName;
         [SerializeField] private Text _warriorNumber;
@@ -16,18 +17,18 @@ namespace TTBattle.UI
         private void Start()
         {
             _player = new Player();
-            SetArmysData();
+            SetArmysValues();
         }
 
-        public void SetArmysData()
+        public void SetArmysValues()
         {
             SetPlayerName();
             SetAmountOfUnits();
         }
-        
+
         public void SetPlayerName()
         {
-            _playerName.text = name;
+            _playerName.text = _name;
         }
 
         public void SetAmountOfUnits()

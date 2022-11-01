@@ -9,11 +9,13 @@ namespace TTBattle.UI
         [SerializeField] private TurnsNumerator _turnsNumerator;
         [SerializeField] private SquadAttack _squadAttack;
         [SerializeField] private ReplaceArmys _replaceArmys;
+        [SerializeField] private MapScript _map;
         private int _newTurnsChecker;
 
         public void MakeTurn()
         {
             SetNewTurnCount();
+            MapScripts();
             _squadAttack.Attack(_player1Army._player._playerHand.GetUnitChoice(_player1Army._unitDropdown.value),
                 _player2Army._player._playerHand.GetUnitChoice(_player2Army._unitDropdown.value), _player1Army._player,
                 _player2Army._player, _turnsNumerator);
@@ -36,5 +38,12 @@ namespace TTBattle.UI
                 _newTurnsChecker = 0;
             }
         }
+
+        private void MapScripts()
+        {
+            _map.SetNewMapCell(_map._newMapCell);
+            _map.ChangeMapCells();
+        }
     }
 }
+

@@ -36,6 +36,7 @@ namespace TTBattle.UI
             _player1Army.name = _player2Army.name;
             _player2Army.name = name;
             (_player1Army._player, _player2Army._player) = (_player2Army._player, _player1Army._player);
+            (_player1Army._playerPanelColor, _player2Army._playerPanelColor) = (_player2Army._playerPanelColor, _player1Army._playerPanelColor);
         }
     }
 }

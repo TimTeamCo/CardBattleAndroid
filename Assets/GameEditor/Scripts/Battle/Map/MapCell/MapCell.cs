@@ -39,17 +39,21 @@ namespace TTBattle.UI
         {
             if (_isAccasible && _isSelected)
             {
-                _image.color = _selectedCellColor;
+                _map._mapCell._isAccasible = false;
+                SetImageColorToSelected();
                 foreach (MapCell mapCell in _map._mapCell.NextCell) 
                 { 
                     mapCell._isAccasible = false;
                 }
                     // доп функця для атаки
+                    _map._makeTurn._isAttack = true;
+                    _map._makeTurn.MakeButtonEnabled();
             }
             else if (_isAccasible && !_isSelected)
             {
-                _lastColor = _selectedCellColor;
+                SetImageColorToSelected();
                 _map.NewMapCell = this;
+                _map._makeTurn.MakeButtonEnabled();
             }
         }
 
@@ -117,6 +121,18 @@ namespace TTBattle.UI
         {
             _lastColor = player._playerMapCellColor;
             _lastColor.a = 0.8f;
+            _image.color = _lastColor;
+        }
+
+        public void SetImageColorToUsual()
+        {
+            _lastColor = _usualColor;
+            _image.color = _lastColor;
+        }
+        
+        private void SetImageColorToSelected()
+        {
+            _lastColor = _selectedCellColor;
             _image.color = _lastColor;
         }
     }

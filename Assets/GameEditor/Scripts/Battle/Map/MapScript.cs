@@ -5,7 +5,7 @@ namespace TTBattle.UI
 {
     public class MapScript : MonoBehaviour
     {
-        [SerializeField] public TurnNumeratorButton _turnNumeratorButton;
+        [SerializeField] public MakeTurn _makeTurn;
         public ArmyPanel _playerSelector;
         public ArmyPanel _playerSecondRate;
         public MapCell _mapCell;
@@ -25,12 +25,19 @@ namespace TTBattle.UI
                 {
                     _newMapCell = value;
                     _lastMapCell = _mapCell;
-
+                    _makeTurn.MakeButtonEnabled();
                 }
                 if (value.id != _newMapCell.id)
                 {
-                    _newMapCell = value;
-                    _lastMapCell = _mapCell;
+                    if (!_newMapCell._isSelected)
+                    {                    
+                        _newMapCell.SetImageColorToUsual();
+                    }
+                    else
+                    {
+                        _newMapCell = value;
+                        _lastMapCell = _mapCell;
+                    }
                 }
             }
         }
@@ -68,6 +75,14 @@ namespace TTBattle.UI
                     _playerSelector._playerMapCell = _mapCell;
                     _lastMapCell.CellIsLeaved();
                 }
+                if (_newMapCell != null && _newMapCell == _playerSecondRate._playerMapCell)
+                {
+                    _mapCell._isAccasible = true;
+                    foreach (MapCell mapCell in _mapCell.NextCell)
+                    {
+                        mapCell._isAccasible = false;
+                    }
+                }
             }
         }
         
@@ -78,7 +93,5 @@ namespace TTBattle.UI
             _mapCell = _playerSelector._playerMapCell;
             _mapCell.CellIsSelected();
         }
-
-
     }
 }

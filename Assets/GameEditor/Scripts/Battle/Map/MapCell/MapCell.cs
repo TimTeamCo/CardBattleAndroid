@@ -22,9 +22,8 @@ namespace TTBattle.UI
         private Image _image;
         private MapScript _map;
         [NonSerialized] public float[] uintsInfluence = new float [3];
-        public bool _isAccasible = false;
-        public bool _isSelected = false;
-        private bool _occupaedAnoutherPlayer;
+        public bool _isAccasible;
+        public bool _isSelected;
         
         private void Awake()
         {
@@ -33,37 +32,53 @@ namespace TTBattle.UI
             _image.color = _lastColor;
             GetComponent<Image>().alphaHitTestMinimumThreshold = 0.1f;
             SetUnitsInfluence();
-            _map = this.GetComponentInParent<MapScript>();
+            _map = GetComponentInParent<MapScript>();
         }
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            if(this._isSelected){}
-            else if (this._isAccasible && this._occupaedAnoutherPlayer == true)
+            if (_isAccasible && _isSelected)
             {
-                _lastColor = _selectedCellColor;
-                _map._newMapCell = this;
+                _image.color = _selectedCellColor;
+                foreach (MapCell mapCell in _map._mapCell.NextCell) 
+                { 
+                    mapCell._isAccasible = false;
+                }
+                    // доп функця для атаки
             }
-            else if (_isAccasible == true)
+            else if (_isAccasible && !_isSelected)
             {
                 _lastColor = _selectedCellColor;
-                _map.GetNewMapCell(this);
+                _map.NewMapCell = this;
             }
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if(this._isSelected){}
-            else if (_isAccasible == true || (this._isAccasible && this._occupaedAnoutherPlayer == true))
+            if (_isAccasible && !_isSelected)
             {
                 _image.color = _activeChoiseColor;
+            }
+            else
+            {
+                if (_isAccasible && _isSelected)
+                {
+                    _image.color = _activeChoiseColor;
+                    _activeChoiseColor.a = 0.4f;
+                }
             }
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (_isAccasible == true)
+            if (_isAccasible && !_isSelected)
             {
+                _image.color = _lastColor;
+            }
+
+            if (_isAccasible && _isSelected)
+            {
+                _activeChoiseColor.a = 1f;
                 _image.color = _lastColor;
             }
         }
@@ -75,13 +90,13 @@ namespace TTBattle.UI
             uintsInfluence[2] = (100 + _mageInfluence) / 100;
         }
 
-        public void LeaveCell()
+        public void CellIsLeaved()
         {
             _lastColor = _usualColor;
             _image.color = _lastColor;
             _isSelected = false;
             _isAccasible = false;
-            foreach (MapCell mapCell in this.NextCell)
+            foreach (MapCell mapCell in NextCell)
             {
                 mapCell._isAccasible = false;
             }
@@ -91,13 +106,18 @@ namespace TTBattle.UI
         {
             _isSelected = true;
             _isAccasible = true;
-            _lastColor = _map._playerSelector._playerPanelColor;
-            _lastColor.a = 0.8f;
-            _image.color = _lastColor;
-            foreach (MapCell mapCell in this.NextCell)
+            SetCellCollorAsPlayers(_map._playerSelector);
+            foreach (MapCell mapCell in NextCell)
             {
                 mapCell._isAccasible = true;
             }
+        }
+
+        public void SetCellCollorAsPlayers(ArmyPanel player)
+        {
+            _lastColor = player._playerMapCellColor;
+            _lastColor.a = 0.8f;
+            _image.color = _lastColor;
         }
     }
 }

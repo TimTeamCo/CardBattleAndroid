@@ -15,7 +15,7 @@ namespace TTBattle.UI
         public void MakeTurn()
         {
             SetNewTurnCount();
-            MapScripts();
+            MapScript();
             _squadAttack.Attack(_player1Army._player._playerHand.GetUnitChoice(_player1Army._unitDropdown.value),
                 _player2Army._player._playerHand.GetUnitChoice(_player2Army._unitDropdown.value), _player1Army._player,
                 _player2Army._player, _turnsNumerator);
@@ -39,9 +39,8 @@ namespace TTBattle.UI
             }
         }
 
-        private void MapScripts()
+        private void MapScript()
         {
-            _map.SetNewMapCell(_map._newMapCell);
             _map.ChangeMapCells();
         }
     }

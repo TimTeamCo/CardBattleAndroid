@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace TTBattle.UI
@@ -16,11 +17,14 @@ namespace TTBattle.UI
         [SerializeField] private GameObject _playerNameBg;
         [SerializeField] private Sprite _playerChip;
         public Player _player;
+        public MapCell _playerMapCell;
+        [NonSerialized] public Color _playerMapCellColor; 
 
         private void Awake()
         {
             _player = new Player();
             SetArmysValues();
+            _playerMapCellColor = _playerPanelColor;
         }
 
         public void SetArmysValues()

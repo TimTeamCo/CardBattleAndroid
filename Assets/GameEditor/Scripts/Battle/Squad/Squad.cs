@@ -8,7 +8,7 @@
         public Squad(Unit unit, int count)
         {
             Count = count;
-            for (var i = 0; i < Count; i++) _unit = unit;
+            for (var i = 0; i < Count; i++) _unit = unit; //if _unit one why use for?
         }
 
         public int Count

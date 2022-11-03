@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 namespace TTBattle.UI
 {
+    //?
     [RequireComponent(typeof(Button))]
     public class ChooseMapCellButton : MonoBehaviour
     {

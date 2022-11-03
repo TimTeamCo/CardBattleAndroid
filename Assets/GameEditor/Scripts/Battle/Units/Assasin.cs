@@ -1,5 +1,6 @@
 ﻿namespace TTBattle
 {
+    //The same IUnit
     public class Assasin: Unit, IUnit
     {
         public Assasin()

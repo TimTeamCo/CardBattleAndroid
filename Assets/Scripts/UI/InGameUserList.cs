@@ -56,8 +56,11 @@ namespace TTUI
 
         void OnUserLeft(string userID)
         {
-            if (!m_CurrentUsers.Contains(userID))
+            if (m_CurrentUsers.Contains(userID) == false)
+            {
                 return;
+            }
+            Debug.Log($"Remove userID");
             m_CurrentUsers.Remove(userID);
         }
     }

@@ -37,6 +37,7 @@ namespace TTUI
 
         public void OnUserLeft()
         {
+            Debug.Log($"UserLeft {m_DisplayNameText}");
             UserId = null;
             Hide();
             m_observer.EndObserving();

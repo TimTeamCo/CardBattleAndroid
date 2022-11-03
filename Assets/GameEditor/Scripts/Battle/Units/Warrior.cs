@@ -7,6 +7,7 @@
             {
                 Attack = 10;
                 Health = 90;
+                UnitType = UnitType.Warrior;
             }
         }
 }

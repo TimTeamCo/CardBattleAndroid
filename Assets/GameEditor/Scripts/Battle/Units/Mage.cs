@@ -7,6 +7,7 @@
         {
             Attack = 90;
             Health = 10;
+            UnitType = UnitType.Mage;
         }
 
         //Zero usability

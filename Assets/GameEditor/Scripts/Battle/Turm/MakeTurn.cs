@@ -32,6 +32,7 @@ namespace TTBattle.UI
                 _squadAttack.Attack(_player1Army._player._playerHand.GetUnitChoice(_player1Army._unitDropdown.value),
                     _player2Army._player._playerHand.GetUnitChoice(_player2Army._unitDropdown.value), _player1Army._player,
                     _player2Army._player, _turnsNumerator);
+                _squadAttack.Attack(_player1Army, _player2Army, _turnsNumerator);
                 SetAmountOfArmysUnits(); // Bad naming for methods
             }
             MapScript();
@@ -42,8 +43,8 @@ namespace TTBattle.UI
 
         private void SetAmountOfArmysUnits()
         {
-            _player1Army.SetAmountOfUnits();
-            _player2Army.SetAmountOfUnits();
+            _player1Army.SetTextOfUnitsAmount();
+            _player2Army.SetTextOfUnitsAmount();
         }
 
         private void SetNewTurnCount()

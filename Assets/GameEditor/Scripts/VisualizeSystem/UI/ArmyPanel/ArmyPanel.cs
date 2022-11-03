@@ -6,8 +6,8 @@ namespace TTBattle.UI
 {
     public class ArmyPanel : MonoBehaviour
     {
-        //TODO: Tim need wright sort modifiers and naming in our dev team 
         public string _name;
+        [SerializeField] private Image _playerPanelImage;
         [SerializeField] public Dropdown _unitDropdown;
         [SerializeField] private Text _playerName;
         [SerializeField] private Text _warriorNumber;
@@ -16,28 +16,26 @@ namespace TTBattle.UI
         [SerializeField] public Color _playerPanelColor;
         [SerializeField] private GameObject _playerPanel;
         [SerializeField] private GameObject _playerNameBg;
-        [SerializeField] private Sprite _playerChip; // no use in code, need?
-        public Player _player;
+        [SerializeField] private Sprite _playerChip;
+        public Player _player = new Player();
         public MapCell _playerMapCell;
-        [NonSerialized] public Color _playerMapCellColor; 
+        [NonSerialized] public Color _playerMapCellColor;
 
         private void Awake()
         {
-            _player = new Player(); //why dont call new player in init?
-            SetArmysValues();
+            SetArmyValues();
             _playerMapCellColor = _playerPanelColor;
+            
         }
 
-        //Army
-        public void SetArmysValues()
+        public void SetArmyValues()
         {
             SetPlayerName();
-            SetAmountOfUnits();
-            SetBGsColor();
+            SetTextOfUnitsAmount();
+            SetBackgroundColor();
         }
 
-        //why public?
-        public void SetPlayerName()
+        private void SetPlayerName()
         {
             _playerName.text = _name;
         }
@@ -45,17 +43,18 @@ namespace TTBattle.UI
         /// <summary>
         /// var playerHand = _player._playerHand;
         /// </summary>
-        public void SetAmountOfUnits()
+        public void SetTextOfUnitsAmount()
         {
-            _warriorNumber.text = _player._playerHand._warriorSquad.Count.ToString();
-            _assasinNumber.text = _player._playerHand._assasinSquad.Count.ToString();
-            _mageNumber.text = _player._playerHand._mageSquad.Count.ToString();
+            var playerHand = _player._playerHand;
+            _warriorNumber.text = playerHand._warriorSquad.Count.ToString();
+            _assasinNumber.text = playerHand._assasinSquad.Count.ToString();
+            _mageNumber.text = playerHand._mageSquad.Count.ToString();
         }
 
-        private void SetBGsColor()
+        private void SetBackgroundColor()
         {
             //cache GetComponent
-            _playerPanel.GetComponent<Image>().color = _playerPanelColor;
+            _playerPanelImage.color = _playerPanelColor;
             _playerNameBg.GetComponent<Image>().color = _playerPanelColor;
         }
     }

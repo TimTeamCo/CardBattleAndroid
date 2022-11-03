@@ -7,6 +7,7 @@
             {
                 Attack = 30;
                 Health = 30;
+                UnitType = UnitType.Assasin;
             }
     }
 }

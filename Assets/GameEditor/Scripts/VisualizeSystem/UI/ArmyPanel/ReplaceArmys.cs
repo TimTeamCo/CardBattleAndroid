@@ -15,8 +15,8 @@ namespace TTBattle.UI
             //Replace Replace Replace Replace Replace more Replays to Replays God
             ReplaceArmysValues();
             ReplaceDropdownValues();
-            _player1Army.SetArmysValues();
-            _player2Army.SetArmysValues();
+            _player1Army.SetArmyValues();
+            _player2Army.SetArmyValues();
         }
 
         /// <summary>
@@ -52,12 +52,12 @@ namespace TTBattle.UI
             (_player1Army._playerPanelColor, _player2Army._playerPanelColor) = (_player2Army._playerPanelColor, _player1Army._playerPanelColor);
         }
 
-        // private void ReplaceArmy(Player player1, Player player2)
-        // {
-        //     //players change
-        //     _player1Army._player = player1;
-        //     _player2Army._player = player2;
-        //     //name change no need and color change no need
-        // }
+        private void ReplaceArmy(Player player1, Player player2)
+        {
+            //players change
+            _player1Army._player = player1;
+            _player2Army._player = player2;
+            //name change no need and color change no need
+        }
     }
 }

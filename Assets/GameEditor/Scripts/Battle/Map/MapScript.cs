@@ -1,13 +1,14 @@
-﻿using System;
+﻿using System; //...
 using UnityEngine;
 
 namespace TTBattle.UI
 {
     public class MapScript : MonoBehaviour
     {
+        //public?
         [SerializeField] public MakeTurn _makeTurn;
         public ArmyPanel _playerSelector;
-        public ArmyPanel _playerSecondRate;
+        public ArmyPanel _playerSecondRate; //bad naming
         public MapCell _mapCell;
         private MapCell _secondRateMapCell;
         private MapCell _newMapCell;
@@ -63,6 +64,7 @@ namespace TTBattle.UI
             player._unitsInfluence = _mapCell.uintsInfluence;
         }
 
+        //?
         public void SetNewMapCell()
         {
             {
@@ -89,7 +91,7 @@ namespace TTBattle.UI
         public void ChangeMapCells()
         {
             SetNewMapCell();
-            (_playerSelector, _playerSecondRate) = (_playerSecondRate, _playerSelector);
+            (_playerSelector, _playerSecondRate) = (_playerSecondRate, _playerSelector); //don't use that like this
             _mapCell = _playerSelector._playerMapCell;
             _mapCell.CellIsSelected();
         }

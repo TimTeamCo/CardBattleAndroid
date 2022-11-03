@@ -1,5 +1,6 @@
 ﻿namespace TTBattle
 {
+    //Do readable file
     public class Warrior: Unit
         {
             public Warrior()

@@ -1,4 +1,4 @@
-using System;
+using System; //not use this library
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,8 +6,9 @@ namespace TTBattle.UI
 {
     public class MakeTurn : MonoBehaviour
     {
-        [SerializeField] private ArmyPanel _player1Army;
-        [SerializeField] private ArmyPanel _player2Army;
+        //Why all public?
+        [SerializeField] private ArmyPanel _player1Army; //Want call this Army1
+        [SerializeField] private ArmyPanel _player2Army; //Army2
         [SerializeField] private TurnsNumerator _turnsNumerator;
         [SerializeField] private SquadAttack _squadAttack;
         [SerializeField] private ReplaceArmys _replaceArmys;
@@ -27,10 +28,11 @@ namespace TTBattle.UI
             SetNewTurnCount();
             if (_isAttack)
             {
+                //We can push only (_player1Army._player, _player2Army._player, _turnsNumerator)
                 _squadAttack.Attack(_player1Army._player._playerHand.GetUnitChoice(_player1Army._unitDropdown.value),
                     _player2Army._player._playerHand.GetUnitChoice(_player2Army._unitDropdown.value), _player1Army._player,
                     _player2Army._player, _turnsNumerator);
-                SetAmountOfArmysUnits();
+                SetAmountOfArmysUnits(); // Bad naming for methods
             }
             MapScript();
             _replaceArmys.DoReplaceArmys();
@@ -46,6 +48,7 @@ namespace TTBattle.UI
 
         private void SetNewTurnCount()
         {
+            //hard to realize
             _newTurnsChecker++;
             if (_newTurnsChecker == 2)
             {
@@ -56,17 +59,19 @@ namespace TTBattle.UI
 
         private void MapScript()
         {
-            _map.ChangeMapCells();
+            _map.ChangeMapCells(); //Why one line in method?
         }
 
         public void MakeButtonEnabled()
         {
+            //.....
             GetComponent<Button>().enabled = true;
             GetComponent<Image>().color = _enabledButtonColor;
         }
 
         public void MakeButtonDisabled()
         {
+            //OMG bad :(
             GetComponent<Button>().enabled = false;
             GetComponent<Image>().color = _disabledButtonColor;
         }

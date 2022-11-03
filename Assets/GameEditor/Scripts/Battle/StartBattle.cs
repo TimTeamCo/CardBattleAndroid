@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace TTBattle
 {
+    //Do nothing, delete?
     public class StartBattle : MonoBehaviour
     {
         [SerializeField] private ArmyPanel _player1Army;

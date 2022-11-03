@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Rendering;
 
+//No usages really need?
 public class CutOutBackGroundMask : Image
 {
     [SerializeField] private GameObject _backGround;

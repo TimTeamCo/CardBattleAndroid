@@ -5,8 +5,10 @@ using TTBattle.UI;
 
 namespace TTBattle
 {
+    //Why prefab lay near?
     public class SquadAttack : MonoBehaviour
     {
+        //Bad method if u can't see end of him in one screen, use simple clean code rules
         public void Attack(Squad attacker, Squad deffender, Player _playerAttacker, Player _playerDeffender, TurnsNumerator _turnsNumerator)
         {
             if (attacker._unit is Warrior)

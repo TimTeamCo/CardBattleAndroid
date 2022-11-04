@@ -28,10 +28,6 @@ namespace TTBattle.UI
             SetNewTurnCount();
             if (_isAttack)
             {
-                //We can push only (_player1Army._player, _player2Army._player, _turnsNumerator)
-                _squadAttack.Attack(_player1Army._player._playerHand.GetUnitChoice(_player1Army._unitDropdown.value),
-                    _player2Army._player._playerHand.GetUnitChoice(_player2Army._unitDropdown.value), _player1Army._player,
-                    _player2Army._player, _turnsNumerator);
                 _squadAttack.Attack(_player1Army, _player2Army, _turnsNumerator);
                 SetAmountOfArmysUnits(); // Bad naming for methods
             }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using TTBattle.UI;
 
@@ -8,225 +7,112 @@ namespace TTBattle
     //Why prefab lay near?
     public class SquadAttack : MonoBehaviour
     {
-        //Bad method if u can't see end of him in one screen, use simple clean code rules
-        public void Attack(Squad attacker, Squad deffender, Player _playerAttacker, Player _playerDeffender, TurnsNumerator _turnsNumerator)
+        public void Attack(ArmyPanel army1, ArmyPanel army2, TurnsNumerator turnsNumerator)
         {
-            if (attacker._unit is Warrior)
-            {
-                if (deffender._unit is Warrior)
-                {
-                    deffender.Count = (int) ((deffender._unit.Health * _playerDeffender._unitsInfluence[0] * deffender.Count -
-                                              attacker._unit.Attack * _playerAttacker._unitsInfluence[0] * attacker.Count) /
-                                             (deffender._unit.Health * _playerDeffender._unitsInfluence[0]));
-                    Debug.Log($"{deffender.Count} {attacker.Count}");
-                    attacker.Count = (int) ((attacker._unit.Health * _playerAttacker._unitsInfluence[0] * attacker.Count -
-                                             deffender._unit.Attack * _playerDeffender._unitsInfluence[0] * deffender.Count) /
-                                            (attacker._unit.Health * _playerAttacker._unitsInfluence[0]));
-                }
+            Player playerAttacker = army1._player;
+            Player playerDefender = army2._player;
+            Squad attacker = playerAttacker._playerHand.GetUnitChoice(army1._unitDropdown.value);
+            Squad defender = playerDefender._playerHand.GetUnitChoice(army2._unitDropdown.value);
 
-                if (deffender._unit is Assasin)
-                    deffender.Count = (int) ((deffender._unit.Health * _playerDeffender._unitsInfluence[1] * deffender.Count -
-                                              attacker._unit.Attack * _playerAttacker._unitsInfluence[0] * attacker.Count) /
-                                             (deffender._unit.Health * _playerDeffender._unitsInfluence[1]));
-                if (deffender._unit is Mage)
-                {
-                    deffender.Count = (int) ((deffender._unit.Health * _playerDeffender._unitsInfluence[2] * deffender.Count -
-                                              attacker._unit.Attack * _playerAttacker._unitsInfluence[0] * attacker.Count) /
-                                             (deffender._unit.Health * _playerDeffender._unitsInfluence[2]));
-                    StartCoroutine(MageAttack(attacker, deffender, attacker.Count, _playerDeffender._unitsInfluence[2],
-                        _playerDeffender));
-                }
-            }
-
-            if (attacker._unit is Assasin)
-            {
-                if (deffender._unit is Warrior)
-                    deffender.Count =
-                        (int) ((deffender._unit.Health * _playerDeffender._unitsInfluence[0] * deffender.Count -
-                                attacker._unit.Attack * _playerAttacker._unitsInfluence[1] * attacker.Count *
-                                attacker._unit.WeakCoeficient) / (deffender._unit.Health *
-                                                                  _playerDeffender._unitsInfluence[0]));
-
-                if (deffender._unit is Assasin)
-                    deffender.Count = (int) ((deffender._unit.Health * _playerDeffender._unitsInfluence[1] * deffender.Count -
-                                              attacker._unit.Attack * _playerAttacker._unitsInfluence[1] * attacker.Count) /
-                                             (deffender._unit.Health * _playerDeffender._unitsInfluence[1]));
-
-                if (deffender._unit is Mage)
-                    deffender.Count =
-                        (int) ((deffender._unit.Health * _playerDeffender._unitsInfluence[2] * deffender.Count -
-                                attacker._unit.Attack * _playerAttacker._unitsInfluence[2] * attacker.Count *
-                                attacker._unit.StrongCoefitient) / (deffender._unit.Health *
-                                                                    _playerDeffender._unitsInfluence[2]));
-            }
-
-            if (attacker._unit is Mage)
-                StartCoroutine(MageAttack(attacker, deffender, attacker.Count, _playerAttacker._unitsInfluence[2],
-                    _playerDeffender));
-
-            IEnumerator MageAttack(Squad _attacker, Squad _deffender, int _attackCount, float _mageInfluence,
-                Player _deffenderPlayer)
-            {
-                int _numerator;
-                _numerator = _turnsNumerator.NumeratorValue;
-                while (_turnsNumerator.NumeratorValue != _numerator + 1) yield return null;
-                if (_deffender._unit is Warrior)
-                {
-                    yield return _deffender.Count =
-                        (int) ((_deffender._unit.Health * _deffenderPlayer._unitsInfluence[0] * _deffender.Count -
-                                _attacker._unit.Attack * _mageInfluence * _attackCount *
-                                _attacker._unit.StrongCoefitient) / (_deffender._unit.Health *
-                                                                     _deffenderPlayer._unitsInfluence[0]));
-                    yield break;
-                }
-
-                if (_deffender._unit is Assasin)
-                {
-                    yield return _deffender.Count =
-                        (int) ((_deffender._unit.Health * _deffenderPlayer._unitsInfluence[1] * _deffender.Count -
-                                _attacker._unit.Attack * _mageInfluence * _attackCount * _attacker._unit.WeakCoeficient) /
-                               (_deffender._unit.Health * _deffenderPlayer._unitsInfluence[1]));
-                    yield break;
-                }
-
-                if (_deffender._unit is Mage)
-                    yield return _deffender.Count = (int) ((_deffender._unit.Health * _deffenderPlayer._unitsInfluence[2] * _deffender.Count -
-                                                            _attacker._unit.Attack * _mageInfluence * _attackCount) /
-                                                           (_deffender._unit.Health * _deffenderPlayer._unitsInfluence[2]));
-            }
-        }
-        public void Attack(ArmyPanel army1, ArmyPanel army2, TurnsNumerator _turnsNumerator)
-        {
-            Player _playerAttacker = army1._player;
-            Player _playerDeffender = army2._player;
-            Squad attacker = _playerAttacker._playerHand.GetUnitChoice(army1._unitDropdown.value);
-            Squad deffender = _playerDeffender._playerHand.GetUnitChoice(army2._unitDropdown.value);
+            var defUnitType = ChooseDefender(defender);
             switch (attacker._unit.UnitType)
             {
                 case UnitType.Warrior:
-                    ChooseDeffender(_turnsNumerator, deffender, _playerDeffender, attacker, _playerAttacker); 
+                    WarriorLogicBattle(turnsNumerator, defUnitType, defender, playerDefender, attacker,
+                        playerAttacker);
                     break;
                 case UnitType.Assasin:
-                    ChooseDeffender(_turnsNumerator, deffender, _playerDeffender, attacker, _playerAttacker); 
+                    AssasinLogicBattle(defUnitType, defender, playerDefender, attacker,
+                        playerAttacker);
                     break;
                 case UnitType.Mage:
-                    ChooseDeffender(_turnsNumerator, deffender, _playerDeffender, attacker, _playerAttacker); 
+                    MageLogicBattle(defUnitType,turnsNumerator, defender, playerDefender, attacker,
+                        playerAttacker);
                     break;
             }
-            if (attacker._unit is Warrior)
-            {
-                if (deffender._unit is Warrior)
-                {
-                   
-                }
-
-                if (deffender._unit is Mage)
-                {
-                }
-            }
-
-            if (attacker._unit is Assasin)
-            {
-                if (deffender._unit is Warrior)
-                    deffender.Count =
-                        (int) ((deffender._unit.Health * _playerDeffender._unitsInfluence[0] * deffender.Count -
-                                attacker._unit.Attack * _playerAttacker._unitsInfluence[1] * attacker.Count *
-                                attacker._unit.WeakCoeficient) / (deffender._unit.Health *
-                                                                  _playerDeffender._unitsInfluence[0]));
-
-                if (deffender._unit is Assasin)
-                    deffender.Count = (int) ((deffender._unit.Health * _playerDeffender._unitsInfluence[1] * deffender.Count -
-                                              attacker._unit.Attack * _playerAttacker._unitsInfluence[1] * attacker.Count) /
-                                             (deffender._unit.Health * _playerDeffender._unitsInfluence[1]));
-
-                if (deffender._unit is Mage)
-                    deffender.Count =
-                        (int) ((deffender._unit.Health * _playerDeffender._unitsInfluence[2] * deffender.Count -
-                                attacker._unit.Attack * _playerAttacker._unitsInfluence[2] * attacker.Count *
-                                attacker._unit.StrongCoefitient) / (deffender._unit.Health *
-                                                                    _playerDeffender._unitsInfluence[2]));
-            }
-
-            if (attacker._unit is Mage)
-                StartCoroutine(MageAttack(attacker, deffender, attacker.Count, _playerAttacker._unitsInfluence[2],
-                    _playerDeffender, _turnsNumerator));
         }
 
-        private void ChooseDeffender(TurnsNumerator _turnsNumerator, Squad deffender, Player _playerDeffender, Squad attacker,
-            Player _playerAttacker)
+        private void WarriorLogicBattle(TurnsNumerator turnsNumerator, UnitType defUnitType, Squad defender,
+            Player playerDefender, Squad attacker, Player playerAttacker)
         {
-            switch (deffender._unit.UnitType)
+            switch (defUnitType)
             {
                 case UnitType.Warrior:
-                    CalculateWarrior(deffender, _playerDeffender, attacker, _playerAttacker);
+                    CalculateDefenderCount(defender, playerDefender, attacker, playerAttacker, 0, 0);
+                    CalculateDefenderCount(attacker, playerAttacker, defender, playerDefender, 0, 0);
                     break;
                 case UnitType.Assasin:
-                    CalculateAssasin(deffender, _playerDeffender, attacker, _playerAttacker);
+                    CalculateDefenderCount(defender, playerDefender, attacker, playerAttacker, 1, 0);
                     break;
                 case UnitType.Mage:
-                    CalculateMage(_turnsNumerator, deffender, _playerDeffender, attacker, _playerAttacker);
+                    CalculateDefenderCount(defender, playerDefender, attacker, playerAttacker, 2, 0);
+                    StartCoroutine(MageAttack(defUnitType, attacker, defender, playerAttacker._unitsInfluence[2], 
+                        playerDefender, playerAttacker, turnsNumerator));
                     break;
             }
         }
 
-        private void CalculateMage(TurnsNumerator _turnsNumerator, Squad deffender, Player _playerDeffender, Squad attacker,
-            Player _playerAttacker)
+        private void AssasinLogicBattle(UnitType defUnitType, Squad defender,
+            Player playerDefender, Squad attacker, Player playerAttacker)
         {
-            deffender.Count = (int) ((deffender._unit.Health * _playerDeffender._unitsInfluence[2] * deffender.Count -
-                                      attacker._unit.Attack * _playerAttacker._unitsInfluence[0] * attacker.Count) /
-                                     (deffender._unit.Health * _playerDeffender._unitsInfluence[2]));
-            StartCoroutine(MageAttack(attacker, deffender, attacker.Count, _playerDeffender._unitsInfluence[2],
-                _playerDeffender, _turnsNumerator));
-        }
-
-        private IEnumerator MageAttack(Squad _attacker, Squad _deffender, int _attackCount, float _mageInfluence,
-            Player _deffenderPlayer, TurnsNumerator _turnsNumerator)
-        {
-            int _numerator;
-            _numerator = _turnsNumerator.NumeratorValue;
-            while (_turnsNumerator.NumeratorValue != _numerator + 1) yield return null;
-            if (_deffender._unit is Warrior)
+            switch (defUnitType)
             {
-                yield return _deffender.Count =
-                    (int) ((_deffender._unit.Health * _deffenderPlayer._unitsInfluence[0] * _deffender.Count -
-                            _attacker._unit.Attack * _mageInfluence * _attackCount *
-                            _attacker._unit.StrongCoefitient) / (_deffender._unit.Health *
-                                                                 _deffenderPlayer._unitsInfluence[0]));
-                yield break;
+                case UnitType.Warrior:
+                    CalculateDefenderCount(defender, playerDefender, attacker, playerAttacker, 0, 1, attacker._unit.WeakCoeficient);
+                    break;
+                case UnitType.Assasin:
+                    CalculateDefenderCount(defender, playerDefender, attacker, playerAttacker, 1, 1);
+                    break;
+                case UnitType.Mage:
+                    CalculateDefenderCount(defender, playerDefender, attacker, playerAttacker, 2, 1, attacker._unit.StrongCoefitient);
+                    break;
             }
+        }
 
-            if (_deffender._unit is Assasin)
+        
+        private void MageLogicBattle(UnitType defUnitType, TurnsNumerator turnsNumerator, Squad defender,
+            Player playerDefender, Squad attacker, Player playerAttacker)
+        {
+            StartCoroutine(MageAttack(defUnitType, attacker, defender, playerAttacker._unitsInfluence[2],
+                playerDefender, playerAttacker, turnsNumerator));
+        }
+        
+        private void CalculateDefenderCount(Squad defender, Player playerDefender, Squad attacker,
+            Player playerAttacker, int unitsInfluenceDefender, int unitsInfluenceAttacker, float coefficient = 1)
+        {
+            defender.Count = (int) ((defender._unit.Health * playerDefender._unitsInfluence[unitsInfluenceDefender] *
+                                      defender.Count -
+                                      attacker._unit.Attack * playerAttacker._unitsInfluence[unitsInfluenceAttacker] *
+                                      attacker.Count) * coefficient /
+                                     (defender._unit.Health * playerDefender._unitsInfluence[unitsInfluenceDefender]));
+        }
+
+        private UnitType ChooseDefender(Squad defender)
+        {
+            return defender._unit.UnitType;
+        }
+
+        private IEnumerator MageAttack(UnitType defUnitType, Squad attacker, Squad defender, float mageInfluence,
+            Player playerDefender, Player playerAttacker, TurnsNumerator turnsNumerator)
+        {
+            int numerator;
+            numerator = turnsNumerator.NumeratorValue;
+            while (turnsNumerator.NumeratorValue != numerator + 1) yield return null;
+            switch (defUnitType)
             {
-                yield return _deffender.Count =
-                    (int) ((_deffender._unit.Health * _deffenderPlayer._unitsInfluence[1] * _deffender.Count -
-                            _attacker._unit.Attack * _mageInfluence * _attackCount * _attacker._unit.WeakCoeficient) /
-                           (_deffender._unit.Health * _deffenderPlayer._unitsInfluence[1]));
-                yield break;
+                case UnitType.Warrior:
+                    CalculateDefenderCount(defender, playerDefender, attacker, playerAttacker, 0, 2, attacker._unit.StrongCoefitient);
+                    yield return defender.Count;
+                    break;
+                case UnitType.Assasin:
+                    CalculateDefenderCount(defender, playerDefender, attacker, playerAttacker, 1, 2, attacker._unit.WeakCoeficient);
+                    yield return defender.Count;
+                    break;
+                case UnitType.Mage:
+                    CalculateDefenderCount(defender, playerDefender, attacker, playerAttacker, 2, 2);
+                    yield return defender.Count;
+                    break;
             }
-
-            if (_deffender._unit is Mage)
-                yield return _deffender.Count = (int) ((_deffender._unit.Health * _deffenderPlayer._unitsInfluence[2] * _deffender.Count -
-                                                        _attacker._unit.Attack * _mageInfluence * _attackCount) /
-                                                       (_deffender._unit.Health * _deffenderPlayer._unitsInfluence[2]));
-        }
-
-        private void CalculateAssasin(Squad deffender, Player _playerDeffender, Squad attacker, Player _playerAttacker)
-        {
-            deffender.Count = (int) ((deffender._unit.Health * _playerDeffender._unitsInfluence[1] * deffender.Count -
-                                      attacker._unit.Attack * _playerAttacker._unitsInfluence[0] * attacker.Count) /
-                                     (deffender._unit.Health * _playerDeffender._unitsInfluence[1]));
-        }
-
-        private void CalculateWarrior(Squad deffender, Player _playerDeffender, Squad attacker,
-            Player _playerAttacker)
-        {
-            deffender.Count = (int) ((deffender._unit.Health * _playerDeffender._unitsInfluence[0] * deffender.Count -
-                                      attacker._unit.Attack * _playerAttacker._unitsInfluence[0] * attacker.Count) /
-                                     (deffender._unit.Health * _playerDeffender._unitsInfluence[0]));
-            Debug.Log($"{deffender.Count} {attacker.Count}");
-            attacker.Count = (int) ((attacker._unit.Health * _playerAttacker._unitsInfluence[0] * attacker.Count -
-                                     deffender._unit.Attack * _playerDeffender._unitsInfluence[0] * deffender.Count) /
-                                    (attacker._unit.Health * _playerAttacker._unitsInfluence[0]));
         }
     }
 }

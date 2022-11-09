@@ -6,13 +6,13 @@ namespace TTBattle.UI
     public class MapScript : MonoBehaviour
     {
         //public?
-        [SerializeField] public MakeTurn _makeTurn;
-        public ArmyPanel _playerSelector;
-        public ArmyPanel _playerSecondRate; //bad naming
-        public MapCell _mapCell;
+        [SerializeField] public MakeTurn MakeTurn;
         private MapCell _secondRateMapCell;
         private MapCell _newMapCell;
         private MapCell _lastMapCell;
+        public ArmyPanel PlayerSelector;
+        public ArmyPanel PlayerInferror; //bad naming
+        public MapCell MapCell;
         
         public MapCell NewMapCell
         {
@@ -25,8 +25,8 @@ namespace TTBattle.UI
                 if( _newMapCell == null)
                 {
                     _newMapCell = value;
-                    _lastMapCell = _mapCell;
-                    _makeTurn.MakeButtonEnabled();
+                    _lastMapCell = MapCell;
+                    MakeTurn.MakeButtonEnabled();
                 }
                 if (value.id != _newMapCell.id)
                 {
@@ -37,7 +37,7 @@ namespace TTBattle.UI
                     else
                     {
                         _newMapCell = value;
-                        _lastMapCell = _mapCell;
+                        _lastMapCell = MapCell;
                     }
                 }
             }
@@ -46,41 +46,41 @@ namespace TTBattle.UI
         
         private void Start()
         {
-            _secondRateMapCell = _mapCell;
-            _mapCell.CellIsSelected();
+            _secondRateMapCell = MapCell;
+            MapCell.CellIsSelected();
             InitializePLayersMapCells();
         }
 
         private void InitializePLayersMapCells()
         {
-            _playerSelector._playerMapCell = _mapCell;
-            _playerSecondRate._playerMapCell = _mapCell;
-            GetPlayerInfluence(_playerSelector._player);
-            GetPlayerInfluence(_playerSecondRate._player);
+            PlayerSelector.PlayerMapCell = MapCell;
+            PlayerInferror.PlayerMapCell = MapCell;
+            GetPlayerInfluence(PlayerSelector.Player);
+            GetPlayerInfluence(PlayerInferror.Player);
         }
 
         private void GetPlayerInfluence(Player player)
         {
-            player._unitsInfluence = _mapCell.uintsInfluence;
+            player.UnitsInfluence = MapCell.uintsInfluence;
         }
 
         //?
         public void SetNewMapCell()
         {
             {
-                if (_newMapCell != null && _newMapCell != _playerSecondRate._playerMapCell)
+                if (_newMapCell != null && _newMapCell != PlayerInferror.PlayerMapCell)
                 {
-                    _mapCell = NewMapCell;
-                    _mapCell._isSelected = true;
-                    _mapCell.SetCellCollorAsPlayers(_playerSelector);
-                    GetPlayerInfluence(_playerSelector._player);
-                    _playerSelector._playerMapCell = _mapCell;
+                    MapCell = NewMapCell;
+                    MapCell._isSelected = true;
+                    MapCell.SetCellCollorAsPlayers(PlayerSelector);
+                    GetPlayerInfluence(PlayerSelector.Player);
+                    PlayerSelector.PlayerMapCell = MapCell;
                     _lastMapCell.CellIsLeaved();
                 }
-                if (_newMapCell != null && _newMapCell == _playerSecondRate._playerMapCell)
+                if (_newMapCell != null && _newMapCell == PlayerInferror.PlayerMapCell)
                 {
-                    _mapCell._isAccasible = true;
-                    foreach (MapCell mapCell in _mapCell.NextCell)
+                    MapCell._isAccasible = true;
+                    foreach (MapCell mapCell in MapCell.NextCell)
                     {
                         mapCell._isAccasible = false;
                     }
@@ -91,9 +91,9 @@ namespace TTBattle.UI
         public void ChangeMapCells()
         {
             SetNewMapCell();
-            (_playerSelector, _playerSecondRate) = (_playerSecondRate, _playerSelector); //don't use that like this
-            _mapCell = _playerSelector._playerMapCell;
-            _mapCell.CellIsSelected();
+            (PlayerSelector, PlayerInferror) = (PlayerInferror, PlayerSelector); //don't use that like this
+            MapCell = PlayerSelector.PlayerMapCell;
+            MapCell.CellIsSelected();
         }
     }
 }

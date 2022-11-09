@@ -117,16 +117,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1fcef44217d45644b82d8f8c7f1b6d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Map: {fileID: 0}
-  id: 0
-  NextCell: []
-  _selectedCellColor: {r: 1, g: 0.2, b: 0, a: 0.8627451}
-  _usualColor: {r: 0.9433962, g: 0.9047873, b: 0.0658597, a: 1}
-  _activeChoiseColor: {r: 0.6156863, g: 0.21176471, b: 0.16470589, a: 0.47058824}
   _warriorInfluence: 0
   _assasinInfluence: 0
   _mageInfluence: 0
-  uintsInfluence:
-  - 0
-  - 0
-  - 0
+  NextCell: []
+  id: 0
+  ActiveChoiseColor: {r: 0.63529414, g: 0.20784315, b: 0.16078432, a: 0.77254903}
+  SelectedCellColor: {r: 1, g: 0.45490196, b: 0, a: 0.8156863}
+  UsualColor: {r: 0, g: 0, b: 0, a: 1}
+  _isAccasible: 0
+  _isSelected: 0

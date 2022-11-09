@@ -28,14 +28,14 @@ namespace TTBattle.UI
         /// </summary>
         private void ReplaceDropdownValues()
         {
-            (_player1Army._unitDropdown, _player2Army._unitDropdown) = (_player2Army._unitDropdown, _player1Army._unitDropdown);
+            (_player1Army.UnitDropdown, _player2Army.UnitDropdown) = (_player2Army.UnitDropdown, _player1Army.UnitDropdown);
 
-            (_player1Army._unitDropdown.image.color, _player2Army._unitDropdown.image.color) = (_player2Army._unitDropdown.image.color, _player1Army._unitDropdown.image.color);
+            (_player1Army.UnitDropdown.image.color, _player2Army.UnitDropdown.image.color) = (_player2Army.UnitDropdown.image.color, _player1Army.UnitDropdown.image.color);
 
-            (_player1Army._unitDropdown.template.GetComponent<Image>().color,
-                _player2Army._unitDropdown.template.GetComponent<Image>().color) = (
-                _player2Army._unitDropdown.template.GetComponent<Image>().color,
-                _player1Army._unitDropdown.template.GetComponent<Image>().color);
+            (_player1Army.UnitDropdown.template.GetComponent<Image>().color,
+                _player2Army.UnitDropdown.template.GetComponent<Image>().color) = (
+                _player2Army.UnitDropdown.template.GetComponent<Image>().color,
+                _player1Army.UnitDropdown.template.GetComponent<Image>().color);
         }
 
         /// <summary>
@@ -48,16 +48,14 @@ namespace TTBattle.UI
             var name = _player1Army.name;
             _player1Army.name = _player2Army.name;
             _player2Army.name = name;
-            (_player1Army._player, _player2Army._player) = (_player2Army._player, _player1Army._player);
-            (_player1Army._playerPanelColor, _player2Army._playerPanelColor) = (_player2Army._playerPanelColor, _player1Army._playerPanelColor);
+            (_player1Army.Player, _player2Army.Player) = (_player2Army.Player, _player1Army.Player);
+            (_player1Army.PlayerPanelColor, _player2Army.PlayerPanelColor) = (_player2Army.PlayerPanelColor, _player1Army.PlayerPanelColor);
         }
 
         private void ReplaceArmy(Player player1, Player player2)
         {
-            //players change
-            _player1Army._player = player1;
-            _player2Army._player = player2;
-            //name change no need and color change no need
+            _player1Army.Player = player1;
+            _player2Army.Player = player2;
         }
     }
 }

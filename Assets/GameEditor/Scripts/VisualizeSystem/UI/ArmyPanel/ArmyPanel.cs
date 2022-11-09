@@ -6,26 +6,32 @@ namespace TTBattle.UI
 {
     public class ArmyPanel : MonoBehaviour
     {
-        public string _name;
-        [SerializeField] private Image _playerPanelImage;
-        [SerializeField] public Dropdown _unitDropdown;
+        [SerializeField] private Image _armyPanelImage;
+        [SerializeField] private Image _nameImage;
+        [SerializeField] private Sprite _playerChip;
         [SerializeField] private Text _playerName;
         [SerializeField] private Text _warriorNumber;
         [SerializeField] private Text _assasinNumber;
         [SerializeField] private Text _mageNumber;
-        [SerializeField] public Color _playerPanelColor;
-        [SerializeField] private GameObject _playerPanel;
-        [SerializeField] private GameObject _playerNameBg;
-        [SerializeField] private Sprite _playerChip;
-        public Player _player = new Player();
-        public MapCell _playerMapCell;
-        [NonSerialized] public Color _playerMapCellColor;
+        [SerializeField] public Dropdown UnitDropdown;
+        [SerializeField] public Color PlayerPanelColor;
+        [NonSerialized] public Color PlayerMapCellColor;
+        public string Name;
+        public Player Player = new Player();
+        public MapCell PlayerMapCell;
 
         private void Awake()
         {
+            CachePlayerValues();
             SetArmyValues();
-            _playerMapCellColor = _playerPanelColor;
+            PlayerMapCellColor = PlayerPanelColor;
             
+        }
+
+        private void CachePlayerValues()
+        {
+            Player.PlayerName = Name;
+            Player.PlayerColor = PlayerPanelColor;
         }
 
         public void SetArmyValues()
@@ -37,15 +43,12 @@ namespace TTBattle.UI
 
         private void SetPlayerName()
         {
-            _playerName.text = _name;
+            _playerName.text = Player.PlayerName;
         }
         
-        /// <summary>
-        /// var playerHand = _player._playerHand;
-        /// </summary>
         public void SetTextOfUnitsAmount()
         {
-            var playerHand = _player._playerHand;
+            var playerHand = Player.PlayerHand;
             _warriorNumber.text = playerHand._warriorSquad.Count.ToString();
             _assasinNumber.text = playerHand._assasinSquad.Count.ToString();
             _mageNumber.text = playerHand._mageSquad.Count.ToString();
@@ -53,9 +56,8 @@ namespace TTBattle.UI
 
         private void SetBackgroundColor()
         {
-            //cache GetComponent
-            _playerPanelImage.color = _playerPanelColor;
-            _playerNameBg.GetComponent<Image>().color = _playerPanelColor;
+            _armyPanelImage.color = Player.PlayerColor;
+            _nameImage.color = Player.PlayerColor;
         }
     }
 }

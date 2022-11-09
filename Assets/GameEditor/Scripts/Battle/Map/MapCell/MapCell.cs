@@ -9,15 +9,15 @@ namespace TTBattle.UI
 {
     [RequireComponent(typeof(PolygonCollider2D))]
     public class MapCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
-    {
-        [SerializeField] public List<MapCell> NextCell;
-        [SerializeField] public int id;
+    {        
         [SerializeField] private float _warriorInfluence;
         [SerializeField] private float _assasinInfluence;
         [SerializeField] private float _mageInfluence;
-        [SerializeField] public Color _activeChoiseColor;
-        [SerializeField] public Color _selectedCellColor;
-        [SerializeField] public Color _usualColor;
+        [SerializeField] public List<MapCell> NextCell;
+        [SerializeField] public int id;
+        [SerializeField] public Color ActiveChoiseColor;
+        [SerializeField] public Color SelectedCellColor;
+        [SerializeField] public Color UsualColor;
         private Color _lastColor;
         private Image _image;
         private MapScript _map;
@@ -28,7 +28,7 @@ namespace TTBattle.UI
         private void Awake()
         {
             _image = GetComponent<Image>();
-            _lastColor = _usualColor;
+            _lastColor = UsualColor;
             _image.color = _lastColor;
             GetComponent<Image>().alphaHitTestMinimumThreshold = 0.1f;
             SetUnitsInfluence();
@@ -39,21 +39,21 @@ namespace TTBattle.UI
         {
             if (_isAccasible && _isSelected)
             {
-                _map._mapCell._isAccasible = false;
+                _map.MapCell._isAccasible = false;
                 SetImageColorToSelected();
-                foreach (MapCell mapCell in _map._mapCell.NextCell) 
+                foreach (MapCell mapCell in _map.MapCell.NextCell) 
                 { 
                     mapCell._isAccasible = false;
                 }
                     // доп функця для атаки
-                    _map._makeTurn._isAttack = true;
-                    _map._makeTurn.MakeButtonEnabled();
+                    _map.MakeTurn._isAttack = true;
+                    _map.MakeTurn.MakeButtonEnabled();
             }
             else if (_isAccasible && !_isSelected)
             {
                 SetImageColorToSelected();
                 _map.NewMapCell = this;
-                _map._makeTurn.MakeButtonEnabled();
+                _map.MakeTurn.MakeButtonEnabled();
             }
         }
 
@@ -61,14 +61,14 @@ namespace TTBattle.UI
         {
             if (_isAccasible && !_isSelected)
             {
-                _image.color = _activeChoiseColor;
+                _image.color = ActiveChoiseColor;
             }
             else
             {
                 if (_isAccasible && _isSelected)
                 {
-                    _image.color = _activeChoiseColor;
-                    _activeChoiseColor.a = 0.4f;
+                    _image.color = ActiveChoiseColor;
+                    ActiveChoiseColor.a = 0.4f;
                 }
             }
         }
@@ -82,7 +82,7 @@ namespace TTBattle.UI
 
             if (_isAccasible && _isSelected)
             {
-                _activeChoiseColor.a = 1f;
+                ActiveChoiseColor.a = 1f;
                 _image.color = _lastColor;
             }
         }
@@ -96,7 +96,7 @@ namespace TTBattle.UI
 
         public void CellIsLeaved()
         {
-            _lastColor = _usualColor;
+            _lastColor = UsualColor;
             _image.color = _lastColor;
             _isSelected = false;
             _isAccasible = false;
@@ -110,7 +110,7 @@ namespace TTBattle.UI
         {
             _isSelected = true;
             _isAccasible = true;
-            SetCellCollorAsPlayers(_map._playerSelector);
+            SetCellCollorAsPlayers(_map.PlayerSelector);
             foreach (MapCell mapCell in NextCell)
             {
                 mapCell._isAccasible = true;
@@ -119,20 +119,20 @@ namespace TTBattle.UI
 
         public void SetCellCollorAsPlayers(ArmyPanel player)
         {
-            _lastColor = player._playerMapCellColor;
+            _lastColor = player.PlayerMapCellColor;
             _lastColor.a = 0.8f;
             _image.color = _lastColor;
         }
 
         public void SetImageColorToUsual()
         {
-            _lastColor = _usualColor;
+            _lastColor = UsualColor;
             _image.color = _lastColor;
         }
         
         private void SetImageColorToSelected()
         {
-            _lastColor = _selectedCellColor;
+            _lastColor = SelectedCellColor;
             _image.color = _lastColor;
         }
     }

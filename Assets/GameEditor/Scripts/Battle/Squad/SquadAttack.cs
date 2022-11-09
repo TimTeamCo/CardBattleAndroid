@@ -9,10 +9,10 @@ namespace TTBattle
     {
         public void Attack(ArmyPanel army1, ArmyPanel army2, TurnsNumerator turnsNumerator)
         {
-            Player playerAttacker = army1._player;
-            Player playerDefender = army2._player;
-            Squad attacker = playerAttacker._playerHand.GetUnitChoice(army1._unitDropdown.value);
-            Squad defender = playerDefender._playerHand.GetUnitChoice(army2._unitDropdown.value);
+            Player playerAttacker = army1.Player;
+            Player playerDefender = army2.Player;
+            Squad attacker = playerAttacker.PlayerHand.GetUnitChoice(army1.UnitDropdown.value);
+            Squad defender = playerDefender.PlayerHand.GetUnitChoice(army2.UnitDropdown.value);
 
             var defUnitType = ChooseDefender(defender);
             switch (attacker._unit.UnitType)
@@ -46,7 +46,7 @@ namespace TTBattle
                     break;
                 case UnitType.Mage:
                     CalculateDefenderCount(defender, playerDefender, attacker, playerAttacker, 2, 0);
-                    StartCoroutine(MageAttack(defUnitType, attacker, defender, playerAttacker._unitsInfluence[2], 
+                    StartCoroutine(MageAttack(defUnitType, attacker, defender, playerAttacker.UnitsInfluence[2], 
                         playerDefender, playerAttacker, turnsNumerator));
                     break;
             }
@@ -73,18 +73,18 @@ namespace TTBattle
         private void MageLogicBattle(UnitType defUnitType, TurnsNumerator turnsNumerator, Squad defender,
             Player playerDefender, Squad attacker, Player playerAttacker)
         {
-            StartCoroutine(MageAttack(defUnitType, attacker, defender, playerAttacker._unitsInfluence[2],
+            StartCoroutine(MageAttack(defUnitType, attacker, defender, playerAttacker.UnitsInfluence[2],
                 playerDefender, playerAttacker, turnsNumerator));
         }
         
         private void CalculateDefenderCount(Squad defender, Player playerDefender, Squad attacker,
             Player playerAttacker, int unitsInfluenceDefender, int unitsInfluenceAttacker, float coefficient = 1)
         {
-            defender.Count = (int) ((defender._unit.Health * playerDefender._unitsInfluence[unitsInfluenceDefender] *
+            defender.Count = (int) ((defender._unit.Health * playerDefender.UnitsInfluence[unitsInfluenceDefender] *
                                       defender.Count -
-                                      attacker._unit.Attack * playerAttacker._unitsInfluence[unitsInfluenceAttacker] *
+                                      attacker._unit.Attack * playerAttacker.UnitsInfluence[unitsInfluenceAttacker] *
                                       attacker.Count) * coefficient /
-                                     (defender._unit.Health * playerDefender._unitsInfluence[unitsInfluenceDefender]));
+                                     (defender._unit.Health * playerDefender.UnitsInfluence[unitsInfluenceDefender]));
         }
 
         private UnitType ChooseDefender(Squad defender)

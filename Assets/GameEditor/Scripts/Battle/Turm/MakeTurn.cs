@@ -6,17 +6,17 @@ namespace TTBattle.UI
 {
     public class MakeTurn : MonoBehaviour
     {
-        //Why all public?
-        [SerializeField] private ArmyPanel _player1Army; //Want call this Army1
-        [SerializeField] private ArmyPanel _player2Army; //Army2
+        [SerializeField] private ArmyPanel _army1;
+        [SerializeField] private ArmyPanel _army2;
         [SerializeField] private TurnsNumerator _turnsNumerator;
         [SerializeField] private SquadAttack _squadAttack;
-        [SerializeField] private ReplaceArmys _replaceArmys;
         [SerializeField] private MapScript _map;
-        [SerializeField] public Color _enabledButtonColor;
-        [SerializeField] public Color _disabledButtonColor;
-        public bool _isAttack;
+        [SerializeField] private Button _turnButton;
+        [SerializeField] private Image _turnImage;
+        [SerializeField] public Color EnabledButtonColor;
+        [SerializeField] public Color DisabledButtonColor;
         private int _newTurnsChecker;
+        public bool IsAttack;
         
         private void Awake()
         {
@@ -26,26 +26,25 @@ namespace TTBattle.UI
         public void DoMakeTurn()
         {
             SetNewTurnCount();
-            if (_isAttack)
+            if (IsAttack)
             {
-                _squadAttack.Attack(_player1Army, _player2Army, _turnsNumerator);
-                SetAmountOfArmysUnits(); // Bad naming for methods
+                _squadAttack.Attack(_army1, _army2, _turnsNumerator);
+                SetTextOfArmyUnitsAmount();
             }
-            MapScript();
-            _replaceArmys.DoReplaceArmys();
+            _map.ChangeMapCells();
+            ReplaceArmy.DoReplaceArmys(_army1, _army2);
             MakeButtonDisabled();
-            _isAttack = false;
+            IsAttack = false;
         }
 
-        private void SetAmountOfArmysUnits()
+        private void SetTextOfArmyUnitsAmount()
         {
-            _player1Army.SetTextOfUnitsAmount();
-            _player2Army.SetTextOfUnitsAmount();
+            _army1.SetTextOfUnitsAmount();
+            _army2.SetTextOfUnitsAmount();
         }
 
         private void SetNewTurnCount()
         {
-            //hard to realize
             _newTurnsChecker++;
             if (_newTurnsChecker == 2)
             {
@@ -61,16 +60,14 @@ namespace TTBattle.UI
 
         public void MakeButtonEnabled()
         {
-            //.....
-            GetComponent<Button>().enabled = true;
-            GetComponent<Image>().color = _enabledButtonColor;
+            _turnButton.enabled = true;
+            _turnImage.color = EnabledButtonColor;
         }
 
         public void MakeButtonDisabled()
         {
-            //OMG bad :(
-            GetComponent<Button>().enabled = false;
-            GetComponent<Image>().color = _disabledButtonColor;
+            _turnButton.enabled = false;
+            _turnImage.color = DisabledButtonColor;
         }
     }
 }

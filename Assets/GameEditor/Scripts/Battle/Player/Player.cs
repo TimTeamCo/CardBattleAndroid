@@ -16,5 +16,10 @@ namespace TTBattle
         {
             PlayerHand = new PlayerHand();
         }
+        
+        public void GetUnitsInfluence()
+        {
+            UnitsInfluence = PlayerMapCell.uintsInfluence;
+        }
     }
 }

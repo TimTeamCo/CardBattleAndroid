@@ -5,13 +5,12 @@ namespace TTBattle.UI
 {
     public class MapScript : MonoBehaviour
     {
-        //public?
         [SerializeField] public MakeTurn MakeTurn;
         private MapCell _secondRateMapCell;
         private MapCell _newMapCell;
         private MapCell _lastMapCell;
         public ArmyPanel PlayerSelector;
-        public ArmyPanel PlayerInferror; //bad naming
+        public ArmyPanel PlayerInferior;
         public MapCell MapCell;
         
         public MapCell NewMapCell
@@ -24,62 +23,55 @@ namespace TTBattle.UI
             { 
                 if( _newMapCell == null)
                 {
-                    _newMapCell = value;
                     _lastMapCell = MapCell;
+                    _newMapCell = value;
                     MakeTurn.MakeButtonEnabled();
                 }
                 if (value.id != _newMapCell.id)
                 {
                     if (!_newMapCell._isSelected)
-                    {                    
+                    { 
                         _newMapCell.SetImageColorToUsual();
+                        _newMapCell = value;
                     }
                     else
                     {
+                        _newMapCell.SetCellCollorAsPlayers(PlayerSelector.Player);
                         _newMapCell = value;
-                        _lastMapCell = MapCell;
                     }
                 }
             }
         }
         
-        
-        private void Start()
+        public void Start()
         {
-            _secondRateMapCell = MapCell;
-            MapCell.CellIsSelected();
             InitializePLayersMapCells();
+            MapCell.CellIsSelected();
         }
 
         private void InitializePLayersMapCells()
         {
-            PlayerSelector.PlayerMapCell = MapCell;
-            PlayerInferror.PlayerMapCell = MapCell;
-            GetPlayerInfluence(PlayerSelector.Player);
-            GetPlayerInfluence(PlayerInferror.Player);
-        }
-
-        private void GetPlayerInfluence(Player player)
-        {
-            player.UnitsInfluence = MapCell.uintsInfluence;
+            PlayerSelector.Player.PlayerMapCell = MapCell;
+            PlayerInferior.Player.PlayerMapCell = MapCell;
+            PlayerSelector.Player.GetUnitsInfluence();
+            PlayerInferior.Player.GetUnitsInfluence();
         }
 
         //?
         public void SetNewMapCell()
         {
             {
-                if (_newMapCell != null && _newMapCell != PlayerInferror.PlayerMapCell)
+                if (_newMapCell != MapCell)
                 {
                     MapCell = NewMapCell;
                     MapCell._isSelected = true;
-                    MapCell.SetCellCollorAsPlayers(PlayerSelector);
-                    GetPlayerInfluence(PlayerSelector.Player);
-                    PlayerSelector.PlayerMapCell = MapCell;
+                    MapCell.SetCellCollorAsPlayers(PlayerSelector.Player);
+                    PlayerSelector.Player.PlayerMapCell = MapCell;
+                    PlayerSelector.Player.GetUnitsInfluence();
                     _lastMapCell.CellIsLeaved();
                 }
-                if (_newMapCell != null && _newMapCell == PlayerInferror.PlayerMapCell)
+                else
                 {
-                    MapCell._isAccasible = true;
                     foreach (MapCell mapCell in MapCell.NextCell)
                     {
                         mapCell._isAccasible = false;
@@ -91,9 +83,16 @@ namespace TTBattle.UI
         public void ChangeMapCells()
         {
             SetNewMapCell();
-            (PlayerSelector, PlayerInferror) = (PlayerInferror, PlayerSelector); //don't use that like this
-            MapCell = PlayerSelector.PlayerMapCell;
+            ChangePlayers();
+            MapCell = PlayerSelector.Player.PlayerMapCell;
             MapCell.CellIsSelected();
+        }
+
+        private void ChangePlayers()
+        {
+            var player = PlayerSelector;
+            PlayerInferior = PlayerSelector;
+            PlayerSelector = player;
         }
     }
 }

@@ -4,7 +4,6 @@ using TTBattle.UI;
 
 namespace TTBattle
 {
-    //Why prefab lay near?
     public class SquadAttack : MonoBehaviour
     {
         public void Attack(ArmyPanel army1, ArmyPanel army2, TurnsNumerator turnsNumerator)

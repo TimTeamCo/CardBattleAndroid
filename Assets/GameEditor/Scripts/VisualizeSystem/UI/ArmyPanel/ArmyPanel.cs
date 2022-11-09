@@ -14,17 +14,16 @@ namespace TTBattle.UI
         [SerializeField] private Text _assasinNumber;
         [SerializeField] private Text _mageNumber;
         [SerializeField] public Dropdown UnitDropdown;
+        [SerializeField] public Image UnitDropdownImage;
+        [SerializeField] public Image UnitDropdownTemplateImage;
         [SerializeField] public Color PlayerPanelColor;
-        [NonSerialized] public Color PlayerMapCellColor;
         public string Name;
         public Player Player = new Player();
-        public MapCell PlayerMapCell;
 
         private void Awake()
         {
             CachePlayerValues();
             SetArmyValues();
-            PlayerMapCellColor = PlayerPanelColor;
             
         }
 

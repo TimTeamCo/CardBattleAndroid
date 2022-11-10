@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using TTBattle.UI;
+using UnityEngine.UI;
 
 namespace TTBattle
 {
@@ -9,17 +11,22 @@ namespace TTBattle
         public float[] UnitsInfluence = new float [3];
         public Color PlayerColor;
         public string PlayerName;
-        public MapCell PlayerMapCell;
-
+        public MapCell PlayerMapCell; 
+        public Sprite PlayerChip;
 
         public Player()
         {
             PlayerHand = new PlayerHand();
         }
-        
+
         public void GetUnitsInfluence()
         {
             UnitsInfluence = PlayerMapCell.uintsInfluence;
+        }
+
+        public void SetPlayerChipToCell()
+        {
+                PlayerMapCell.SetChipSprite(PlayerChip);
         }
     }
 }

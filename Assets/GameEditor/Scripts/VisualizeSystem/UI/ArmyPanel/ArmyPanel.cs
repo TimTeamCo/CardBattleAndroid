@@ -24,7 +24,7 @@ namespace TTBattle.UI
         {
             CachePlayerValues();
             SetArmyValues();
-            
+            Player.PlayerChip= _playerChip;
         }
 
         private void CachePlayerValues()

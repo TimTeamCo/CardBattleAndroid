@@ -2,7 +2,7 @@
 {
     public static class ReplaceArmy
     {
-        public static void DoReplaceArmys(ArmyPanel Army1, ArmyPanel Army2)
+        public static void Execute(ArmyPanel Army1, ArmyPanel Army2)
         {
             SwapDropdownValues(Army1, Army2);
             SwapPlayers(Army1, Army2);

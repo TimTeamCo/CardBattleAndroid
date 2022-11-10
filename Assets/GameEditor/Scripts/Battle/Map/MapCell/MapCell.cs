@@ -16,14 +16,15 @@ namespace TTBattle.UI
         [SerializeField] public List<MapCell> NextCell;
         [SerializeField] public int id;
         [SerializeField] public Color ActiveChoiseColor;
-        [SerializeField] public Color SelectedCellColor;
+        [SerializeField] public Color ChoisedCellColor;
         [SerializeField] public Color UsualColor;
+        [SerializeField] public Image ChipImage;
         private Color _lastColor;
         private Image _image;
         private MapScript _map;
         [NonSerialized] public float[] uintsInfluence = new float [3];
         public bool _isAccasible;
-        public bool _isSelected;
+        public bool _isTaken;
         
         private void Awake()
         {
@@ -33,39 +34,41 @@ namespace TTBattle.UI
             _image.color = _lastColor;
             GetComponent<Image>().alphaHitTestMinimumThreshold = 0.1f;
             SetUnitsInfluence();
+            SetAlphaChipSprite(0f);
+            ChipImage.transform.localScale = gameObject.transform.localScale;
         }
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            if (_isAccasible && _isSelected)
+            if (_isAccasible && _isTaken && _map.MapCell != this)
             {
-                SetImageColorToSelected();
+                SetImageColorToSelected(); 
+                _map.NewMapCell = _map.MapCell;
                 _map.MapCell._isAccasible = false;
                 _map.NewMapCell = _map.MapCell;
                 foreach (MapCell mapCell in _map.MapCell.NextCell) 
                 { 
                     mapCell._isAccasible = false;
                 }
-                _map.MakeTurn.IsAttack = true; 
-                _map.MakeTurn.MakeButtonEnabled();
+                _map.MakeTurn.ExecuteWithAttack();
             }
-            else if (_isAccasible && !_isSelected)
+            else if (_isAccasible && !_isTaken || _map.MapCell == this)
             {
                 SetImageColorToSelected();
                 _map.NewMapCell = this;
-                _map.MakeTurn.MakeButtonEnabled();
+                _map.MakeTurn.MakeTurnButtonEnabled();
             }
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (_isAccasible && !_isSelected)
+            if (_isAccasible && !_isTaken)
             {
                 _image.color = ActiveChoiseColor;
             }
             else
             {
-                if (_isAccasible && _isSelected)
+                if (_isAccasible && _isTaken)
                 {
                     _image.color = ActiveChoiseColor;
                     ActiveChoiseColor.a = 0.4f;
@@ -75,12 +78,12 @@ namespace TTBattle.UI
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (_isAccasible && !_isSelected)
+            if (_isAccasible && !_isTaken)
             {
                 _image.color = _lastColor;
             }
 
-            if (_isAccasible && _isSelected)
+            if (_isAccasible && _isTaken)
             {
                 ActiveChoiseColor.a = 1f;
                 _image.color = _lastColor;
@@ -98,17 +101,20 @@ namespace TTBattle.UI
         {
             _lastColor = UsualColor;
             _image.color = _lastColor;
-            _isSelected = false;
+            _isTaken = false;
             _isAccasible = false;
             foreach (MapCell mapCell in NextCell)
             {
                 mapCell._isAccasible = false;
             }
+            ChipImage.sprite = null;
+            ChipImage.preserveAspect = false;
+            SetAlphaChipSprite(0f);
         }
         
         public void CellIsSelected()
         {
-            _isSelected = true;
+            _isTaken = true;
             _isAccasible = true;
             SetCellCollorAsPlayers(_map.PlayerSelector.Player);
             foreach (MapCell mapCell in NextCell)
@@ -132,8 +138,22 @@ namespace TTBattle.UI
         
         private void SetImageColorToSelected()
         {
-            _lastColor = SelectedCellColor;
+            _lastColor = ChoisedCellColor;
             _image.color = _lastColor;
+        }
+
+        public void SetChipSprite(Sprite chipSprite)
+        {
+            ChipImage.sprite = chipSprite;
+            ChipImage.preserveAspect = true;
+            SetAlphaChipSprite(1f);
+        }
+
+        private void SetAlphaChipSprite(float f)
+        {
+            var tempColor = ChipImage.color;
+            tempColor.a = f;
+            ChipImage.color = tempColor;
         }
     }
 }

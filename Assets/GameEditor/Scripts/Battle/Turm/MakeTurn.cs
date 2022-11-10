@@ -13,6 +13,7 @@ namespace TTBattle.UI
         [SerializeField] private MapScript _map;
         [SerializeField] private Button _turnButton;
         [SerializeField] private Image _turnImage;
+        [SerializeField] private Image _attackImage;
         [SerializeField] public Color EnabledButtonColor;
         [SerializeField] public Color DisabledButtonColor;
         private int _newTurnsChecker;
@@ -20,7 +21,7 @@ namespace TTBattle.UI
         
         private void Awake()
         {
-            MakeButtonDisabled();
+            MakeTurnButtonDisabled();
         }
 
         public void DoMakeTurn()
@@ -28,13 +29,11 @@ namespace TTBattle.UI
             SetNewTurnCount();
             if (IsAttack)
             {
-                _squadAttack.Attack(_army1, _army2, _turnsNumerator);
-                SetTextOfArmyUnitsAmount();
+                Attack();
             }
-            _map.ChangeMapCells();
-            ReplaceArmy.DoReplaceArmys(_army1, _army2);
-            MakeButtonDisabled();
-            IsAttack = false;
+            ReplaceArmy.Execute(_army1, _army2);
+            _map.SetPlayersMapCells();
+            EndOfTurn();
         }
 
         private void SetTextOfArmyUnitsAmount()
@@ -53,21 +52,35 @@ namespace TTBattle.UI
             }
         }
 
-        private void MapScript()
-        {
-            _map.ChangeMapCells(); //Why one line in method?
-        }
-
-        public void MakeButtonEnabled()
+        public void MakeTurnButtonEnabled()
         {
             _turnButton.enabled = true;
             _turnImage.color = EnabledButtonColor;
         }
 
-        public void MakeButtonDisabled()
+        public void MakeTurnButtonDisabled()
         {
             _turnButton.enabled = false;
             _turnImage.color = DisabledButtonColor;
+        }
+
+        private void Attack()
+        {
+            _squadAttack.Attack(_army1, _army2, _turnsNumerator);
+        }
+
+        public void ExecuteWithAttack()
+        {
+            IsAttack = true;
+            MakeTurnButtonEnabled();
+            _attackImage.enabled = true;
+        }
+
+        private void EndOfTurn()
+        {
+            MakeTurnButtonDisabled();
+            _attackImage.enabled = false;
+            IsAttack = false;
         }
     }
 }

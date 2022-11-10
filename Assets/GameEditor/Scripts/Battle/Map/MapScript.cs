@@ -23,13 +23,12 @@ namespace TTBattle.UI
             { 
                 if( _newMapCell == null)
                 {
-                    _lastMapCell = MapCell;
                     _newMapCell = value;
-                    MakeTurn.MakeButtonEnabled();
+                    MakeTurn.MakeTurnButtonEnabled();
                 }
                 if (value.id != _newMapCell.id)
                 {
-                    if (!_newMapCell._isSelected)
+                    if (!_newMapCell._isTaken)
                     { 
                         _newMapCell.SetImageColorToUsual();
                         _newMapCell = value;
@@ -55,20 +54,23 @@ namespace TTBattle.UI
             PlayerInferior.Player.PlayerMapCell = MapCell;
             PlayerSelector.Player.GetUnitsInfluence();
             PlayerInferior.Player.GetUnitsInfluence();
+            PlayerSelector.Player.SetPlayerChipToCell();
         }
-
-        //?
-        public void SetNewMapCell()
+        
+        private void SetPlayerInferiorMapCell()
         {
             {
-                if (_newMapCell != MapCell)
+                if (_newMapCell.id != MapCell.id)
                 {
+                    _lastMapCell = MapCell;
                     MapCell = NewMapCell;
-                    MapCell._isSelected = true;
-                    MapCell.SetCellCollorAsPlayers(PlayerSelector.Player);
-                    PlayerSelector.Player.PlayerMapCell = MapCell;
-                    PlayerSelector.Player.GetUnitsInfluence();
+                    MapCell._isTaken = true;
+                    MapCell.SetCellCollorAsPlayers(PlayerInferior.Player);
+                    PlayerInferior.Player.PlayerMapCell = MapCell;
+                    PlayerInferior.Player.GetUnitsInfluence();
+                    PlayerInferior.Player.SetPlayerChipToCell();
                     _lastMapCell.CellIsLeaved();
+                    _newMapCell = null;
                 }
                 else
                 {
@@ -76,23 +78,25 @@ namespace TTBattle.UI
                     {
                         mapCell._isAccasible = false;
                     }
+                    //MapCell.SetCellCollorAsPlayers(PlayerInferior.Player);
+                    //PlayerInferior.Player.PlayerMapCell = MapCell;
+                    _newMapCell = null;
                 }
             }
         }
-        
-        public void ChangeMapCells()
+
+        private void SetPlayerSelectorMapCell()
         {
-            SetNewMapCell();
-            ChangePlayers();
             MapCell = PlayerSelector.Player.PlayerMapCell;
             MapCell.CellIsSelected();
+            PlayerSelector.Player.PlayerMapCell = MapCell;
+            PlayerSelector.Player.SetPlayerChipToCell();
         }
-
-        private void ChangePlayers()
+        
+        public void SetPlayersMapCells()
         {
-            var player = PlayerSelector;
-            PlayerInferior = PlayerSelector;
-            PlayerSelector = player;
+            SetPlayerInferiorMapCell();
+            SetPlayerSelectorMapCell();
         }
     }
 }

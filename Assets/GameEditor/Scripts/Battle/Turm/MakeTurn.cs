@@ -22,6 +22,7 @@ namespace TTBattle.UI
         private void Awake()
         {
             MakeTurnButtonDisabled();
+            _attackImage.enabled = false;
         }
 
         public void DoMakeTurn()
@@ -34,12 +35,6 @@ namespace TTBattle.UI
             ReplaceArmy.Execute(_army1, _army2);
             _map.SetPlayersMapCells();
             EndOfTurn();
-        }
-
-        private void SetTextOfArmyUnitsAmount()
-        {
-            _army1.SetTextOfUnitsAmount();
-            _army2.SetTextOfUnitsAmount();
         }
 
         private void SetNewTurnCount()

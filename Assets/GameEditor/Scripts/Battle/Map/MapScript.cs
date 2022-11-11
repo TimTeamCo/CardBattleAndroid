@@ -45,7 +45,7 @@ namespace TTBattle.UI
         public void Start()
         {
             InitializePLayersMapCells();
-            MapCell.CellIsSelected();
+            MapCell.CellIsTaken();
         }
 
         private void InitializePLayersMapCells()
@@ -78,8 +78,6 @@ namespace TTBattle.UI
                     {
                         mapCell._isAccasible = false;
                     }
-                    //MapCell.SetCellCollorAsPlayers(PlayerInferior.Player);
-                    //PlayerInferior.Player.PlayerMapCell = MapCell;
                     _newMapCell = null;
                 }
             }
@@ -88,7 +86,7 @@ namespace TTBattle.UI
         private void SetPlayerSelectorMapCell()
         {
             MapCell = PlayerSelector.Player.PlayerMapCell;
-            MapCell.CellIsSelected();
+            MapCell.CellIsTaken();
             PlayerSelector.Player.PlayerMapCell = MapCell;
             PlayerSelector.Player.SetPlayerChipToCell();
         }

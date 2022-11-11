@@ -8,10 +8,10 @@ namespace TTBattle
     public class Player
     {
         public PlayerHand PlayerHand;
+        public MapCell PlayerMapCell;
         public float[] UnitsInfluence = new float [3];
         public Color PlayerColor;
         public string PlayerName;
-        public MapCell PlayerMapCell; 
         public Sprite PlayerChip;
 
         public Player()
@@ -26,7 +26,7 @@ namespace TTBattle
 
         public void SetPlayerChipToCell()
         {
-                PlayerMapCell.SetChipSprite(PlayerChip);
+            PlayerMapCell.SetChipSprite(PlayerChip);
         }
     }
 }

@@ -22,7 +22,7 @@ namespace TTBattle.UI
         private Color _lastColor;
         private Image _image;
         private MapScript _map;
-        [NonSerialized] public float[] uintsInfluence = new float [3];
+        public float[] uintsInfluence = new float [3];
         public bool _isAccasible;
         public bool _isTaken;
         
@@ -112,7 +112,7 @@ namespace TTBattle.UI
             SetAlphaChipSprite(0f);
         }
         
-        public void CellIsSelected()
+        public void CellIsTaken()
         {
             _isTaken = true;
             _isAccasible = true;

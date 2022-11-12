@@ -375,7 +375,7 @@ namespace TTGame
                 m_relayClient = client;
                 if (m_localUser.IsHost)
                 {
-                    Debug.Log("Host is now ...");
+                    Debug.Log($"Host is now {m_localUser.DisplayName}");
                     CompleteRelayConnection();
                 }
                 else

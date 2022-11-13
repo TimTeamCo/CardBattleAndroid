@@ -34,6 +34,8 @@ namespace TTBattle.UI
             }
             ReplaceArmy.Execute(_army1, _army2);
             _map.SetPlayersMapCells();
+            _army1.SetTextOfCellAtributes();
+            _army2.SetTextOfCellAtributes();
             EndOfTurn();
         }
 

@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 namespace TTBattle.UI
 {
@@ -25,7 +27,7 @@ namespace TTBattle.UI
 
             if (hpCellAttribute < 0)
             {
-                HPCellAtrtibute.text = $"- {hpCellAttribute}";
+                HPCellAtrtibute.text = $"- {hpCellAttribute*-1}";
             }
         }
         
@@ -35,17 +37,17 @@ namespace TTBattle.UI
             
             if (apCellAttribute > 0)
             {
-                HPCellAtrtibute.text = $"+ {apCellAttribute}";
+                APCellAtrtibute.text = $"+ {apCellAttribute}";
             }
             
             if (apCellAttribute == 0)
             {
-                HPCellAtrtibute.text = "0";
+                APCellAtrtibute.text = "0";
             }
 
             if (apCellAttribute < 0)
             {
-                HPCellAtrtibute.text = $"- {apCellAttribute}";
+                APCellAtrtibute.text = $"- {apCellAttribute*-1}";
             }
         }
     }

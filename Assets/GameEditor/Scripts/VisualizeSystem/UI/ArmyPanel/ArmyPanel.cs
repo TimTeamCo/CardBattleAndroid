@@ -10,9 +10,9 @@ namespace TTBattle.UI
         [SerializeField] private Image _nameImage;
         [SerializeField] private Sprite _playerChip;
         [SerializeField] private Text _playerName;
-        [SerializeField] private Text _warriorNumber;
-        [SerializeField] private Text _assasinNumber;
-        [SerializeField] private Text _mageNumber;
+        [SerializeField] private SquadCard _warriorCard;
+        [SerializeField] private SquadCard _assasinCard;
+        [SerializeField] private SquadCard _mageCard;
         [SerializeField] public Dropdown UnitDropdown;
         [SerializeField] public Image UnitDropdownImage;
         [SerializeField] public Image UnitDropdownTemplateImage;
@@ -24,6 +24,7 @@ namespace TTBattle.UI
         {
             CachePlayerValues();
             SetArmyValues();
+            SetTextOfCellAtributes();
             Player.PlayerChip= _playerChip;
         }
 
@@ -48,9 +49,21 @@ namespace TTBattle.UI
         public void SetTextOfUnitsAmount()
         {
             var playerHand = Player.PlayerHand;
-            _warriorNumber.text = playerHand._warriorSquad.Count.ToString();
-            _assasinNumber.text = playerHand._assasinSquad.Count.ToString();
-            _mageNumber.text = playerHand._mageSquad.Count.ToString();
+            _warriorCard.UnitsNumber.text = playerHand._warriorSquad.Count.ToString();
+            _assasinCard.UnitsNumber.text = playerHand._assasinSquad.Count.ToString();
+            _mageCard.UnitsNumber.text = playerHand._mageSquad.Count.ToString();
+            
+        }
+
+        public void SetTextOfCellAtributes()
+        {
+            var playerHand = Player.PlayerHand;
+            _warriorCard.SetHPCellAtrtibute(Player.UnitsInfluence[0], playerHand._warriorSquad._unit.Health);
+            _assasinCard.SetHPCellAtrtibute(Player.UnitsInfluence[1], playerHand._assasinSquad._unit.Health);
+            _mageCard.SetHPCellAtrtibute(Player.UnitsInfluence[2], playerHand._mageSquad._unit.Health);
+            _warriorCard.SetAPCellAtrtibute(Player.UnitsInfluence[0], playerHand._warriorSquad._unit.Attack);
+            _assasinCard.SetAPCellAtrtibute(Player.UnitsInfluence[1], playerHand._assasinSquad._unit.Attack);
+            _mageCard.SetAPCellAtrtibute(Player.UnitsInfluence[2], playerHand._mageSquad._unit.Attack);
         }
 
         private void SetBackgroundColor()

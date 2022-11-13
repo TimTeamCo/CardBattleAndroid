@@ -23,10 +23,5 @@ namespace TTBattle
         {
             UnitsInfluence = PlayerMapCell.uintsInfluence;
         }
-
-        public void SetPlayerChipToCell()
-        {
-            PlayerMapCell.SetChipSprite(PlayerChip);
-        }
     }
 }

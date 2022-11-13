@@ -42,9 +42,13 @@ namespace TTBattle.UI
             }
         }
         
-        public void Start()
+        public void Awake()
         {
             InitializePLayersMapCells();
+        }
+
+        private void Start()
+        { 
             MapCell.CellIsTaken();
         }
 
@@ -54,7 +58,6 @@ namespace TTBattle.UI
             PlayerInferior.Player.PlayerMapCell = MapCell;
             PlayerSelector.Player.GetUnitsInfluence();
             PlayerInferior.Player.GetUnitsInfluence();
-            PlayerSelector.Player.SetPlayerChipToCell();
         }
         
         private void SetPlayerInferiorMapCell()
@@ -68,7 +71,7 @@ namespace TTBattle.UI
                     MapCell.SetCellCollorAsPlayers(PlayerInferior.Player);
                     PlayerInferior.Player.PlayerMapCell = MapCell;
                     PlayerInferior.Player.GetUnitsInfluence();
-                    PlayerInferior.Player.SetPlayerChipToCell();
+                    MapCell.SetChipSprite(PlayerInferior.Player.PlayerChip);
                     _lastMapCell.CellIsLeaved();
                     _newMapCell = null;
                 }
@@ -88,7 +91,6 @@ namespace TTBattle.UI
             MapCell = PlayerSelector.Player.PlayerMapCell;
             MapCell.CellIsTaken();
             PlayerSelector.Player.PlayerMapCell = MapCell;
-            PlayerSelector.Player.SetPlayerChipToCell();
         }
         
         public void SetPlayersMapCells()

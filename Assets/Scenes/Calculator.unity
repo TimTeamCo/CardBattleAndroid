@@ -1712,10 +1712,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 220050947173472634, guid: e66cfe70be244784e986233280477dba, type: 3}
-      propertyPath: m_Name
-      value: CellAttributes
-      objectReference: {fileID: 0}
     - target: {fileID: 220050948477549717, guid: e66cfe70be244784e986233280477dba, type: 3}
       propertyPath: m_Camera
       value: 
@@ -1889,26 +1885,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1950147769}
   m_CullTransparentMesh: 1
---- !u!1 &1956826454 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 220050947178130598, guid: e66cfe70be244784e986233280477dba, type: 3}
-  m_PrefabInstance: {fileID: 1925029200}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1956826455
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1956826454}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44d069dd51a54160906fec8dcdd523b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  UnitsNumber: {fileID: 0}
-  HPCellAtrtibute: {fileID: 0}
-  APCellAtrtibute: {fileID: 0}
 --- !u!1 &2012125513
 GameObject:
   m_ObjectHideFlags: 0

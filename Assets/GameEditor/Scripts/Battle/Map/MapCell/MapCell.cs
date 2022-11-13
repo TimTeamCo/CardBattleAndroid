@@ -121,6 +121,7 @@ namespace TTBattle.UI
             {
                 mapCell._isAccasible = true;
             }
+            SetChipSprite(_map.PlayerSelector.Player.PlayerChip);
         }
 
         public void SetCellCollorAsPlayers(Player player)

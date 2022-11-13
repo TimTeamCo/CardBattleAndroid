@@ -7,6 +7,7 @@ namespace TTBattle.UI
     {
         [SerializeField] private Text _turnText;
         public int NumeratorValue = 1;
+        public int MoveCount;
         
         public void Numerate()
         {

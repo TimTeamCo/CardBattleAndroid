@@ -43,7 +43,7 @@ namespace TTBattle.UI
             if (_isAccasible && _isTaken && _map.MapCell != this)
             {
                 SetImageColorToSelected(); 
-                _map.NewMapCell = _map.MapCell;
+                //_map.NewMapCell = _map.MapCell;
                 _map.MapCell._isAccasible = false;
                 _map.NewMapCell = _map.MapCell;
                 foreach (MapCell mapCell in _map.MapCell.NextCell) 

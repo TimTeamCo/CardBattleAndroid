@@ -23,5 +23,5 @@ namespace TTBattle
         {
             UnitsInfluence = PlayerMapCell.uintsInfluence;
         }
-    }
+     }
 }

@@ -35,7 +35,7 @@ namespace TTBattle.UI
                     }
                     else
                     {
-                        _newMapCell.SetCellCollorAsPlayers(PlayerSelector.Player);
+                        PlayerSelector.Player.PlayerMapCell.SetCellCollorAsPlayers(PlayerSelector.Player);
                         _newMapCell = value;
                     }
                 }

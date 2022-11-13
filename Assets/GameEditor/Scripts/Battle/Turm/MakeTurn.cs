@@ -1,4 +1,5 @@
-using System; //not use this library
+using System;
+using System.Runtime.InteropServices.ComTypes; //not use this library
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -47,6 +48,7 @@ namespace TTBattle.UI
                 _turnsNumerator.Numerate();
                 _newTurnsChecker = 0;
             }
+            _turnsNumerator.MoveCount++;
         }
 
         public void MakeTurnButtonEnabled()

@@ -23,6 +23,7 @@ namespace TTBattle.UI
         private void Awake()
         {
             MakeTurnButtonDisabled();
+            _attackImage.gameObject.SetActive(true);
             _attackImage.enabled = false;
         }
 
@@ -80,6 +81,8 @@ namespace TTBattle.UI
             MakeTurnButtonDisabled();
             _attackImage.enabled = false;
             IsAttack = false;
+            _map.NextCellInformer.gameObject.SetActive(true);
+            _map.NextCellInformer.IsNotCelected();
         }
     }
 }

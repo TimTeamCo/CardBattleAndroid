@@ -12,6 +12,7 @@ namespace TTBattle.UI
         public ArmyPanel PlayerSelector;
         public ArmyPanel PlayerInferior;
         public MapCell MapCell;
+        public NextCellInformer NextCellInformer;
         
         public MapCell NewMapCell
         {

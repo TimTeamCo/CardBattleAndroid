@@ -51,12 +51,14 @@ namespace TTBattle.UI
                     mapCell._isAccasible = false;
                 }
                 _map.MakeTurn.ExecuteWithAttack();
+                _map.NextCellInformer.gameObject.SetActive(false);
             }
             else if (_isAccasible && !_isTaken || _map.MapCell == this)
             {
                 SetImageColorToSelected();
                 _map.NewMapCell = this;
                 _map.MakeTurn.MakeTurnButtonEnabled();
+                _map.NextCellInformer.SetUnitsIfluenceText(this, true);
             }
         }
 
@@ -65,28 +67,29 @@ namespace TTBattle.UI
             if (_isAccasible && !_isTaken)
             {
                 _image.color = ActiveChoiseColor;
+                _map.NextCellInformer.SetUnitsIfluenceText(this, false);
             }
-            else
-            {
-                if (_isAccasible && _isTaken)
+            else if (_isAccasible && _isTaken)
                 {
                     _image.color = ActiveChoiseColor;
                     ActiveChoiseColor.a = 0.4f;
+                    _map.NextCellInformer.SetUnitsIfluenceText(this, false);
                 }
             }
-        }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             if (_isAccasible && !_isTaken)
             {
                 _image.color = _lastColor;
+                _map.NextCellInformer.ExitCell();
             }
 
             if (_isAccasible && _isTaken)
             {
                 ActiveChoiseColor.a = 1f;
                 _image.color = _lastColor;
+                _map.NextCellInformer.ExitCell();
             }
         }
 

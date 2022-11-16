@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TTBattle.UI;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,9 +12,9 @@ public class NextCellInformer : MonoBehaviour
     [SerializeField] private Color _red;
     [SerializeField] private Color _yellow;
     private bool _isSelected;
-    private string _warriorInfluenceValue;
-    private string _assasinInfluenceValue;
-    private string _mageInfluenceValue;
+    private float _warriorInfluenceValue;
+    private float _assasinInfluenceValue;
+    private float _mageInfluenceValue;
 
     private void OnEnable()
     {
@@ -91,9 +88,9 @@ public class NextCellInformer : MonoBehaviour
             _warriorInfluenceText.color = _yellow;
             _assasinInfluenceText.color = _yellow;
             _mageInfluenceText.color = _yellow;
-            _warriorInfluenceValue = $"{warriorInfluence}";
-            _assasinInfluenceValue = $"{assasinInfluence}";
-            _mageInfluenceValue = $"{mageInfluence}";
+            _warriorInfluenceValue = warriorInfluence;
+            _assasinInfluenceValue = assasinInfluence;
+            _mageInfluenceValue = mageInfluence;
         }
     }
 
@@ -104,9 +101,46 @@ public class NextCellInformer : MonoBehaviour
             _warriorInfluenceText.color = _yellow;
             _assasinInfluenceText.color = _yellow;
             _mageInfluenceText.color = _yellow;
-            _warriorInfluenceText.text = _warriorInfluenceValue;
-            _assasinInfluenceText.text = _assasinInfluenceValue;
-            _mageInfluenceText.text = _mageInfluenceValue;
+            if (_warriorInfluenceValue > 0)
+            {
+                _warriorInfluenceText.text = $"+{_warriorInfluenceValue}%";
+            }
+            if (_warriorInfluenceValue == 0)
+            {
+                _warriorInfluenceText.text = "--";
+            }
+            if (_warriorInfluenceValue < 0)
+            {
+                _warriorInfluenceText.text = $"-{_warriorInfluenceValue}%";
+            }
+        
+        
+            if (_assasinInfluenceValue > 0)
+            {
+                _assasinInfluenceText.text = $"+{_assasinInfluenceValue}%";
+            }
+            if (_assasinInfluenceValue == 0)
+            {
+                _assasinInfluenceText.text = "--";
+            }
+            if (_assasinInfluenceValue < 0)
+            {
+                _assasinInfluenceText.text = $"-{_assasinInfluenceValue}%";
+            }
+        
+        
+            if (_mageInfluenceValue > 0)
+            {
+                _mageInfluenceText.text = $"+{_mageInfluenceValue}%";
+            }
+            if (_mageInfluenceValue == 0)
+            {
+                _mageInfluenceText.text = "--";
+            }
+            if (_mageInfluenceValue < 0)
+            {
+                _mageInfluenceText.text = $"-{_mageInfluenceValue}%";
+            }
         }
     }
 

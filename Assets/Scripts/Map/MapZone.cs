@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Army;
 using UnityEngine;
 
@@ -9,24 +10,14 @@ namespace Map
     {
         public BiomType biom;
         public int zoneID ;
-        public List<UnitType> UnitTypes;
-        public List<int> buffValue;
         public int burnFactor = 0;
-        public Dictionary<UnitType, int> BuffZone;
+        public List<BuffZone> buffsZone;
 
-        private void OnValidate()
+        [Serializable]
+        public struct BuffZone
         {
-            if (UnitTypes.Count != buffValue.Count)
-            {
-                return;
-            }
-            
-            BuffZone = new Dictionary<UnitType, int>();
-            for (int i = 0; i < UnitTypes.Count; i++)
-            {
-                BuffZone.Add(UnitTypes[i], buffValue[i]);
-            }
-            Debug.Log($"New Dic {BuffZone.Keys.Count} {BuffZone.Values.Count}");
+            public UnitType unitType;
+            public int buffValue;
         }
     }
 }

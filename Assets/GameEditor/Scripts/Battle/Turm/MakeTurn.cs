@@ -35,12 +35,56 @@ namespace TTBattle.UI
                 Attack();
             }
             ReplaceArmy.Execute(_army1, _army2);
-            _map.SetPlayersMapCells();
-            _army1.SetTextOfCellAtributes();
-            _army2.SetTextOfCellAtributes();
+            MapScripts();
+            SetBurningDamageToPlayers();
+            SetTextOfCellAtributesToArmys();
             EndOfTurn();
         }
 
+        private void MapScripts()
+        {
+            _map.SetPlayersMapCells();
+            if (_turnsNumerator.TurnsCount == 5 && _newTurnsChecker==0)
+            {
+                _map.SetBurningZones(1 );
+            }
+            if (_turnsNumerator.TurnsCount == 10 && _newTurnsChecker==0) 
+            {
+                 _map.SetBurningZones(2);
+                 _map.SetBurningZones(1); 
+            }
+            if (_turnsNumerator.TurnsCount == 15 && _newTurnsChecker==0)
+            {
+                _map.SetBurningZones(3);
+                _map.SetBurningZones(2);
+                _map.SetBurningZones(1);
+            }
+            if (_turnsNumerator.TurnsCount == 20 && _newTurnsChecker==0)
+            {
+                _map.SetBurningZones(3);
+                _map.SetBurningZones(2);
+            }
+            if (_turnsNumerator.TurnsCount == 25 && _newTurnsChecker==0)
+            {
+                _map.SetBurningZones(3);
+            }
+        }
+
+        private void SetBurningDamageToPlayers()
+        {
+            if (_newTurnsChecker == 0)
+            {
+                _army1.Player.BurningDamageToUnits();
+                _army2.Player.BurningDamageToUnits();    
+            }
+        }
+        
+        private void SetTextOfCellAtributesToArmys()
+        {
+            _army1.SetTextOfCardsAtributes();
+            _army2.SetTextOfCardsAtributes();
+        }
+        
         private void SetNewTurnCount()
         {
             _newTurnsChecker++;

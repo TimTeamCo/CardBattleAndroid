@@ -6,18 +6,18 @@ namespace TTBattle.UI
     public class TurnsNumerator : MonoBehaviour
     {
         [SerializeField] private Text _turnText;
-        public int NumeratorValue = 1;
+        public int TurnsCount = 1;
         public int MoveCount;
         
         public void Numerate()
         {
-            NumeratorValue++;
+            TurnsCount++;
             SetTurnText();
         }
 
         private void SetTurnText()
         {
-            _turnText.text = $"{NumeratorValue}";
+            _turnText.text = $"{TurnsCount}";
         }
     }
 }

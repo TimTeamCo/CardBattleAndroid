@@ -1,19 +1,25 @@
-﻿using System; //...
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace TTBattle.UI
 {
     public class MapScript : MonoBehaviour
     {
+        [SerializeField] private List<MapCell> _fistBurningZone = new List<MapCell>();
+        [SerializeField] private List<MapCell> _secondBurningZone = new List<MapCell>();
+        [SerializeField] private List<MapCell> _thirdBurningZone = new List<MapCell>();
         [SerializeField] public MakeTurn MakeTurn;
         private MapCell _secondRateMapCell;
         private MapCell _newMapCell;
         private MapCell _lastMapCell;
+        public Sprite FireStage1;
+        public Sprite FireStage2;
+        public Sprite FireStage3;
         public ArmyPanel PlayerSelector;
         public ArmyPanel PlayerInferior;
         public MapCell MapCell;
         public NextCellInformer NextCellInformer;
-        
+
         public MapCell NewMapCell
         {
             get
@@ -29,7 +35,7 @@ namespace TTBattle.UI
                 }
                 if (value.id != _newMapCell.id)
                 {
-                    if (!_newMapCell._isTaken)
+                    if (!_newMapCell.IsTaken)
                     { 
                         _newMapCell.SetImageColorToUsual();
                         _newMapCell = value;
@@ -68,7 +74,7 @@ namespace TTBattle.UI
                 {
                     _lastMapCell = MapCell;
                     MapCell = NewMapCell;
-                    MapCell._isTaken = true;
+                    MapCell.IsTaken = true;
                     MapCell.SetCellCollorAsPlayers(PlayerInferior.Player);
                     PlayerInferior.Player.PlayerMapCell = MapCell;
                     PlayerInferior.Player.GetUnitsInfluence();
@@ -80,7 +86,7 @@ namespace TTBattle.UI
                 {
                     foreach (MapCell mapCell in MapCell.NextCell)
                     {
-                        mapCell._isAccasible = false;
+                        mapCell.IsAccasible = false;
                     }
                     _newMapCell = null;
                 }
@@ -98,6 +104,81 @@ namespace TTBattle.UI
         {
             SetPlayerInferiorMapCell();
             SetPlayerSelectorMapCell();
+        }
+
+        public void SetBurningZones(int nomber)
+        {
+            if (nomber == 1)
+            {
+                foreach (MapCell mapCell in _fistBurningZone)
+                {
+                    mapCell.BurningDamage += 3;
+                    if (PlayerSelector.Player.PlayerMapCell.id != mapCell.id && PlayerInferior.Player.PlayerMapCell.id != mapCell.id)
+                    {
+                        mapCell.SetAlphaChipSprite(1f);
+                        if (mapCell.BurningDamage==3)
+                        {
+                            mapCell.ChipImage.sprite = FireStage1;
+                        }
+                        if (mapCell.BurningDamage==6)
+                        {
+                            mapCell.ChipImage.sprite = FireStage2;
+                        }
+                        if (mapCell.BurningDamage==9)
+                        {
+                            mapCell.ChipImage.sprite = FireStage3;
+                        }
+                    }
+                }
+            }
+            
+            if (nomber == 2)
+            {
+                foreach (MapCell mapCell in _secondBurningZone)
+                {
+                    mapCell.BurningDamage =+ 3;
+                    if (PlayerSelector.Player.PlayerMapCell.id != mapCell.id && PlayerInferior.Player.PlayerMapCell.id != mapCell.id)
+                    {
+                        mapCell.SetAlphaChipSprite(1f);
+                        if (mapCell.BurningDamage==3)
+                        {
+                            mapCell.ChipImage.sprite = FireStage1;
+                        }
+                        if (mapCell.BurningDamage==6)
+                        {
+                            mapCell.ChipImage.sprite = FireStage2;
+                        }
+                        if (mapCell.BurningDamage==9)
+                        {
+                            mapCell.ChipImage.sprite = FireStage3;
+                        }
+                    }
+                }
+            }
+            
+            if (nomber == 3)
+            {
+                foreach (MapCell mapCell in _thirdBurningZone)
+                {
+                    mapCell.BurningDamage =+ 3;
+                    if (PlayerSelector.Player.PlayerMapCell.id != mapCell.id && PlayerInferior.Player.PlayerMapCell.id != mapCell.id)
+                    {
+                        mapCell.SetAlphaChipSprite(1f);
+                        if (mapCell.BurningDamage==3)
+                        {
+                            mapCell.ChipImage.sprite = FireStage1;
+                        }
+                        if (mapCell.BurningDamage==6)
+                        {
+                            mapCell.ChipImage.sprite = FireStage2;
+                        }
+                        if (mapCell.BurningDamage==9)
+                        {
+                            mapCell.ChipImage.sprite = FireStage3;
+                        }
+                    }
+                }
+            }
         }
     }
 }

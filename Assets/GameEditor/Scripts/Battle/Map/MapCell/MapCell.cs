@@ -21,11 +21,12 @@ namespace TTBattle.UI
         [SerializeField] public Image ChipImage;
         private Color _lastColor;
         private Image _image;
-        private MapScript _map;
+        public MapScript _map;
+        public int BurningDamage;
         public float[] uintsInfluence = new float [3];
-        public bool _isAccasible;
-        public bool _isTaken;
-        
+        public bool IsAccasible;
+        public bool IsTaken;
+
         private void Awake()
         {
             _map = GetComponentInParent<MapScript>();
@@ -40,20 +41,20 @@ namespace TTBattle.UI
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            if (_isAccasible && _isTaken && _map.MapCell != this)
+            if (IsAccasible && IsTaken && _map.MapCell != this)
             {
                 SetImageColorToSelected(); 
                 //_map.NewMapCell = _map.MapCell;
-                _map.MapCell._isAccasible = false;
+                _map.MapCell.IsAccasible = false;
                 _map.NewMapCell = _map.MapCell;
                 foreach (MapCell mapCell in _map.MapCell.NextCell) 
                 { 
-                    mapCell._isAccasible = false;
+                    mapCell.IsAccasible = false;
                 }
                 _map.MakeTurn.ExecuteWithAttack();
                 _map.NextCellInformer.gameObject.SetActive(false);
             }
-            else if (_isAccasible && !_isTaken || _map.MapCell == this)
+            else if (IsAccasible && !IsTaken || _map.MapCell == this)
             {
                 SetImageColorToSelected();
                 _map.NewMapCell = this;
@@ -64,12 +65,12 @@ namespace TTBattle.UI
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (_isAccasible && !_isTaken)
+            if (IsAccasible && !IsTaken)
             {
                 _image.color = ActiveChoiseColor;
                 _map.NextCellInformer.SetUnitsIfluenceText(this, false);
             }
-            else if (_isAccasible && _isTaken)
+            else if (IsAccasible && IsTaken)
                 {
                     _image.color = ActiveChoiseColor;
                     ActiveChoiseColor.a = 0.4f;
@@ -79,13 +80,13 @@ namespace TTBattle.UI
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (_isAccasible && !_isTaken)
+            if (IsAccasible && !IsTaken)
             {
                 _image.color = _lastColor;
                 _map.NextCellInformer.ExitCell();
             }
 
-            if (_isAccasible && _isTaken)
+            if (IsAccasible && IsTaken)
             {
                 ActiveChoiseColor.a = 1f;
                 _image.color = _lastColor;
@@ -104,25 +105,25 @@ namespace TTBattle.UI
         {
             _lastColor = UsualColor;
             _image.color = _lastColor;
-            _isTaken = false;
-            _isAccasible = false;
+            IsTaken = false;
+            IsAccasible = false;
             foreach (MapCell mapCell in NextCell)
             {
-                mapCell._isAccasible = false;
+                mapCell.IsAccasible = false;
             }
             ChipImage.sprite = null;
             ChipImage.preserveAspect = false;
-            SetAlphaChipSprite(0f);
+           SetFireSpriteToImage();
         }
         
         public void CellIsTaken()
         {
-            _isTaken = true;
-            _isAccasible = true;
+            IsTaken = true;
+            IsAccasible = true;
             SetCellCollorAsPlayers(_map.PlayerSelector.Player);
             foreach (MapCell mapCell in NextCell)
             {
-                mapCell._isAccasible = true;
+                mapCell.IsAccasible = true;
             }
             SetChipSprite(_map.PlayerSelector.Player.PlayerChip);
         }
@@ -153,11 +154,34 @@ namespace TTBattle.UI
             SetAlphaChipSprite(1f);
         }
 
-        private void SetAlphaChipSprite(float f)
+        public void SetAlphaChipSprite(float f)
         {
             var tempColor = ChipImage.color;
             tempColor.a = f;
             ChipImage.color = tempColor;
+        }
+
+        public void SetFireSpriteToImage()
+        {
+            if (BurningDamage == 0)
+            {
+                SetAlphaChipSprite(0f);
+            }
+            else
+            {
+                if (BurningDamage == 3)
+                {
+                    ChipImage.sprite = _map.FireStage1;
+                }
+                if (BurningDamage == 6)
+                {
+                    ChipImage.sprite = _map.FireStage2;
+                }
+                if (BurningDamage == 9)
+                {
+                    ChipImage.sprite = _map.FireStage3;
+                }
+            }
         }
     }
 }

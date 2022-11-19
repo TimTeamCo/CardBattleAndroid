@@ -23,5 +23,16 @@ namespace TTBattle
         {
             UnitsInfluence = PlayerMapCell.uintsInfluence;
         }
+
+        public void BurningDamageToUnits()
+        {
+            if (PlayerMapCell.BurningDamage != 0)
+            {
+                PlayerHand._warriorSquad._unit.Health -= PlayerMapCell.BurningDamage;
+                PlayerHand._assasinSquad._unit.Health -= PlayerMapCell.BurningDamage;
+                PlayerHand._mageSquad._unit.Health -= PlayerMapCell.BurningDamage;
+                Debug.Log(PlayerHand._warriorSquad._unit.Health);
+            }
+        }
      }
 }

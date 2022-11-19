@@ -24,7 +24,7 @@ namespace TTBattle.UI
         {
             CachePlayerValues();
             SetArmyValues();
-            SetTextOfCellAtributes();
+            SetTextOfCardsAtributes();
             Player.PlayerChip= _playerChip;
         }
 
@@ -55,7 +55,7 @@ namespace TTBattle.UI
             
         }
 
-        public void SetTextOfCellAtributes()
+        public void SetTextOfCardsAtributes()
         {
             var playerHand = Player.PlayerHand;
             _warriorCard.SetHPCellAtrtibute(Player.UnitsInfluence[0], playerHand._warriorSquad._unit.Health);
@@ -64,6 +64,9 @@ namespace TTBattle.UI
             _warriorCard.SetAPCellAtrtibute(Player.UnitsInfluence[0], playerHand._warriorSquad._unit.Attack);
             _assasinCard.SetAPCellAtrtibute(Player.UnitsInfluence[1], playerHand._assasinSquad._unit.Attack);
             _mageCard.SetAPCellAtrtibute(Player.UnitsInfluence[2], playerHand._mageSquad._unit.Attack);
+            _warriorCard.SetBurningDamageText(this);
+            _assasinCard.SetBurningDamageText(this);
+            _mageCard.SetBurningDamageText(this);
         }
 
         private void SetBackgroundColor()

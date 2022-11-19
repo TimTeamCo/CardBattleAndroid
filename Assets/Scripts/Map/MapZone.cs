@@ -11,6 +11,7 @@ namespace Map
         public int zoneID ;
         public List<UnitType> UnitTypes;
         public List<int> buffValue;
+        public int burnFactor = 0;
         public Dictionary<UnitType, int> BuffZone;
 
         private void OnValidate()

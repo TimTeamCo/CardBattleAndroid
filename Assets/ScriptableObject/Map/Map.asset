@@ -12,4 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82fa9a52f27a7d840b20cc98798e5568, type: 3}
   m_Name: Map
   m_EditorClassIdentifier: 
-  _mapZones: []
+  _mapZones:
+  - {fileID: 11400000, guid: 2f1aa102d49320f48952a96b78f39ccd, type: 2}
+  - {fileID: 11400000, guid: 68d72502903fd904ab13da519faaa182, type: 2}
+  - {fileID: 11400000, guid: 57aba3503d4866c41ba9580f4bda283d, type: 2}
+  - {fileID: 11400000, guid: a669464c75071304b8c1ca76800ebbfe, type: 2}
+  - {fileID: 11400000, guid: 0e8671c794844554ca84606bb5372dcd, type: 2}
+  - {fileID: 11400000, guid: 7cc54251a110edf45aa6557c98dd2ebb, type: 2}
+  - {fileID: 11400000, guid: db18b9489f536ce49871abefd3fc2412, type: 2}
+  - {fileID: 11400000, guid: 74cd93adbbcd0924e860c96badcfcce5, type: 2}
+  - {fileID: 11400000, guid: 678360a0bc81c5941944f53418efa602, type: 2}
+  - {fileID: 11400000, guid: 6280c59b773d56c4c9630144460643e1, type: 2}
+  - {fileID: 11400000, guid: bb8acb3ebab002d42b97a455b4468d99, type: 2}
+  - {fileID: 11400000, guid: 71f48f814c8eb5d40958ea69ee9e2be8, type: 2}
+  - {fileID: 11400000, guid: 98deef3c564a4c64892376b4d27b2cd1, type: 2}
+  - {fileID: 11400000, guid: d76b25afd1c785943a4a681ecff2dac2, type: 2}
+  - {fileID: 11400000, guid: b4b7f8b5352c21c40ae819774e26f9ff, type: 2}
+  - {fileID: 11400000, guid: 0e4753265294a25448497d1178226465, type: 2}

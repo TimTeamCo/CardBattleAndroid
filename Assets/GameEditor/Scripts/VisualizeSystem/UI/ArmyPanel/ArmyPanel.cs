@@ -26,6 +26,7 @@ namespace TTBattle.UI
             SetArmyValues();
             SetTextOfCardsAtributes();
             Player.PlayerChip= _playerChip;
+            UnitDropdown.gameObject.SetActive(false);
         }
 
         private void CachePlayerValues()

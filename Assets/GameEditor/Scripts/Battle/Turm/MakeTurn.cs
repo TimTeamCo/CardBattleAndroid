@@ -30,10 +30,7 @@ namespace TTBattle.UI
         public void DoMakeTurn()
         {
             SetNewTurnCount();
-            if (IsAttack)
-            {
-                Attack();
-            }
+            Attack();
             ReplaceArmy.Execute(_army1, _army2);
             MapScripts();
             SetBurningDamageToPlayers();
@@ -110,7 +107,12 @@ namespace TTBattle.UI
 
         private void Attack()
         {
-            _squadAttack.Attack(_army1, _army2, _turnsNumerator);
+            if (IsAttack)
+            {
+                _squadAttack.Attack(_army1, _army2, _turnsNumerator);
+                _army1.UnitDropdown.gameObject.SetActive(false);
+                _army2.UnitDropdown.gameObject.SetActive(false);
+            }
         }
 
         public void ExecuteWithAttack()
@@ -118,6 +120,8 @@ namespace TTBattle.UI
             IsAttack = true;
             MakeTurnButtonEnabled();
             _attackImage.enabled = true;
+            _army1.UnitDropdown.gameObject.SetActive(true);
+            _army2.UnitDropdown.gameObject.SetActive(true);
         }
 
         private void EndOfTurn()

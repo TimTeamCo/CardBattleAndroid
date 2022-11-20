@@ -78,7 +78,7 @@ namespace TTBattle.UI
                     MapCell.SetCellCollorAsPlayers(PlayerInferior.Player);
                     PlayerInferior.Player.PlayerMapCell = MapCell;
                     PlayerInferior.Player.GetUnitsInfluence();
-                    MapCell.SetChipSprite(PlayerInferior.Player.PlayerChip);
+                    MapCell.SetChipSpriteToImage(PlayerInferior.Player.PlayerChip);
                     _lastMapCell.CellIsLeaved();
                     _newMapCell = null;
                 }
@@ -116,18 +116,19 @@ namespace TTBattle.UI
                     if (PlayerSelector.Player.PlayerMapCell.id != mapCell.id && PlayerInferior.Player.PlayerMapCell.id != mapCell.id)
                     {
                         mapCell.SetAlphaChipSprite(1f);
-                        if (mapCell.BurningDamage==3)
+                        /*if (mapCell.BurningDamage==3)
                         {
-                            mapCell.ChipImage.sprite = FireStage1;
+                            mapCell.IndicateImage.sprite = FireStage1;
                         }
                         if (mapCell.BurningDamage==6)
                         {
-                            mapCell.ChipImage.sprite = FireStage2;
+                            mapCell.IndicateImage.sprite = FireStage2;
                         }
                         if (mapCell.BurningDamage==9)
                         {
-                            mapCell.ChipImage.sprite = FireStage3;
-                        }
+                            mapCell.IndicateImage.sprite = FireStage3;
+                        }*/
+                        mapCell.SetFireSpriteToImage();
                     }
                 }
             }
@@ -142,15 +143,15 @@ namespace TTBattle.UI
                         mapCell.SetAlphaChipSprite(1f);
                         if (mapCell.BurningDamage==3)
                         {
-                            mapCell.ChipImage.sprite = FireStage1;
+                            mapCell.IndicateImage.sprite = FireStage1;
                         }
                         if (mapCell.BurningDamage==6)
                         {
-                            mapCell.ChipImage.sprite = FireStage2;
+                            mapCell.IndicateImage.sprite = FireStage2;
                         }
                         if (mapCell.BurningDamage==9)
                         {
-                            mapCell.ChipImage.sprite = FireStage3;
+                            mapCell.IndicateImage.sprite = FireStage3;
                         }
                     }
                 }
@@ -166,15 +167,15 @@ namespace TTBattle.UI
                         mapCell.SetAlphaChipSprite(1f);
                         if (mapCell.BurningDamage==3)
                         {
-                            mapCell.ChipImage.sprite = FireStage1;
+                            mapCell.IndicateImage.sprite = FireStage1;
                         }
                         if (mapCell.BurningDamage==6)
                         {
-                            mapCell.ChipImage.sprite = FireStage2;
+                            mapCell.IndicateImage.sprite = FireStage2;
                         }
                         if (mapCell.BurningDamage==9)
                         {
-                            mapCell.ChipImage.sprite = FireStage3;
+                            mapCell.IndicateImage.sprite = FireStage3;
                         }
                     }
                 }

@@ -1,10 +1,10 @@
-﻿using UnityEngine;
+﻿using Sirenix.OdinInspector;
 
 namespace Card
 {
-    [CreateAssetMenu(fileName = "ItemCard", menuName = "ScriptableObject/Cards/ItemCard", order = 1)]
     public class ItemCard : Card
     {
-        
+        [BoxGroup("CardType")] 
+        public CardType CardType = CardType.Item;
     }
 }

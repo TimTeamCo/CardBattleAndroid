@@ -1,12 +1,17 @@
-﻿using UnityEngine;
+﻿using Sirenix.OdinInspector;
+using UnityEngine;
 
 namespace Card
 {
-    [CreateAssetMenu(fileName = "Card", menuName = "ScriptableObject/Cards/Card", order = 0)]
     public class Card : ScriptableObject
     {
+        [BoxGroup("Basic Info")]
         public string name;
+        [PreviewField(100)]
+        [BoxGroup("Basic Info")]
         public Sprite frame;
+        [PreviewField(100)]
+        [BoxGroup("Basic Info")]
         public Sprite art;
     }
 }

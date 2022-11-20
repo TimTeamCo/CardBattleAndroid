@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 794f2c54718b49ea91aa6aa3f009f7c6, type: 3}
-  m_Name: ItemCard
+  m_Script: {fileID: 11500000, guid: a64af573b3c744a7810bbe1d79550ef5, type: 3}
+  m_Name: PermanentItemCard
   m_EditorClassIdentifier: 
   name: 
   frame: {fileID: 0}

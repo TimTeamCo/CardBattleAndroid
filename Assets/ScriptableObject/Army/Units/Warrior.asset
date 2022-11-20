@@ -9,6 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9957335b58ad4726849e9ff8c6a9fbc4, type: 3}
-  m_Name: MapZone
+  m_Script: {fileID: 11500000, guid: cee200d034fe42929dfe86883932adfd, type: 3}
+  m_Name: Warrior
   m_EditorClassIdentifier: 
+  UnitType: 0
+  unitFace: {fileID: 21300000, guid: 33cf39fbfc130844a9e4148a77216be6, type: 3}
+  Attack: 10
+  Health: 90

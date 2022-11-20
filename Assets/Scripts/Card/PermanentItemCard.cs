@@ -24,37 +24,19 @@ namespace Card
             {
                 return;
             }
-
-            char healthSign = ' ';
-            if (Effect.HealthEffect > 0)
-            {
-                healthSign = '+';
-            }else
-            {
-                healthSign = ' ';
-            }
-
+            
             string healthPart = String.Empty;
-            if (healthSign != ' ')
+            if (Effect.HealthEffect != 0)
             {
-                healthPart = $"{healthSign} {Effect.HealthEffect} HP";
+                healthPart = Effect.HealthEffect > 0 ? $"+{Effect.HealthEffect} HP" : $"{Effect.HealthEffect} HP";
             }
             
-            char attackSign = ' ';
-            if (Effect.AttackEffect > 0)
+            string attackPart = String.Empty;
+            if (Effect.AttackEffect != 0)
             {
-                attackSign = '+';
-            }else
-            {
-                attackSign = ' ';
+                attackPart = Effect.AttackEffect > 0 ? $"+{Effect.AttackEffect} ATK" : $"{Effect.AttackEffect} ATK";
             }
 
-            string attackPart = String.Empty;
-            if (attackSign != ' ')
-            {
-                attackPart = $"{attackSign} {Effect.AttackEffect} ATK";
-            }
-            
             Description = $"{healthPart} {attackPart} FOR {Effect.UnitType.ToString().ToUpper()}S";
         }
     }

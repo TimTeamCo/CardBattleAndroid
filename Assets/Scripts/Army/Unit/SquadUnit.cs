@@ -1,6 +1,8 @@
-﻿namespace Army
+﻿using UnityEngine;
+
+namespace Army
 {
-    public abstract class SquadUnit
+    public abstract class SquadUnit : ScriptableObject
     {
         
     }

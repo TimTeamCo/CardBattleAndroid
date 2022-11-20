@@ -30,7 +30,7 @@ namespace TTBattle.UI
         public void DoMakeTurn()
         {
             SetNewTurnCount();
-            Attack();
+             Attack();
             ReplaceArmy.Execute(_army1, _army2);
             MapScripts();
             SetBurningDamageToPlayers();

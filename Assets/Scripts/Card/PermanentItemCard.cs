@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Card
 {
-    [CreateAssetMenu(fileName = "PermanentItemCard", menuName = "ScriptableObject/Cards/PermanentItemCard", order = 0)]
+    [CreateAssetMenu(fileName = "PermanentItemCard", menuName = "ScriptableObject/Cards/PermanentItem", order = 0)]
     public class PermanentItemCard : ItemCard
     {
         [BoxGroup("CardType")] public CardTypeSmall cardTypeSmall = CardTypeSmall.Permanent;

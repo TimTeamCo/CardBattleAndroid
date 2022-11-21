@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Assasin
   m_EditorClassIdentifier: 
   UnitType: 1
-  unitFace: {fileID: 21300000, guid: 916ce8075735eaa428df8c543694e4e5, type: 3}
+  unitFace: {fileID: 21300000, guid: 84315b7338b6dd64bbde6e71cfaa6dd6, type: 3}
   Attack: 10
   Health: 30

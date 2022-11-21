@@ -1,5 +1,6 @@
 ﻿using System;
 using Army;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Card
@@ -7,37 +8,35 @@ namespace Card
     [CreateAssetMenu(fileName = "PermanentItemCard", menuName = "ScriptableObject/Cards/PermanentItemCard", order = 0)]
     public class PermanentItemCard : ItemCard
     {
-        public Effects Effect;
+        [BoxGroup("CardType")] public CardTypeSmall cardTypeSmall = CardTypeSmall.Permanent;
+
+        [BoxGroup("Card Effect")] public int AttackEffect;
+        [BoxGroup("Card Effect")] public int HealthEffect;
+        [BoxGroup("Card Effect")] public UnitType UnitType;
+
+        [BoxGroup("Card Text")] [TextArea]
         public string Description;
-        
-        [Serializable]
-        public struct Effects
-        {
-            public int AttackEffect;
-            public int HealthEffect;
-            public UnitType UnitType;
-        }
 
         private void OnValidate()
         {
-            if (Effect.AttackEffect == 0 && Effect.HealthEffect == 0)
+            if (AttackEffect == 0 && HealthEffect == 0)
             {
                 return;
             }
-            
+
             string healthPart = String.Empty;
-            if (Effect.HealthEffect != 0)
+            if (HealthEffect != 0)
             {
-                healthPart = Effect.HealthEffect > 0 ? $"+{Effect.HealthEffect} HP" : $"{Effect.HealthEffect} HP";
-            }
-            
-            string attackPart = String.Empty;
-            if (Effect.AttackEffect != 0)
-            {
-                attackPart = Effect.AttackEffect > 0 ? $"+{Effect.AttackEffect} ATK" : $"{Effect.AttackEffect} ATK";
+                healthPart = HealthEffect > 0 ? $"+{HealthEffect} HP" : $"{HealthEffect} HP";
             }
 
-            Description = $"{healthPart} {attackPart} FOR {Effect.UnitType.ToString().ToUpper()}S";
+            string attackPart = String.Empty;
+            if (AttackEffect != 0)
+            {
+                attackPart = AttackEffect > 0 ? $"+{AttackEffect} ATK" : $"{AttackEffect} ATK";
+            }
+
+            Description = $"{healthPart} {attackPart} FOR {UnitType.ToString().ToUpper()}S";
         }
     }
 }

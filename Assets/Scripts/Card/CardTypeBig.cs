@@ -3,7 +3,7 @@
 namespace Card
 {
     [Serializable]
-    public enum CardType
+    public enum CardTypeBig
     {
         Unit,
         Item

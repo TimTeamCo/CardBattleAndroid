@@ -5,6 +5,6 @@ namespace Card
     public class ItemCard : Card
     {
         [BoxGroup("CardType")] 
-        public CardType CardType = CardType.Item;
+        public CardTypeBig cardTypeBig = CardTypeBig.Item;
     }
 }

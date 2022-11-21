@@ -4,7 +4,8 @@ namespace Card
 {
     public class ItemCard : Card
     {
-        [BoxGroup("CardType")] 
+        [BoxGroup("CardType")]
+        [InfoBox("Item cards can strengthen an army or add an advantage in battle")]
         public CardTypeBig cardTypeBig = CardTypeBig.Item;
     }
 }

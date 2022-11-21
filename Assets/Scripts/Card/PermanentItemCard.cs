@@ -8,7 +8,11 @@ namespace Card
     [CreateAssetMenu(fileName = "PermanentItemCard", menuName = "ScriptableObject/Cards/PermanentItem", order = 0)]
     public class PermanentItemCard : ItemCard
     {
-        [BoxGroup("CardType")] public CardTypeSmall cardTypeSmall = CardTypeSmall.Permanent;
+        [BoxGroup("CardType")] 
+        [InfoBox("Permanent - equipment cards for your units. When you pick up this card, it increase the " +
+                 "\ncharacteristics of your units for an unlimited period of time.")]
+        public CardTypeSmall cardTypeSmall = CardTypeSmall.Permanent;
+        
 
         [BoxGroup("Card Effect")] public int AttackEffect;
         [BoxGroup("Card Effect")] public int HealthEffect;

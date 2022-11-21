@@ -7,6 +7,7 @@ namespace Card
     {
         Permanent,
         Usable,
+        Number,
         
     }
 }

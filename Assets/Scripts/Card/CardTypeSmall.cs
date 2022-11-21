@@ -8,6 +8,7 @@ namespace Card
         Permanent,
         Usable,
         Number,
-        
+        Exchange,
+        Sacrifice,
     }
 }

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Mage
   m_EditorClassIdentifier: 
   UnitType: 2
-  unitFace: {fileID: 21300000, guid: 50ed1a62f358cb849b29805660a699a5, type: 3}
+  unitFace: {fileID: 21300000, guid: 15d05fa16ea2af845852cd87a3919c56, type: 3}
   Attack: 30
   Health: 30

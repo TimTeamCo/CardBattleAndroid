@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Warrior
   m_EditorClassIdentifier: 
   UnitType: 0
-  unitFace: {fileID: 21300000, guid: 33cf39fbfc130844a9e4148a77216be6, type: 3}
+  unitFace: {fileID: 21300000, guid: f24235904bc748d4ab042d0711830314, type: 3}
   Attack: 10
   Health: 90

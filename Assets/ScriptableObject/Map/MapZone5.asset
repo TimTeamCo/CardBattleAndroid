@@ -14,5 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   biom: 0
   zoneID: 5
-  UnitTypes: 0000000002000000
-  buffValue: 1e000000ecffffff
+  burnFactor: 0
+  buffsZone:
+  - unitType: 0
+    buffValue: 30
+  - unitType: 2
+    buffValue: -20

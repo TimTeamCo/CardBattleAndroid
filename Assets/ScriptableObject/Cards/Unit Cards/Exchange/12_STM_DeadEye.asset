@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2154aac3e7141cf99e2f0bcbba25899, type: 3}
+  m_Name: 12_STM_DeadEye
+  m_EditorClassIdentifier: 
+  id: 12
+  cardName: Dead Eye
+  crystal: {fileID: 0}
+  frame: {fileID: 0}
+  art: {fileID: 0}
+  cardTypeBig: 0
+  cardTypeSmall: 3
+  Warriors: -2
+  Assasin: 5
+  Mage: 0
+  Description: '-2 WARRIOR
+
+    +5 ASSASSIN
+
+'

@@ -1,14 +1,14 @@
 ﻿using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Card
+namespace CardSpace
 {
     public class Card : ScriptableObject
     {
         [BoxGroup("Basic Info")] 
         public int id;
         [BoxGroup("Basic Info")]
-        public string name;
+        public string cardName;
         
         [PreviewField(50, ObjectFieldAlignment.Left)]
         [BoxGroup("CardView")]

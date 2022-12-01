@@ -1,7 +1,7 @@
 ﻿using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Card
+namespace CardSpace
 {
     [CreateAssetMenu(fileName = "UsableItemCard", menuName = "ScriptableObject/Cards/UsableItem", order = 1)]
     public class UsableItemCard : ItemCard

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Card
+namespace CardSpace
 {
     [Serializable]
     public enum CardTypeSmall

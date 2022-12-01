@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2154aac3e7141cf99e2f0bcbba25899, type: 3}
+  m_Name: 10_WAR_AdditionalTraining
+  m_EditorClassIdentifier: 
+  id: 10
+  cardName: Additional Training
+  crystal: {fileID: 0}
+  frame: {fileID: 0}
+  art: {fileID: 0}
+  cardTypeBig: 0
+  cardTypeSmall: 3
+  Warriors: 5
+  Assasin: -2
+  Mage: 0
+  Description: '+5 WARRIOR
+
+    -2 ASSASSIN
+
+'

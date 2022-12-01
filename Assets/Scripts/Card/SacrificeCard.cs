@@ -2,7 +2,7 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Card
+namespace CardSpace
 {
     [CreateAssetMenu(fileName = "SacrificeCard", menuName = "ScriptableObject/Cards/SacrificeCard", order = 4)]
     public class SacrificeCard : UnitCard

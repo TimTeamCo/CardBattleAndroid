@@ -1,6 +1,6 @@
 ﻿using Sirenix.OdinInspector;
 
-namespace Card
+namespace CardSpace
 {
     public class ItemCard : Card
     {

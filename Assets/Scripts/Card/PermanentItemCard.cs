@@ -3,7 +3,7 @@ using Army;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Card
+namespace CardSpace
 {
     [CreateAssetMenu(fileName = "PermanentItemCard", menuName = "ScriptableObject/Cards/PermanentItem", order = 0)]
     public class PermanentItemCard : ItemCard

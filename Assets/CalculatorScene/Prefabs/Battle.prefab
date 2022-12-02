@@ -527,6 +527,7 @@ MonoBehaviour:
   UnitDropdownImage: {fileID: 220050947684765288}
   UnitDropdownTemplateImage: {fileID: 220050946662035189}
   PlayerPanelColor: {r: 0, g: 0.3166666, b: 1, a: 1}
+  playerSquad: {fileID: 11400000, guid: 79385c2aa944b174ab5d15b8f40ffb7f, type: 2}
   Name: Bob
 --- !u!1 &220050946552370127
 GameObject:
@@ -2511,6 +2512,7 @@ MonoBehaviour:
   UnitDropdownImage: {fileID: 220050947151770616}
   UnitDropdownTemplateImage: {fileID: 220050948564711355}
   PlayerPanelColor: {r: 1, g: 0.08627451, b: 0, a: 1}
+  playerSquad: {fileID: 11400000, guid: 73ad0751e1ce24d43ac261953141d226, type: 2}
   Name: Zak
 --- !u!1 &220050947991205521
 GameObject:
@@ -3525,7 +3527,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
 --- !u!1 &220050948558346572
 GameObject:
   m_ObjectHideFlags: 0

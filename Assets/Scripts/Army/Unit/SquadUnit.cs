@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Army
 {
-    [CreateAssetMenu(fileName = "SquadUnit", menuName = "ScriptableObject/SquadUnit/SquadUnit", order = 0)]
+    [CreateAssetMenu(fileName = "SquadUnit", menuName = "ScriptableObject/Squad/SquadUnit", order = 0)]
     public class SquadUnit : ScriptableObject
     {
         [BoxGroup("Unit type")]

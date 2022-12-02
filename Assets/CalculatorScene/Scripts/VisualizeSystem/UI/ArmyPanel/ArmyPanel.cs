@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Army;
+using Map;
+using PlayerData;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,63 +13,88 @@ namespace TTBattle.UI
         [SerializeField] private Sprite _playerChip;
         [SerializeField] private Text _playerName;
         [SerializeField] private SquadCard _warriorCard;
-        [SerializeField] private SquadCard _assasinCard;
+        [SerializeField] private SquadCard _steamerCard;
         [SerializeField] private SquadCard _mageCard;
         [SerializeField] public Dropdown UnitDropdown;
         [SerializeField] public Image UnitDropdownImage;
         [SerializeField] public Image UnitDropdownTemplateImage;
         [SerializeField] public Color PlayerPanelColor;
+        [SerializeField] public PlayerDataCalculator playerData;
         public string Name;
         public Player Player = new Player();
+
+        private PlayerSquad _warrior;
+        private PlayerSquad _steamer;
+        private PlayerSquad _mage;
+        private MapZone _currentMapZone;
 
         private void Awake()
         {
             CachePlayerValues();
             SetArmyValues();
-            SetTextOfCardsAtributes();
-            Player.PlayerChip= _playerChip;
+            SetTextOfCardsAttributes();
+            Player.PlayerChip = _playerChip;
             UnitDropdown.gameObject.SetActive(false);
         }
 
         private void CachePlayerValues()
         {
             Player.PlayerName = Name;
+            ShowPlayerName();
             Player.PlayerColor = PlayerPanelColor;
         }
 
         public void SetArmyValues()
         {
-            SetPlayerName();
             SetTextOfUnitsAmount();
             SetBackgroundColor();
+            _warrior = playerData.playerSquad.Squads[0];
+            _steamer = playerData.playerSquad.Squads[1];
+            _mage = playerData.playerSquad.Squads[2];
+
+            _currentMapZone = playerData.MapZone;
         }
 
-        private void SetPlayerName()
+        private void ShowPlayerName()
         {
             _playerName.text = Player.PlayerName;
         }
-        
+
         public void SetTextOfUnitsAmount()
         {
-            var playerHand = Player.PlayerHand;
-            _warriorCard.UnitsNumber.text = playerHand._warriorSquad.Count.ToString();
-            _assasinCard.UnitsNumber.text = playerHand._assasinSquad.Count.ToString();
-            _mageCard.UnitsNumber.text = playerHand._mageSquad.Count.ToString();
-            
+            _warriorCard.UnitsNumber.text = _warrior.Count.ToString();
+            _steamerCard.UnitsNumber.text = _steamer.Count.ToString();
+            _mageCard.UnitsNumber.text = _mage.Count.ToString();
         }
 
-        public void SetTextOfCardsAtributes()
+        public void SetTextOfCardsAttributes()
         {
-            var playerHand = Player.PlayerHand;
-            _warriorCard.SetHPCellAtrtibute(Player.UnitsInfluence[0], playerHand._warriorSquad._unit.Health);
-            _assasinCard.SetHPCellAtrtibute(Player.UnitsInfluence[1], playerHand._assasinSquad._unit.Health);
-            _mageCard.SetHPCellAtrtibute(Player.UnitsInfluence[2], playerHand._mageSquad._unit.Health);
-            _warriorCard.SetAPCellAtrtibute(Player.UnitsInfluence[0], playerHand._warriorSquad._unit.Attack);
-            _assasinCard.SetAPCellAtrtibute(Player.UnitsInfluence[1], playerHand._assasinSquad._unit.Attack);
-            _mageCard.SetAPCellAtrtibute(Player.UnitsInfluence[2], playerHand._mageSquad._unit.Attack);
-            _warriorCard.SetBurningDamageText(this);
-            _assasinCard.SetBurningDamageText(this);
-            _mageCard.SetBurningDamageText(this);
+            foreach (var buffZone in _currentMapZone.buffsZone)
+            {
+                switch (buffZone.unitType)
+                {
+                    case Army.UnitType.Warrior:
+                        _warriorCard.SetUnitStats(buffZone.buffValue, _warrior.SquadUnit.Health,
+                            _warrior.SquadUnit.Attack);
+                        break;
+                    case Army.UnitType.Steamer:
+                        _steamerCard.SetUnitStats(buffZone.buffValue, _steamer.SquadUnit.Health,
+                            _steamer.SquadUnit.Attack);
+                        break;
+                    case Army.UnitType.Mage:
+                        _mageCard.SetUnitStats(buffZone.buffValue, _mage.SquadUnit.Health, _mage.SquadUnit.Attack);
+                        break;
+                    default:
+                        _warriorCard.SetUnitStats(0, _warrior.SquadUnit.Health, _warrior.SquadUnit.Attack);
+                        _steamerCard.SetUnitStats(0, _steamer.SquadUnit.Health, _steamer.SquadUnit.Attack);
+                        _mageCard.SetUnitStats(0, _mage.SquadUnit.Health, _mage.SquadUnit.Attack);
+                        break;
+                }
+            }
+
+            _warriorCard.SetBurningDamageText(playerData);
+            _steamerCard.SetBurningDamageText(playerData);
+            _mageCard.SetBurningDamageText(playerData);
         }
 
         private void SetBackgroundColor()

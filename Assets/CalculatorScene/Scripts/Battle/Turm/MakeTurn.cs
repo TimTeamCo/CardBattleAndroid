@@ -78,8 +78,8 @@ namespace TTBattle.UI
         
         private void SetTextOfCellAtributesToArmys()
         {
-            _army1.SetTextOfCardsAtributes();
-            _army2.SetTextOfCardsAtributes();
+            _army1.SetTextOfCardsAttributes();
+            _army2.SetTextOfCardsAttributes();
         }
         
         private void SetNewTurnCount()

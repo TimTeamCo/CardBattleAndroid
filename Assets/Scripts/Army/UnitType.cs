@@ -3,7 +3,7 @@
     public enum UnitType
     {
         Warrior,
-        Assasin,
+        Steamer,
         Mage
     }
 }

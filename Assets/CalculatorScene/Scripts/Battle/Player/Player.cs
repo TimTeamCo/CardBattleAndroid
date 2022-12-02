@@ -1,7 +1,5 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using TTBattle.UI;
-using UnityEngine.UI;
 
 namespace TTBattle
 {

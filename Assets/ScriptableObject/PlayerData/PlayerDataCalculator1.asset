@@ -9,16 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9957335b58ad4726849e9ff8c6a9fbc4, type: 3}
-  m_Name: MapZone8
+  m_Script: {fileID: 11500000, guid: c256141e3b5146abbb013e691365f79d, type: 3}
+  m_Name: PlayerDataCalculator1
   m_EditorClassIdentifier: 
-  biom: 0
-  zoneID: 8
-  burnFactor: 0
-  buffsZone:
-  - unitType: 0
-    buffValue: 50
-  - unitType: 1
-    buffValue: 0
-  - unitType: 2
-    buffValue: 0
+  PlayerHand: {fileID: 0}
+  MapZone: {fileID: 0}
+  PlayerName: 
+  PlayerColor: {r: 0, g: 0, b: 0, a: 0}
+  PlayerChip: {fileID: 0}

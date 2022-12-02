@@ -6,11 +6,11 @@ using UnityEngine.UI;
 
 namespace TTBattle.UI
 {
+    //add name changer
     public class ArmyPanel : MonoBehaviour
     {
         [SerializeField] private Image _armyPanelImage;
         [SerializeField] private Image _nameImage;
-        [SerializeField] private Sprite _playerChip;
         [SerializeField] private Text _playerName;
         [SerializeField] private SquadCard _warriorCard;
         [SerializeField] private SquadCard _steamerCard;
@@ -18,36 +18,26 @@ namespace TTBattle.UI
         [SerializeField] public Dropdown UnitDropdown;
         [SerializeField] public Image UnitDropdownImage;
         [SerializeField] public Image UnitDropdownTemplateImage;
-        [SerializeField] public Color PlayerPanelColor;
         [SerializeField] public PlayerDataCalculator playerData;
-        public string Name;
-        public Player Player = new Player();
 
         private PlayerSquad _warrior;
         private PlayerSquad _steamer;
         private PlayerSquad _mage;
         private MapZone _currentMapZone;
+        private Color _playerPanelColor;
 
         private void Awake()
         {
-            CachePlayerValues();
-            SetArmyValues();
-            SetTextOfCardsAttributes();
-            Player.PlayerChip = _playerChip;
-            UnitDropdown.gameObject.SetActive(false);
-        }
-
-        private void CachePlayerValues()
-        {
-            Player.PlayerName = Name;
             ShowPlayerName();
-            Player.PlayerColor = PlayerPanelColor;
+            SetArmyValues();
+            SetBackgroundColor();
+            SetTextOfCardsAttributes();
+            UnitDropdown.gameObject.SetActive(false);
         }
 
         public void SetArmyValues()
         {
             SetTextOfUnitsAmount();
-            SetBackgroundColor();
             _warrior = playerData.playerSquad.Squads[0];
             _steamer = playerData.playerSquad.Squads[1];
             _mage = playerData.playerSquad.Squads[2];
@@ -57,7 +47,7 @@ namespace TTBattle.UI
 
         private void ShowPlayerName()
         {
-            _playerName.text = Player.PlayerName;
+            _playerName.text = playerData.PlayerName;
         }
 
         public void SetTextOfUnitsAmount()
@@ -84,11 +74,6 @@ namespace TTBattle.UI
                     case Army.UnitType.Mage:
                         _mageCard.SetUnitStats(buffZone.buffValue, _mage.SquadUnit.Health, _mage.SquadUnit.Attack);
                         break;
-                    default:
-                        _warriorCard.SetUnitStats(0, _warrior.SquadUnit.Health, _warrior.SquadUnit.Attack);
-                        _steamerCard.SetUnitStats(0, _steamer.SquadUnit.Health, _steamer.SquadUnit.Attack);
-                        _mageCard.SetUnitStats(0, _mage.SquadUnit.Health, _mage.SquadUnit.Attack);
-                        break;
                 }
             }
 
@@ -99,8 +84,8 @@ namespace TTBattle.UI
 
         private void SetBackgroundColor()
         {
-            _armyPanelImage.color = Player.PlayerColor;
-            _nameImage.color = Player.PlayerColor;
+            _armyPanelImage.color = playerData.PlayerColor;
+            _nameImage.color = playerData.PlayerColor;
         }
     }
 }

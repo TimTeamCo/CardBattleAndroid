@@ -42,7 +42,7 @@ namespace TTBattle.UI
                     }
                     else
                     {
-                        PlayerSelector.Player.PlayerMapCell.SetCellCollorAsPlayers(PlayerSelector.Player);
+                        PlayerSelector.playerData.PlayerMapCell.SetCellColorAsPlayers(PlayerSelector.playerData);
                         _newMapCell = value;
                     }
                 }
@@ -61,10 +61,15 @@ namespace TTBattle.UI
 
         private void InitializePLayersMapCells()
         {
-            PlayerSelector.Player.PlayerMapCell = MapCell;
-            PlayerInferior.Player.PlayerMapCell = MapCell;
-            PlayerSelector.Player.GetUnitsInfluence();
-            PlayerInferior.Player.GetUnitsInfluence();
+            InitializePLayersMapCells(PlayerSelector);
+            InitializePLayersMapCells(PlayerInferior);
+        }
+        
+        private void InitializePLayersMapCells(ArmyPanel player)
+        {
+            var playerCell = player.playerData.PlayerMapCell;
+            playerCell = MapCell;
+            PlayerSelector.playerData.MapZone = playerCell.MapZone;
         }
         
         private void SetPlayerInferiorMapCell()
@@ -75,10 +80,9 @@ namespace TTBattle.UI
                     _lastMapCell = MapCell;
                     MapCell = NewMapCell;
                     MapCell.IsTaken = true;
-                    MapCell.SetCellCollorAsPlayers(PlayerInferior.Player);
-                    PlayerInferior.Player.PlayerMapCell = MapCell;
-                    PlayerInferior.Player.GetUnitsInfluence();
-                    MapCell.SetChipSpriteToImage(PlayerInferior.Player.PlayerChip);
+                    MapCell.SetCellColorAsPlayers(PlayerInferior.playerData);
+                    InitializePLayersMapCells(PlayerInferior);
+                    MapCell.SetChipSpriteToImage(PlayerInferior.playerData.PlayerChip);
                     _lastMapCell.CellIsLeaved();
                     _newMapCell = null;
                 }
@@ -95,9 +99,9 @@ namespace TTBattle.UI
 
         private void SetPlayerSelectorMapCell()
         {
-            MapCell = PlayerSelector.Player.PlayerMapCell;
+            MapCell = PlayerSelector.playerData.PlayerMapCell;
             MapCell.CellIsTaken();
-            PlayerSelector.Player.PlayerMapCell = MapCell;
+            PlayerSelector.playerData.PlayerMapCell = MapCell;
         }
         
         public void SetPlayersMapCells()
@@ -113,7 +117,7 @@ namespace TTBattle.UI
                 foreach (MapCell mapCell in _fistBurningZone)
                 {
                     mapCell.BurningDamage += 3;
-                    if (PlayerSelector.Player.PlayerMapCell.id != mapCell.id && PlayerInferior.Player.PlayerMapCell.id != mapCell.id)
+                    if (PlayerSelector.playerData.PlayerMapCell.id != mapCell.id && PlayerInferior.playerData.PlayerMapCell.id != mapCell.id)
                     {
                         mapCell.SetAlphaChipSprite(1f);
                         /*if (mapCell.BurningDamage==3)
@@ -138,7 +142,7 @@ namespace TTBattle.UI
                 foreach (MapCell mapCell in _secondBurningZone)
                 {
                     mapCell.BurningDamage =+ 3;
-                    if (PlayerSelector.Player.PlayerMapCell.id != mapCell.id && PlayerInferior.Player.PlayerMapCell.id != mapCell.id)
+                    if (PlayerSelector.playerData.PlayerMapCell.id != mapCell.id && PlayerInferior.playerData.PlayerMapCell.id != mapCell.id)
                     {
                         mapCell.SetAlphaChipSprite(1f);
                         if (mapCell.BurningDamage==3)
@@ -162,7 +166,7 @@ namespace TTBattle.UI
                 foreach (MapCell mapCell in _thirdBurningZone)
                 {
                     mapCell.BurningDamage =+ 3;
-                    if (PlayerSelector.Player.PlayerMapCell.id != mapCell.id && PlayerInferior.Player.PlayerMapCell.id != mapCell.id)
+                    if (PlayerSelector.playerData.PlayerMapCell.id != mapCell.id && PlayerInferior.playerData.PlayerMapCell.id != mapCell.id)
                     {
                         mapCell.SetAlphaChipSprite(1f);
                         if (mapCell.BurningDamage==3)

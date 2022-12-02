@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Map;
+using PlayerData;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -10,22 +12,21 @@ namespace TTBattle.UI
     [RequireComponent(typeof(PolygonCollider2D))]
     public class MapCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
     {        
-        [SerializeField] private float _warriorInfluence;
-        [SerializeField] private float _assasinInfluence;
-        [SerializeField] private float _mageInfluence;
         [SerializeField] public List<MapCell> NextCell;
         [SerializeField] public int id;
         [SerializeField] public Color ActiveChoiseColor;
         [SerializeField] public Color ChoisedCellColor;
         [SerializeField] public Color UsualColor;
         [SerializeField] public Image IndicateImage;
+        [SerializeField] public MapZone MapZone;
         private Color _lastColor;
         private Image _cellBG;
         public MapScript _map;
         public int BurningDamage;
-        public float[] uintsInfluence = new float [3];
         public bool IsAccasible;
         public bool IsTaken;
+        
+        [HideInInspector] 
 
         private void Awake()
         {
@@ -99,6 +100,18 @@ namespace TTBattle.UI
             uintsInfluence[0] = (100 + _warriorInfluence) / 100;
             uintsInfluence[1] = (100 + _assasinInfluence) / 100;
             uintsInfluence[2] = (100 + _mageInfluence) / 100;
+            foreach (var buffZone in MapZone.buffsZone)
+            {
+                switch (buffZone.unitType)
+                {
+                    case Army.UnitType.Warrior:
+                        (100 + _warriorInfluence) / 100;
+                        break;
+                }
+            }
+            MapZone.buffsZone.[0] = 
+            uintsInfluence[1] = (100 + _assasinInfluence) / 100;
+            uintsInfluence[2] = (100 + _mageInfluence) / 100;
         }
 
         public void CellIsLeaved()
@@ -120,15 +133,15 @@ namespace TTBattle.UI
         {
             IsTaken = true;
             IsAccasible = true;
-            SetCellCollorAsPlayers(_map.PlayerSelector.Player);
+            SetCellColorAsPlayers(_map.PlayerSelector.playerData);
             foreach (MapCell mapCell in NextCell)
             {
                 mapCell.IsAccasible = true;
             }
-            SetChipSpriteToImage(_map.PlayerSelector.Player.PlayerChip);
+            SetChipSpriteToImage(_map.PlayerSelector.playerData.PlayerChip);
         }
 
-        public void SetCellCollorAsPlayers(Player player)
+        public void SetCellColorAsPlayers(PlayerDataCalculator player)
         {
             _lastColor = player.PlayerColor;
             _lastColor.a = 0.8f;

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c256141e3b5146abbb013e691365f79d, type: 3}
+  m_Name: PlayerDataCalculator2
+  m_EditorClassIdentifier: 
+  PlayerName: Zak
+  PlayerHand: {fileID: 0}
+  MapZone: {fileID: 0}
+  playerSquad: {fileID: 0}
+  PlayerColor: {r: 1, g: 0.08627451, b: 0, a: 0}
+  PlayerChip: {fileID: 0}
+  PlayerMapCell: {fileID: 0}

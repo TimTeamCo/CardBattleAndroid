@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c256141e3b5146abbb013e691365f79d, type: 3}
   m_Name: PlayerDataCalculator1
   m_EditorClassIdentifier: 
+  PlayerName: Bob
   PlayerHand: {fileID: 0}
   MapZone: {fileID: 0}
-  PlayerName: 
-  PlayerColor: {r: 0, g: 0, b: 0, a: 0}
+  playerSquad: {fileID: 0}
+  PlayerColor: {r: 0, g: 0.31764707, b: 1, a: 0}
   PlayerChip: {fileID: 0}
+  PlayerMapCell: {fileID: 0}

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Map;
 using PlayerData;
@@ -13,7 +12,6 @@ namespace TTBattle.UI
     public class MapCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
     {
         [SerializeField] public List<MapCell> NextCell;
-        [SerializeField] public int id;
         [SerializeField] public Color ActiveChoiseColor;
         [SerializeField] public Color ChoisedCellColor;
         [SerializeField] public Color UsualColor;

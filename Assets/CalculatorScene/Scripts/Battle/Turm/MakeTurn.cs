@@ -1,5 +1,3 @@
-using System;
-using System.Runtime.InteropServices.ComTypes; //not use this library
 using UnityEngine;
 using UnityEngine.UI;
 

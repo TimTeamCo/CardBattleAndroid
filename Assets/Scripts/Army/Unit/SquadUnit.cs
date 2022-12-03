@@ -27,6 +27,8 @@ namespace Army
         [Range(0, 100)]
         [GUIColor(0.5f, 1f, 0.5f)]
         public int Health;
-        
+
+        public float WeakCoeficient = 0.5f;
+        public float StrongCoefitient = 1.5f;
     }
 }

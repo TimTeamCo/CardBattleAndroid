@@ -9,9 +9,7 @@ namespace TTBattle.UI
         [SerializeField] private List<MapCell> _secondBurningZone = new List<MapCell>();
         [SerializeField] private List<MapCell> _thirdBurningZone = new List<MapCell>();
         [SerializeField] public MakeTurn MakeTurn;
-        private MapCell _secondRateMapCell;
-        private MapCell _newMapCell;
-        private MapCell _lastMapCell;
+        
         public Sprite FireStage1;
         public Sprite FireStage2;
         public Sprite FireStage3;
@@ -22,10 +20,7 @@ namespace TTBattle.UI
 
         public MapCell NewMapCell
         {
-            get
-            {
-                return _newMapCell;
-            }
+            get => _newMapCell;
             set
             { 
                 if( _newMapCell == null)
@@ -33,21 +28,28 @@ namespace TTBattle.UI
                     _newMapCell = value;
                     MakeTurn.MakeTurnButtonEnabled();
                 }
-                if (value.id != _newMapCell.id)
+
+                if (value.id == _newMapCell.id)
                 {
-                    if (!_newMapCell.IsTaken)
-                    { 
-                        _newMapCell.SetImageColorToUsual();
-                        _newMapCell = value;
-                    }
-                    else
-                    {
-                        PlayerSelector.playerData.PlayerMapCell.SetCellColorAsPlayers(PlayerSelector.playerData);
-                        _newMapCell = value;
-                    }
+                    return;
+                }
+                
+                if (_newMapCell.IsTaken == false)
+                { 
+                    _newMapCell.SetImageColorToUsual();
+                    _newMapCell = value;
+                }
+                else
+                {
+                    PlayerSelector.playerData.PlayerMapCell.SetCellColorAsPlayers(PlayerSelector.playerData);
+                    _newMapCell = value;
                 }
             }
         }
+        
+        private MapCell _secondRateMapCell;
+        private MapCell _newMapCell;
+        private MapCell _lastMapCell;
         
         public void Awake()
         {

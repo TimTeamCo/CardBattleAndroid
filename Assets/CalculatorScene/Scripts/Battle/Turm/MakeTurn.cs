@@ -71,8 +71,8 @@ namespace TTBattle.UI
         {
             if (_newTurnsChecker == 0)
             {
-                _army1.Player.BurningDamageToUnits();
-                _army2.Player.BurningDamageToUnits();    
+                _army1.playerData.playerSquad.AddBurningDamageToUnits(_army1.playerData.MapZone.burnFactor);
+                _army2.playerData.playerSquad.AddBurningDamageToUnits(_army2.playerData.MapZone.burnFactor);
             }
         }
         

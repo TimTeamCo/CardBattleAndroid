@@ -11,7 +11,7 @@ namespace TTBattle.UI
 {
     [RequireComponent(typeof(PolygonCollider2D))]
     public class MapCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
-    {        
+    {
         [SerializeField] public List<MapCell> NextCell;
         [SerializeField] public int id;
         [SerializeField] public Color ActiveChoiseColor;
@@ -25,8 +25,6 @@ namespace TTBattle.UI
         public int BurningDamage;
         public bool IsAccasible;
         public bool IsTaken;
-        
-        [HideInInspector] 
 
         private void Awake()
         {
@@ -35,7 +33,6 @@ namespace TTBattle.UI
             _lastColor = UsualColor;
             _cellBG.color = _lastColor;
             GetComponent<Image>().alphaHitTestMinimumThreshold = 0.1f;
-            SetUnitsInfluence();
             SetAlphaChipSprite(0f);
             IndicateImage.transform.localScale = gameObject.transform.localScale;
         }
@@ -93,25 +90,6 @@ namespace TTBattle.UI
                 _cellBG.color = _lastColor;
                 _map.NextCellInformer.ExitCell();
             }
-        }
-
-        private void SetUnitsInfluence()
-        {
-            uintsInfluence[0] = (100 + _warriorInfluence) / 100;
-            uintsInfluence[1] = (100 + _assasinInfluence) / 100;
-            uintsInfluence[2] = (100 + _mageInfluence) / 100;
-            foreach (var buffZone in MapZone.buffsZone)
-            {
-                switch (buffZone.unitType)
-                {
-                    case Army.UnitType.Warrior:
-                        (100 + _warriorInfluence) / 100;
-                        break;
-                }
-            }
-            MapZone.buffsZone.[0] = 
-            uintsInfluence[1] = (100 + _assasinInfluence) / 100;
-            uintsInfluence[2] = (100 + _mageInfluence) / 100;
         }
 
         public void CellIsLeaved()

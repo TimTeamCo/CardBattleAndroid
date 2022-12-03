@@ -1,3 +1,4 @@
+using Army;
 using TTBattle.UI;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,9 +29,9 @@ public class NextCellInformer : MonoBehaviour
 
     public void SetUnitsIfluenceText(MapCell mapCell, bool cellIsSelected)
     {
-        float warriorInfluence = (mapCell.uintsInfluence[0] * 100) - 100;
-        float assasinInfluence = (mapCell.uintsInfluence[1] * 100) - 100;
-        float mageInfluence = (mapCell.uintsInfluence[2] * 100) - 100;
+        float warriorInfluence = mapCell.MapZone.GetUnitInfluence(UnitType.Warrior);
+        float steamerInfluence = mapCell.MapZone.GetUnitInfluence(UnitType.Steamer);
+        float mageInfluence = mapCell.MapZone.GetUnitInfluence(UnitType.Mage);
         
         if (warriorInfluence > 0)
         {
@@ -49,20 +50,20 @@ public class NextCellInformer : MonoBehaviour
         }
         
         
-        if (assasinInfluence > 0)
+        if (steamerInfluence > 0)
         {
             _assasinInfluenceText.color = _green;
-            _assasinInfluenceText.text = $"+{assasinInfluence}%";
+            _assasinInfluenceText.text = $"+{steamerInfluence}%";
         }
-        if (assasinInfluence == 0)
+        if (steamerInfluence == 0)
         {
             _assasinInfluenceText.color = Color.white;
             _assasinInfluenceText.text = "--";
         }
-        if (assasinInfluence < 0)
+        if (steamerInfluence < 0)
         {
             _assasinInfluenceText.color = _red;
-            _assasinInfluenceText.text = $"-{assasinInfluence}%";
+            _assasinInfluenceText.text = $"-{steamerInfluence}%";
         }
         
         
@@ -89,7 +90,7 @@ public class NextCellInformer : MonoBehaviour
             _assasinInfluenceText.color = _yellow;
             _mageInfluenceText.color = _yellow;
             _warriorInfluenceValue = warriorInfluence;
-            _assasinInfluenceValue = assasinInfluence;
+            _assasinInfluenceValue = steamerInfluence;
             _mageInfluenceValue = mageInfluence;
         }
     }

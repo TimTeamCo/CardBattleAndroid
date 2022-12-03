@@ -7,5 +7,13 @@ namespace Army
     public class PlayerSquads : ScriptableObject
     {
         public List<PlayerSquad> Squads;
+
+        public void AddBurningDamageToUnits(int burningDamage)
+        {
+            foreach (var playerSquad in Squads)
+            {
+                playerSquad.SquadUnit.Health -= burningDamage;
+            }
+        }
     }
 }

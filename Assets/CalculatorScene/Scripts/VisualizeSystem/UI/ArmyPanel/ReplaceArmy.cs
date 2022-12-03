@@ -27,9 +27,9 @@
 
         private static void SwapPlayers(ArmyPanel Army1, ArmyPanel Army2)
         {
-            var player = Army1.Player;
-            Army1.Player = Army2.Player;
-            Army2.Player = player;
+            var player = Army1.playerData;
+            Army1.playerData = Army2.playerData;
+            Army2.playerData = player;
         }
     }
 }

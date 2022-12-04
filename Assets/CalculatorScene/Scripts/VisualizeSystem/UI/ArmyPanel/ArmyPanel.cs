@@ -37,10 +37,10 @@ namespace TTBattle.UI
 
         public void SetArmyValues()
         {
-            SetTextOfUnitsAmount();
             _warrior = playerData.playerArmy.Squads[0];
             _steamer = playerData.playerArmy.Squads[1];
             _mage = playerData.playerArmy.Squads[2];
+            SetTextOfUnitsAmount();
 
             _currentMapZone = playerData.MapZone;
         }
@@ -61,18 +61,19 @@ namespace TTBattle.UI
         {
             foreach (var buffZone in _currentMapZone.buffsZone)
             {
+                float unitsInfluence = (float) buffZone.buffValue / 100;
                 switch (buffZone.unitType)
                 {
-                    case Army.UnitType.Warrior:
-                        _warriorCard.SetUnitStats(buffZone.buffValue, _warrior.SquadUnit.Health,
+                    case UnitType.Warrior:
+                        _warriorCard.SetUnitStats(unitsInfluence, _warrior.SquadUnit.Health,
                             _warrior.SquadUnit.Attack);
                         break;
-                    case Army.UnitType.Steamer:
-                        _steamerCard.SetUnitStats(buffZone.buffValue, _steamer.SquadUnit.Health,
+                    case UnitType.Steamer:
+                        _steamerCard.SetUnitStats(unitsInfluence, _steamer.SquadUnit.Health,
                             _steamer.SquadUnit.Attack);
                         break;
-                    case Army.UnitType.Mage:
-                        _mageCard.SetUnitStats(buffZone.buffValue, _mage.SquadUnit.Health, _mage.SquadUnit.Attack);
+                    case UnitType.Mage:
+                        _mageCard.SetUnitStats(unitsInfluence, _mage.SquadUnit.Health, _mage.SquadUnit.Attack);
                         break;
                 }
             }

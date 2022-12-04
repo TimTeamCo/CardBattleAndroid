@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerName: Bob
   PlayerHand: {fileID: 0}
-  MapZone: {fileID: 0}
+  MapZone: {fileID: 11400000, guid: 2f1aa102d49320f48952a96b78f39ccd, type: 2}
   playerArmy: {fileID: 11400000, guid: 79385c2aa944b174ab5d15b8f40ffb7f, type: 2}
-  PlayerColor: {r: 0, g: 0.31764707, b: 1, a: 0}
+  PlayerColor: {r: 0, g: 0.31764707, b: 1, a: 1}
   PlayerChip: {fileID: 21300000, guid: 3b4c828053e34924d9b0692e753a728c, type: 3}
   PlayerMapCell: {fileID: 0}

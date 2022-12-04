@@ -29,7 +29,6 @@ namespace Map
             {
                 _unitBuffValue.Add(buffZone.unitType, buffZone.buffValue);
             }
-            Debug.Log($"Count in dictionary buffs = {_unitBuffValue.Count}");
         }
 
         public float GetUnitInfluence(UnitType unitType)

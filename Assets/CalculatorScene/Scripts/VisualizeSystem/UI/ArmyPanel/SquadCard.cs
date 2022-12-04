@@ -12,15 +12,9 @@ namespace TTBattle.UI
         [SerializeField] public Text HPCellAtrtibute;
         [SerializeField] public Text APCellAtrtibute;
 
-        private Color _green;
-        private Color _red;
+        private Color _green = Color.green;
+        private Color _red = Color.red;
         
-        private void Start()
-        {
-            _green = Color.green;
-            _red = Color.red;
-        }
-
         private void OnEnable()
         {
             _fireImage.enabled = false;
@@ -29,9 +23,8 @@ namespace TTBattle.UI
 
         public void SetUnitStats(float unitInfluence, int health, int damage)
         {
-            
-            int hpCellAttribute = (int) (health * unitInfluence) - health;
-            int apCellAttribute = (int) (damage * unitInfluence) - damage;
+            int hpCellAttribute = (int) (health * unitInfluence); 
+            int apCellAttribute = (int) (damage * unitInfluence);
 
             if (hpCellAttribute == 0)
             {
@@ -42,10 +35,7 @@ namespace TTBattle.UI
                 return;
             }
 
-            HPCellAtrtibute.text =
-                hpCellAttribute > 0
-                    ? $"+ {hpCellAttribute}"
-                    : $"- {hpCellAttribute * -1}"; //hpCellAttribute * -1 == -hpCellAttribute
+            HPCellAtrtibute.text = hpCellAttribute > 0 ? $"+ {hpCellAttribute}" : $"- { -hpCellAttribute}";
             HPCellAtrtibute.color = hpCellAttribute > 0 ? _green : _red;
             APCellAtrtibute.text = apCellAttribute > 0 ? $"+ {apCellAttribute}" : $"- {apCellAttribute * -1}";
             APCellAtrtibute.color = apCellAttribute > 0 ? _green : _red;

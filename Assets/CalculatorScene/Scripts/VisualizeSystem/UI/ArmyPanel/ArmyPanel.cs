@@ -38,9 +38,9 @@ namespace TTBattle.UI
         public void SetArmyValues()
         {
             SetTextOfUnitsAmount();
-            _warrior = playerData.playerSquad.Squads[0];
-            _steamer = playerData.playerSquad.Squads[1];
-            _mage = playerData.playerSquad.Squads[2];
+            _warrior = playerData.playerArmy.Squads[0];
+            _steamer = playerData.playerArmy.Squads[1];
+            _mage = playerData.playerArmy.Squads[2];
 
             _currentMapZone = playerData.MapZone;
         }

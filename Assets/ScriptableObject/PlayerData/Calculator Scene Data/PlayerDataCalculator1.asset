@@ -15,7 +15,7 @@ MonoBehaviour:
   PlayerName: Bob
   PlayerHand: {fileID: 0}
   MapZone: {fileID: 0}
-  playerSquad: {fileID: 0}
+  playerSquad: {fileID: 11400000, guid: 79385c2aa944b174ab5d15b8f40ffb7f, type: 2}
   PlayerColor: {r: 0, g: 0.31764707, b: 1, a: 0}
   PlayerChip: {fileID: 0}
   PlayerMapCell: {fileID: 0}

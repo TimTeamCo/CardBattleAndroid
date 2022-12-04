@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49c2226e03514fc193f5a97871d7b2c2, type: 3}
   m_Name: Player1Squads
   m_EditorClassIdentifier: 
-  Squad:
+  Squads:
   - Count: 10
     SquadUnit: {fileID: 11400000, guid: 34f7a9ff036d256458572fa0712107cf, type: 2}
   - Count: 10

@@ -11,8 +11,8 @@ namespace TTBattle
         {
             PlayerData.PlayerData playerAttacker = army1.playerData;
             PlayerData.PlayerData playerDefender = army1.playerData;
-            PlayerSquad attacker = playerAttacker.playerSquad.Squads[army1.UnitDropdown.value];
-            PlayerSquad defender = playerDefender.playerSquad.Squads[army2.UnitDropdown.value];
+            PlayerSquad attacker = playerAttacker.playerArmy.Squads[army1.UnitDropdown.value];
+            PlayerSquad defender = playerDefender.playerArmy.Squads[army2.UnitDropdown.value];
 
             var defUnitType = ChooseDefender(defender);
             switch (attacker.SquadUnit.UnitType)

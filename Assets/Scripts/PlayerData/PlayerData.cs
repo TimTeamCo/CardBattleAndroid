@@ -10,6 +10,6 @@ namespace PlayerData
         public string PlayerName;
         public PlayerHand PlayerHand;
         public MapZone MapZone;
-        public PlayerSquads playerSquad;
+        public PlayerArmy playerArmy;
     }
 }

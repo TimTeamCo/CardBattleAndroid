@@ -118,7 +118,7 @@ namespace TTBattle.UI
             {
                 foreach (MapCell mapCell in _fistBurningZone)
                 {
-                    mapCell.BurningDamage += 3;
+                    mapCell.MapZone.burnFactor += 3;
                     if (PlayerSelector.playerData.PlayerMapCell.MapZone.zoneID != mapCell.MapZone.zoneID 
                         && PlayerInferior.playerData.PlayerMapCell.MapZone.zoneID != mapCell.MapZone.zoneID)
                     {
@@ -132,20 +132,20 @@ namespace TTBattle.UI
             {
                 foreach (MapCell mapCell in _secondBurningZone)
                 {
-                    mapCell.BurningDamage =+ 3;
+                    mapCell.MapZone.burnFactor =+ 3;
                     if (PlayerSelector.playerData.PlayerMapCell.MapZone.zoneID != mapCell.MapZone.zoneID 
                         && PlayerInferior.playerData.PlayerMapCell.MapZone.zoneID != mapCell.MapZone.zoneID)
                     {
                         mapCell.SetAlphaChipSprite(1f);
-                        if (mapCell.BurningDamage==3)
+                        if (mapCell.MapZone.burnFactor==3)
                         {
                             mapCell.IndicateImage.sprite = FireStage1;
                         }
-                        if (mapCell.BurningDamage==6)
+                        if (mapCell.MapZone.burnFactor==6)
                         {
                             mapCell.IndicateImage.sprite = FireStage2;
                         }
-                        if (mapCell.BurningDamage==9)
+                        if (mapCell.MapZone.burnFactor==9)
                         {
                             mapCell.IndicateImage.sprite = FireStage3;
                         }
@@ -157,20 +157,20 @@ namespace TTBattle.UI
             {
                 foreach (MapCell mapCell in _thirdBurningZone)
                 {
-                    mapCell.BurningDamage =+ 3;
+                    mapCell.MapZone.burnFactor =+ 3;
                     if (PlayerSelector.playerData.PlayerMapCell.MapZone.zoneID != mapCell.MapZone.zoneID 
                         && PlayerInferior.playerData.PlayerMapCell.MapZone.zoneID != mapCell.MapZone.zoneID)
                     {
                         mapCell.SetAlphaChipSprite(1f);
-                        if (mapCell.BurningDamage==3)
+                        if (mapCell.MapZone.burnFactor==3)
                         {
                             mapCell.IndicateImage.sprite = FireStage1;
                         }
-                        if (mapCell.BurningDamage==6)
+                        if (mapCell.MapZone.burnFactor==6)
                         {
                             mapCell.IndicateImage.sprite = FireStage2;
                         }
-                        if (mapCell.BurningDamage==9)
+                        if (mapCell.MapZone.burnFactor==9)
                         {
                             mapCell.IndicateImage.sprite = FireStage3;
                         }

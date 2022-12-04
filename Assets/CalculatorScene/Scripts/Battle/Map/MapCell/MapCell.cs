@@ -19,7 +19,6 @@ namespace TTBattle.UI
         private Color _lastColor;
         private Image _cellBG;
         public MapScript _map;
-        public int BurningDamage;
         public bool IsAccasible;
         public bool IsTaken;
 
@@ -38,14 +37,15 @@ namespace TTBattle.UI
         {
             if (IsAccasible && IsTaken && _map.MapCell != this)
             {
-                SetImageColorToSelected(); 
+                SetImageColorToSelected();
                 //_map.NewMapCell = _map.MapCell;
                 _map.MapCell.IsAccasible = false;
                 _map.NewMapCell = _map.MapCell;
-                foreach (MapCell mapCell in _map.MapCell.NextCell) 
-                { 
+                foreach (MapCell mapCell in _map.MapCell.NextCell)
+                {
                     mapCell.IsAccasible = false;
                 }
+
                 _map.MakeTurn.ExecuteWithAttack();
                 _map.NextCellInformer.gameObject.SetActive(false);
             }
@@ -60,18 +60,20 @@ namespace TTBattle.UI
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (IsAccasible && !IsTaken)
+            if (IsAccasible == false) return;
+            
+            if (IsTaken)
+            {
+                _cellBG.color = ActiveChoiseColor;
+                ActiveChoiseColor.a = 0.4f;
+                _map.NextCellInformer.SetUnitsIfluenceText(this, false);
+            }
+            else
             {
                 _cellBG.color = ActiveChoiseColor;
                 _map.NextCellInformer.SetUnitsIfluenceText(this, false);
             }
-            else if (IsAccasible && IsTaken)
-                {
-                    _cellBG.color = ActiveChoiseColor;
-                    ActiveChoiseColor.a = 0.4f;
-                    _map.NextCellInformer.SetUnitsIfluenceText(this, false);
-                }
-            }
+        }
 
         public void OnPointerExit(PointerEventData eventData)
         {
@@ -99,11 +101,12 @@ namespace TTBattle.UI
             {
                 mapCell.IsAccasible = false;
             }
+
             IndicateImage.sprite = null;
             IndicateImage.preserveAspect = false;
-           SetFireSpriteToImage();
+            SetFireSpriteToImage();
         }
-        
+
         public void CellIsTaken()
         {
             IsTaken = true;
@@ -113,6 +116,7 @@ namespace TTBattle.UI
             {
                 mapCell.IsAccasible = true;
             }
+
             SetChipSpriteToImage(_map.PlayerSelector.playerData.PlayerChip);
         }
 
@@ -128,7 +132,7 @@ namespace TTBattle.UI
             _lastColor = UsualColor;
             _cellBG.color = _lastColor;
         }
-        
+
         private void SetImageColorToSelected()
         {
             _lastColor = ChoisedCellColor;
@@ -152,25 +156,20 @@ namespace TTBattle.UI
 
         public void SetFireSpriteToImage()
         {
-            if (BurningDamage == 0)
+            if (MapZone.burnFactor == 0)
             {
                 SetAlphaChipSprite(0f);
             }
             else
             {
                 IndicateImage.rectTransform.sizeDelta = new Vector2(130, 130);
-                if (BurningDamage == 3)
+                IndicateImage.sprite = MapZone.burnFactor switch
                 {
-                    IndicateImage.sprite = _map.FireStage1;
-                }
-                if (BurningDamage == 6)
-                {
-                    IndicateImage.sprite = _map.FireStage2;
-                }
-                if (BurningDamage == 9)
-                {
-                    IndicateImage.sprite = _map.FireStage3;
-                }
+                    3 => _map.FireStage1,
+                    6 => _map.FireStage2,
+                    9 => _map.FireStage3,
+                    _ => IndicateImage.sprite
+                };
             }
         }
     }

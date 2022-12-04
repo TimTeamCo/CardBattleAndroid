@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-//using Image = UnityEngine.UI.Image; //?
 namespace TTBattle.UI
 {
     [RequireComponent(typeof(PolygonCollider2D))]

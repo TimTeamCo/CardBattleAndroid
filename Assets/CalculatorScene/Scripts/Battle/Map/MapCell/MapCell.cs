@@ -16,16 +16,15 @@ namespace TTBattle.UI
         [SerializeField] public Color UsualColor;
         [SerializeField] public Image IndicateImage;
         [SerializeField] public MapZone MapZone;
+        [SerializeField] public MapScript _map;
+        [SerializeField] public bool IsAccasible;   
+        [SerializeField] public bool IsTaken;
+        [SerializeField] private Image _cellBG;
+        
         private Color _lastColor;
-        private Image _cellBG;
-        public MapScript _map;
-        public bool IsAccasible;
-        public bool IsTaken;
 
         private void Awake()
         {
-            _map = GetComponentInParent<MapScript>();
-            _cellBG = GetComponent<Image>();
             _lastColor = UsualColor;
             _cellBG.color = _lastColor;
             GetComponent<Image>().alphaHitTestMinimumThreshold = 0.1f;

@@ -37,13 +37,13 @@ namespace Map
             switch (unitType)
             {
                 case UnitType.Warrior:
-                    influence = (100 + _unitBuffValue[UnitType.Warrior]) / 100;
+                    influence = _unitBuffValue[UnitType.Warrior];
                     break;
                 case UnitType.Steamer:
-                    influence = (100 + _unitBuffValue[UnitType.Steamer]) / 100;
+                    influence = _unitBuffValue[UnitType.Steamer];
                     break;
                 case UnitType.Mage:
-                    influence = (100 + _unitBuffValue[UnitType.Mage]) / 100;
+                    influence = _unitBuffValue[UnitType.Mage];
                     break;
             }
 

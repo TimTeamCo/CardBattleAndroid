@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class NextCellInformer : MonoBehaviour
 {
     [SerializeField] private Text _warriorInfluenceText;
-    [SerializeField] private Text _assasinInfluenceText;
+    [SerializeField] private Text _steamerInfluenceText;
     [SerializeField] private Text _mageInfluenceText;
     [SerializeField] private Text _nextCellCard;
     [SerializeField] private Color _green;
@@ -14,16 +14,16 @@ public class NextCellInformer : MonoBehaviour
     [SerializeField] private Color _yellow;
     private bool _isSelected;
     private float _warriorInfluenceValue;
-    private float _assasinInfluenceValue;
+    private float _steamerInfluenceValue;
     private float _mageInfluenceValue;
 
-    private void OnEnable()
+    private void Start()
     {
         _warriorInfluenceText.color = Color.white;
-        _assasinInfluenceText.color = Color.white;
+        _steamerInfluenceText.color = Color.white;
         _mageInfluenceText.color = Color.white;
         _warriorInfluenceText.text = "--";
-        _assasinInfluenceText.text = "--";
+        _steamerInfluenceText.text = "--";
         _mageInfluenceText.text = "--";
     }
 
@@ -52,18 +52,18 @@ public class NextCellInformer : MonoBehaviour
         
         if (steamerInfluence > 0)
         {
-            _assasinInfluenceText.color = _green;
-            _assasinInfluenceText.text = $"+{steamerInfluence}%";
+            _steamerInfluenceText.color = _green;
+            _steamerInfluenceText.text = $"+{steamerInfluence}%";
         }
         if (steamerInfluence == 0)
         {
-            _assasinInfluenceText.color = Color.white;
-            _assasinInfluenceText.text = "--";
+            _steamerInfluenceText.color = Color.white;
+            _steamerInfluenceText.text = "--";
         }
         if (steamerInfluence < 0)
         {
-            _assasinInfluenceText.color = _red;
-            _assasinInfluenceText.text = $"-{steamerInfluence}%";
+            _steamerInfluenceText.color = _red;
+            _steamerInfluenceText.text = $"-{steamerInfluence}%";
         }
         
         
@@ -87,10 +87,10 @@ public class NextCellInformer : MonoBehaviour
         {
             _isSelected = true;
             _warriorInfluenceText.color = _yellow;
-            _assasinInfluenceText.color = _yellow;
+            _steamerInfluenceText.color = _yellow;
             _mageInfluenceText.color = _yellow;
             _warriorInfluenceValue = warriorInfluence;
-            _assasinInfluenceValue = steamerInfluence;
+            _steamerInfluenceValue = steamerInfluence;
             _mageInfluenceValue = mageInfluence;
         }
     }
@@ -100,7 +100,7 @@ public class NextCellInformer : MonoBehaviour
         if (_isSelected)
         {
             _warriorInfluenceText.color = _yellow;
-            _assasinInfluenceText.color = _yellow;
+            _steamerInfluenceText.color = _yellow;
             _mageInfluenceText.color = _yellow;
             if (_warriorInfluenceValue > 0)
             {
@@ -116,17 +116,17 @@ public class NextCellInformer : MonoBehaviour
             }
         
         
-            if (_assasinInfluenceValue > 0)
+            if (_steamerInfluenceValue > 0)
             {
-                _assasinInfluenceText.text = $"+{_assasinInfluenceValue}%";
+                _steamerInfluenceText.text = $"+{_steamerInfluenceValue}%";
             }
-            if (_assasinInfluenceValue == 0)
+            if (_steamerInfluenceValue == 0)
             {
-                _assasinInfluenceText.text = "--";
+                _steamerInfluenceText.text = "--";
             }
-            if (_assasinInfluenceValue < 0)
+            if (_steamerInfluenceValue < 0)
             {
-                _assasinInfluenceText.text = $"-{_assasinInfluenceValue}%";
+                _steamerInfluenceText.text = $"-{_steamerInfluenceValue}%";
             }
         
         

@@ -19,13 +19,13 @@ namespace TTBattle.UI
         [SerializeField] public Image UnitDropdownImage;
         [SerializeField] public Image UnitDropdownTemplateImage;
         [SerializeField] public PlayerDataCalculator playerData;
-
+        
         private PlayerSquad _warrior;
         private PlayerSquad _steamer;
         private PlayerSquad _mage;
         private MapZone _currentMapZone;
         private Color _playerPanelColor;
-
+        
         private void Awake()
         {
             ShowPlayerName();
@@ -41,7 +41,6 @@ namespace TTBattle.UI
             _steamer = playerData.playerArmy.Squads[1];
             _mage = playerData.playerArmy.Squads[2];
             SetTextOfUnitsAmount();
-
             _currentMapZone = playerData.MapZone;
         }
 
@@ -52,6 +51,7 @@ namespace TTBattle.UI
 
         public void SetTextOfUnitsAmount()
         {
+            Debug.Log($"_warrior.Count {_warrior.Count}");
             _warriorCard.UnitsNumber.text = _warrior.Count.ToString();
             _steamerCard.UnitsNumber.text = _steamer.Count.ToString();
             _mageCard.UnitsNumber.text = _mage.Count.ToString();
@@ -81,6 +81,7 @@ namespace TTBattle.UI
             _warriorCard.SetBurningDamageText(playerData);
             _steamerCard.SetBurningDamageText(playerData);
             _mageCard.SetBurningDamageText(playerData);
+            SetTextOfUnitsAmount();
         }
 
         private void SetBackgroundColor()

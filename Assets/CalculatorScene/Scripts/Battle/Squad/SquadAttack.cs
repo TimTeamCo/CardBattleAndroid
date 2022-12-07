@@ -95,11 +95,13 @@ namespace TTBattle
 
         private void CalculateDefenderCount(PlayerSquad defender, PlayerSquad attacker, int unitsInfluenceDefender, int unitsInfluenceAttacker, float coefficient = 1)
         {
+            Debug.Log($"defender.Count {defender.Count}");
             defender.Count = (int) ((defender.SquadUnit.Health * unitsInfluenceDefender *
                                      defender.Count -
                                      attacker.SquadUnit.Attack * unitsInfluenceAttacker *
                                      attacker.Count) * coefficient /
                                     (defender.SquadUnit.Health * unitsInfluenceDefender));
+            Debug.Log($"defender.Count {defender.Count}");
         }
 
         private UnitType ChooseDefender(PlayerSquad defender)
@@ -138,8 +140,6 @@ namespace TTBattle
                     yield return defender.Count;
                     break;
             }
-
-            armyDefender.SetTextOfUnitsAmount();
         }
     }
 }

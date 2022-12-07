@@ -28,7 +28,7 @@ namespace TTBattle.UI
         public void DoMakeTurn()
         {
             SetNewTurnCount();
-             Attack();
+            Attack();
             ReplaceArmy.Execute(_army1, _army2);
             MapScripts();
             SetBurningDamageToPlayers();
@@ -105,12 +105,16 @@ namespace TTBattle.UI
 
         private void Attack()
         {
-            if (IsAttack)
+            if (IsAttack == false)
             {
-                _squadAttack.Attack(_army1, _army2, _turnsNumerator);
-                _army1.UnitDropdown.gameObject.SetActive(false);
-                _army2.UnitDropdown.gameObject.SetActive(false);
+                return;
             }
+
+            _squadAttack.Attack(_army1, _army2, _turnsNumerator);
+            _army1.UnitDropdown.gameObject.SetActive(false);
+            _army2.UnitDropdown.gameObject.SetActive(false);
+            _army1.SetTextOfUnitsAmount();
+            _army2.SetTextOfUnitsAmount();
         }
 
         public void ExecuteWithAttack()
@@ -132,4 +136,3 @@ namespace TTBattle.UI
         }
     }
 }
-

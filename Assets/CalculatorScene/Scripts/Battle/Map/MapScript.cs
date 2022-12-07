@@ -69,9 +69,8 @@ namespace TTBattle.UI
         
         private void InitializePLayersMapCells(ArmyPanel player)
         {
-            var playerCell = player.playerData.PlayerMapCell;
-            playerCell = MapCell;
-            PlayerSelector.playerData.MapZone = playerCell.MapZone;
+            player.playerData.PlayerMapCell = MapCell;
+            PlayerSelector.playerData.MapZone = MapCell.MapZone;
         }
         
         private void SetPlayerInferiorMapCell()

@@ -10,13 +10,15 @@ public class MainMenueScript : MonoBehaviour
     [SerializeField] private Button _shopButton;
     [SerializeField] private Button _cardButton;
     [SerializeField] private Button _startMatch;
+    [SerializeField] private Animator _animatorStartButton;
 
+    private bool _searchMatchStart;
     private void OnEnable()
     {
         _optionsButton.onClick.AddListener(OnClickOptionsButton);
         _shopButton.onClick.AddListener(OnClickShopButton);
         _cardButton.onClick.AddListener(OnClickCardButton);
-        _startMatch.onClick.AddListener(OnClickStartMatch);
+        _startMatch.onClick.AddListener(()=> StartCoroutine(OnClickStartMatch()));
     }
 
     private void OnClickOptionsButton()
@@ -34,9 +36,23 @@ public class MainMenueScript : MonoBehaviour
         Debug.Log("CardButton was Clicked");
     }
 
-    private void OnClickStartMatch()
+    // private void OnClickStartMatch()
+    // {
+    //     Debug.Log("StartMatch was Clicked");
+    //     _searchMatchStart = !_searchMatchStart;
+    //     string stateName = _searchMatchStart ? "Selected" : "Normal";
+    //     _animatorStartButton.Play("Pressed");
+    //     _animatorStartButton.Play(stateName);
+    // }
+    
+    private IEnumerator OnClickStartMatch()
     {
         Debug.Log("StartMatch was Clicked");
+        _searchMatchStart = !_searchMatchStart;
+        string stateName = _searchMatchStart ? "Selected" : "Normal";
+        _animatorStartButton.Play("Pressed");
+        yield return new WaitForSeconds(0.7f);
+        _animatorStartButton.Play(stateName);
     }
 
     private void OnDestroy()
@@ -44,6 +60,6 @@ public class MainMenueScript : MonoBehaviour
         _optionsButton.onClick.RemoveListener(OnClickOptionsButton);
         _shopButton.onClick.RemoveListener(OnClickShopButton);
         _cardButton.onClick.RemoveListener(OnClickCardButton);
-        _startMatch.onClick.RemoveListener(OnClickStartMatch);
+        _startMatch.onClick.RemoveListener(()=> StopCoroutine(OnClickStartMatch()));
     }
 }

@@ -3,7 +3,7 @@
 namespace Army
 {
     [Serializable]
-    public struct PlayerSquad
+    public class PlayerSquad
     {
         public int Count;
         public SquadUnit SquadUnit;

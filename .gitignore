@@ -59,4 +59,6 @@ sysinfo.txt
 crashlytics-build.properties
 
 
-UserSettings/
+UserSettings/EditorUserSettings.asset
+
+ProjectSettings/SceneTemplateSettings.json

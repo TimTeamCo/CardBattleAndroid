@@ -1,5 +1,4 @@
-﻿using System;
-using Sirenix.OdinInspector;
+﻿using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Army
@@ -20,12 +19,10 @@ namespace Army
         [PropertySpace(20)]
         [VerticalGroup("Unit Data/Stats")]
         [LabelWidth(100)]
-        [Range(0, 100)]
         [GUIColor(0.8f, 0.4f, 0.4f)]
         public int Attack;
         [VerticalGroup("Unit Data/Stats")]
         [LabelWidth(100)]
-        [Range(0, 100)]
         [GUIColor(0.5f, 1f, 0.5f)]
         public int Health;
 

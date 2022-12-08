@@ -10,7 +10,7 @@ namespace TTBattle
         public void Attack(ArmyPanel army1, ArmyPanel army2, TurnsNumerator turnsNumerator)
         {
             PlayerData.PlayerData playerAttacker = army1.playerData;
-            PlayerData.PlayerData playerDefender = army1.playerData;
+            PlayerData.PlayerData playerDefender = army2.playerData;
             PlayerSquad attacker = playerAttacker.playerArmy.Squads[army1.UnitDropdown.value];
             PlayerSquad defender = playerDefender.playerArmy.Squads[army2.UnitDropdown.value];
 
@@ -35,15 +35,18 @@ namespace TTBattle
         private void WarriorLogicBattle(TurnsNumerator turnsNumerator, UnitType defUnitType, PlayerSquad defender,
             PlayerData.PlayerData playerDefender, PlayerSquad attacker, PlayerData.PlayerData playerAttacker, ArmyPanel armyDefender)
         {
+            Debug.Log($" defUnitType {defUnitType} -- attacker {attacker.SquadUnit.UnitType}");
             switch (defUnitType)
             {
                 case UnitType.Warrior:
+                    Debug.Log($" defender {playerDefender.PlayerName} attacker {playerAttacker.PlayerName}");
                     CalculateDefenderCount(defender, attacker,  
                         (int) playerDefender.MapZone.GetUnitInfluence(UnitType.Warrior), 
                         (int) playerAttacker.MapZone.GetUnitInfluence(UnitType.Warrior));
+                    Debug.Log($" defender {playerAttacker.PlayerName} attacker {playerDefender.PlayerName}");
                     CalculateDefenderCount(attacker, defender,  
-                        (int) playerDefender.MapZone.GetUnitInfluence(UnitType.Warrior), //possible mistake TODO Illya
-                        (int) playerAttacker.MapZone.GetUnitInfluence(UnitType.Warrior));
+                        (int) playerAttacker.MapZone.GetUnitInfluence(UnitType.Warrior),
+                        (int) playerDefender.MapZone.GetUnitInfluence(UnitType.Warrior));
                     break;
                 case UnitType.Steamer:
                     CalculateDefenderCount(defender, attacker,  
@@ -54,7 +57,7 @@ namespace TTBattle
                     CalculateDefenderCount(defender, attacker,  
                         (int) playerDefender.MapZone.GetUnitInfluence(UnitType.Mage), 
                         (int) playerAttacker.MapZone.GetUnitInfluence(UnitType.Warrior));
-                    StartCoroutine(MageAttack(defUnitType, attacker, defender, playerAttacker.MapZone.GetUnitInfluence(UnitType.Mage),
+                    StartCoroutine(MageAttack(defUnitType, attacker, defender,
                         playerDefender, playerAttacker, turnsNumerator, armyDefender));
                     break;
             }
@@ -89,19 +92,21 @@ namespace TTBattle
         private void MageLogicBattle(UnitType defUnitType, TurnsNumerator turnsNumerator, PlayerSquad defender,
             PlayerData.PlayerData playerDefender, PlayerSquad attacker, PlayerData.PlayerData playerAttacker, ArmyPanel armyDefender)
         {
-            StartCoroutine(MageAttack(defUnitType, attacker, defender, playerAttacker.MapZone.GetUnitInfluence(UnitType.Mage),
+            StartCoroutine(MageAttack(defUnitType, attacker, defender,
                 playerDefender, playerAttacker, turnsNumerator, armyDefender));
         }
 
         private void CalculateDefenderCount(PlayerSquad defender, PlayerSquad attacker, int unitsInfluenceDefender, int unitsInfluenceAttacker, float coefficient = 1)
         {
-            Debug.Log($"defender.Count {defender.Count}");
+            Debug.Log($" Pre attack defender.Count {defender.Count} {defender.SquadUnit.UnitType} attack {attacker.SquadUnit.UnitType}");
+            unitsInfluenceDefender = (unitsInfluenceDefender / 100) + 1;
+            unitsInfluenceAttacker = (unitsInfluenceAttacker / 100) + 1;
             defender.Count = (int) ((defender.SquadUnit.Health * unitsInfluenceDefender *
                                      defender.Count -
                                      attacker.SquadUnit.Attack * unitsInfluenceAttacker *
                                      attacker.Count) * coefficient /
                                     (defender.SquadUnit.Health * unitsInfluenceDefender));
-            Debug.Log($"defender.Count {defender.Count}");
+            Debug.Log($" After attack defender.Count {defender.Count} {defender.SquadUnit.UnitType}");
         }
 
         private UnitType ChooseDefender(PlayerSquad defender)
@@ -109,7 +114,7 @@ namespace TTBattle
             return defender.SquadUnit.UnitType;
         }
 
-        private IEnumerator MageAttack(UnitType defUnitType, PlayerSquad attacker, PlayerSquad defender, float mageInfluence,
+        private IEnumerator MageAttack(UnitType defUnitType, PlayerSquad attacker, PlayerSquad defender,
             PlayerData.PlayerData playerDefender, PlayerData.PlayerData playerAttacker, TurnsNumerator turnsNumerator, ArmyPanel armyDefender)
         {
             int numerator;
@@ -140,6 +145,8 @@ namespace TTBattle
                     yield return defender.Count;
                     break;
             }
+            
+            armyDefender.SetTextOfUnitsAmount();
         }
     }
 }

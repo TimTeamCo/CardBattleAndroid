@@ -51,7 +51,6 @@ namespace TTBattle.UI
 
         public void SetTextOfUnitsAmount()
         {
-            Debug.Log($"_warrior.Count {_warrior.Count}");
             _warriorCard.UnitsNumber.text = _warrior.Count.ToString();
             _steamerCard.UnitsNumber.text = _steamer.Count.ToString();
             _mageCard.UnitsNumber.text = _mage.Count.ToString();

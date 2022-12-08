@@ -70,10 +70,10 @@ namespace TTBattle.UI
         private void InitializePLayersMapCells(ArmyPanel player)
         {
             player.playerData.PlayerMapCell = MapCell;
-            PlayerSelector.playerData.MapZone = MapCell.MapZone;
+            player.playerData.MapZone = MapCell.MapZone;
         }
         
-        private void SetPlayerInferiorMapCell()
+        private void SetPlayerSelectorMapCell()
         {
             {
                 if (_newMapCell.MapZone.zoneID != MapCell.MapZone.zoneID)
@@ -81,9 +81,9 @@ namespace TTBattle.UI
                     _lastMapCell = MapCell;
                     MapCell = NewMapCell;
                     MapCell.IsTaken = true;
-                    MapCell.SetCellColorAsPlayers(PlayerInferior.playerData);
-                    InitializePLayersMapCells(PlayerInferior);
-                    MapCell.SetChipSpriteToImage(PlayerInferior.playerData.PlayerChip);
+                    MapCell.SetCellColorAsPlayers(PlayerSelector.playerData);
+                    InitializePLayersMapCells(PlayerSelector);
+                    MapCell.SetChipSpriteToImage(PlayerSelector.playerData.PlayerChip);
                     _lastMapCell.CellIsLeaved();
                     _newMapCell = null;
                 }
@@ -98,17 +98,18 @@ namespace TTBattle.UI
             }
         }
 
-        private void SetPlayerSelectorMapCell()
+        private void SwapPlayersRoles()
         {
+            (PlayerInferior, PlayerSelector) = (PlayerSelector, PlayerInferior);
             MapCell = PlayerSelector.playerData.PlayerMapCell;
             MapCell.CellIsTaken();
             PlayerSelector.playerData.PlayerMapCell = MapCell;
         }
-        
+
         public void SetPlayersMapCells()
         {
-            SetPlayerInferiorMapCell();
             SetPlayerSelectorMapCell();
+            SwapPlayersRoles();
         }
 
         public void SetBurningZones(int nomber)

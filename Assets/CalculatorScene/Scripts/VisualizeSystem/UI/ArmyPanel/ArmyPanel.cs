@@ -23,7 +23,6 @@ namespace TTBattle.UI
         private PlayerSquad _warrior;
         private PlayerSquad _steamer;
         private PlayerSquad _mage;
-        private MapZone _currentMapZone;
         private Color _playerPanelColor;
         
         private void Awake()
@@ -41,10 +40,9 @@ namespace TTBattle.UI
             _steamer = playerData.playerArmy.Squads[1];
             _mage = playerData.playerArmy.Squads[2];
             SetTextOfUnitsAmount();
-            _currentMapZone = playerData.MapZone;
         }
 
-        private void ShowPlayerName()
+        public void ShowPlayerName()
         {
             _playerName.text = playerData.PlayerName;
         }
@@ -58,7 +56,7 @@ namespace TTBattle.UI
 
         public void SetTextOfCardsAttributes()
         {
-            foreach (var buffZone in _currentMapZone.buffsZone)
+            foreach (var buffZone in playerData.PlayerMapCell.MapZone.buffsZone)
             {
                 float unitsInfluence = (float) buffZone.buffValue / 100;
                 switch (buffZone.unitType)

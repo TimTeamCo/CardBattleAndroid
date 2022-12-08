@@ -29,7 +29,6 @@ namespace TTBattle.UI
         {
             SetNewTurnCount();
             Attack();
-            ReplaceArmy.Execute(_army1, _army2);
             MapScripts();
             SetBurningDamageToPlayers();
             SetTextOfCellAtributesToArmys();

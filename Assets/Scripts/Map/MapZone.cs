@@ -21,6 +21,11 @@ namespace Map
             public UnitType unitType;
             public int buffValue;
         }
+        
+        private void OnEnable()
+        {
+            burnFactor = 0;
+        }
 
         private void OnValidate()
         {

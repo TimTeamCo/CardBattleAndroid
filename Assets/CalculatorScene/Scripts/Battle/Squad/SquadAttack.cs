@@ -35,15 +35,12 @@ namespace TTBattle
         private void WarriorLogicBattle(TurnsNumerator turnsNumerator, UnitType defUnitType, PlayerSquad defender,
             PlayerData.PlayerData playerDefender, PlayerSquad attacker, PlayerData.PlayerData playerAttacker, ArmyPanel armyDefender)
         {
-            Debug.Log($" defUnitType {defUnitType} -- attacker {attacker.SquadUnit.UnitType}");
             switch (defUnitType)
             {
                 case UnitType.Warrior:
-                    Debug.Log($" defender {playerDefender.PlayerName} attacker {playerAttacker.PlayerName}");
                     CalculateDefenderCount(defender, attacker,  
                         (int) playerDefender.MapZone.GetUnitInfluence(UnitType.Warrior), 
                         (int) playerAttacker.MapZone.GetUnitInfluence(UnitType.Warrior));
-                    Debug.Log($" defender {playerAttacker.PlayerName} attacker {playerDefender.PlayerName}");
                     CalculateDefenderCount(attacker, defender,  
                         (int) playerAttacker.MapZone.GetUnitInfluence(UnitType.Warrior),
                         (int) playerDefender.MapZone.GetUnitInfluence(UnitType.Warrior));
@@ -98,7 +95,6 @@ namespace TTBattle
 
         private void CalculateDefenderCount(PlayerSquad defender, PlayerSquad attacker, int unitsInfluenceDefender, int unitsInfluenceAttacker, float coefficient = 1)
         {
-            Debug.Log($" Pre attack defender.Count {defender.Count} {defender.SquadUnit.UnitType} attack {attacker.SquadUnit.UnitType}");
             unitsInfluenceDefender = (unitsInfluenceDefender / 100) + 1;
             unitsInfluenceAttacker = (unitsInfluenceAttacker / 100) + 1;
             defender.Count = (int) ((defender.SquadUnit.Health * unitsInfluenceDefender *
@@ -106,7 +102,6 @@ namespace TTBattle
                                      attacker.SquadUnit.Attack * unitsInfluenceAttacker *
                                      attacker.Count) * coefficient /
                                     (defender.SquadUnit.Health * unitsInfluenceDefender));
-            Debug.Log($" After attack defender.Count {defender.Count} {defender.SquadUnit.UnitType}");
         }
 
         private UnitType ChooseDefender(PlayerSquad defender)

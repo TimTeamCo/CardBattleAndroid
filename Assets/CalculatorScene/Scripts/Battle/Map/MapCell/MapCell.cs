@@ -166,7 +166,7 @@ namespace TTBattle.UI
                 {
                     3 => _map.FireStage1,
                     6 => _map.FireStage2,
-                    9 => _map.FireStage3,
+                    >=9 => _map.FireStage3,
                     _ => IndicateImage.sprite
                 };
             }

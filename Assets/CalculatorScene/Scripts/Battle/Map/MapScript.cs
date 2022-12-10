@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace TTBattle.UI
 {
     public class MapScript : MonoBehaviour
     {
-        [SerializeField] private List<MapCell> _fistBurningZone = new List<MapCell>();
-        [SerializeField] private List<MapCell> _secondBurningZone = new List<MapCell>();
-        [SerializeField] private List<MapCell> _thirdBurningZone = new List<MapCell>();
+        [SerializeField] private List<BurningZone> BurningZones = new List<BurningZone>();
         [SerializeField] public MakeTurn MakeTurn;
         
         public Sprite FireStage1;
@@ -46,10 +46,26 @@ namespace TTBattle.UI
                 }
             }
         }
-        
+
         private MapCell _secondRateMapCell;
         private MapCell _newMapCell;
         private MapCell _lastMapCell;
+        
+        [Serializable]
+        private struct BurningZone
+        {
+            public enum BurningIndicator
+            {   
+                FistBurningZone = 1,
+                SecondBurningZone = 2,
+                ThirdBurningZone = 3,
+                ForthBurningZone = 4,
+                FifthBurningZone = 5
+            }
+
+            public BurningIndicator OrderIndicator;
+            public List<MapCell> BurningCells;
+        }
         
         public void Awake()
         {
@@ -111,70 +127,60 @@ namespace TTBattle.UI
             SetPlayerSelectorMapCell();
             SwapPlayersRoles();
         }
-
-        public void SetBurningZones(int nomber)
+        
+        private void SetBurningCell(MapCell cell)
         {
-            if (nomber == 1)
+            cell.MapZone.burnFactor += 3;
+            if (PlayerSelector.playerData.PlayerMapCell.MapZone.zoneID != cell.MapZone.zoneID
+                && PlayerInferior.playerData.PlayerMapCell.MapZone.zoneID != cell.MapZone.zoneID)
             {
-                foreach (MapCell mapCell in _fistBurningZone)
-                {
-                    mapCell.MapZone.burnFactor += 3;
-                    if (PlayerSelector.playerData.PlayerMapCell.MapZone.zoneID != mapCell.MapZone.zoneID 
-                        && PlayerInferior.playerData.PlayerMapCell.MapZone.zoneID != mapCell.MapZone.zoneID)
-                    {
-                        mapCell.SetAlphaChipSprite(1f);
-                        mapCell.SetFireSpriteToImage();
-                    }
-                }
+                cell.SetAlphaChipSprite(1f);
+                cell.SetFireSpriteToImage();
             }
-            
-            if (nomber == 2)
+        }
+
+        public void SetBurningZones(int turnNumber)
+        {
+            foreach (BurningZone zone in BurningZones)
             {
-                foreach (MapCell mapCell in _secondBurningZone)
+                int indicator = (int) zone.OrderIndicator;
+                switch (indicator)
                 {
-                    mapCell.MapZone.burnFactor =+ 3;
-                    if (PlayerSelector.playerData.PlayerMapCell.MapZone.zoneID != mapCell.MapZone.zoneID 
-                        && PlayerInferior.playerData.PlayerMapCell.MapZone.zoneID != mapCell.MapZone.zoneID)
-                    {
-                        mapCell.SetAlphaChipSprite(1f);
-                        if (mapCell.MapZone.burnFactor==3)
-                        {
-                            mapCell.IndicateImage.sprite = FireStage1;
-                        }
-                        if (mapCell.MapZone.burnFactor==6)
-                        {
-                            mapCell.IndicateImage.sprite = FireStage2;
-                        }
-                        if (mapCell.MapZone.burnFactor==9)
-                        {
-                            mapCell.IndicateImage.sprite = FireStage3;
-                        }
-                    }
-                }
-            }
-            
-            if (nomber == 3)
-            {
-                foreach (MapCell mapCell in _thirdBurningZone)
-                {
-                    mapCell.MapZone.burnFactor =+ 3;
-                    if (PlayerSelector.playerData.PlayerMapCell.MapZone.zoneID != mapCell.MapZone.zoneID 
-                        && PlayerInferior.playerData.PlayerMapCell.MapZone.zoneID != mapCell.MapZone.zoneID)
-                    {
-                        mapCell.SetAlphaChipSprite(1f);
-                        if (mapCell.MapZone.burnFactor==3)
-                        {
-                            mapCell.IndicateImage.sprite = FireStage1;
-                        }
-                        if (mapCell.MapZone.burnFactor==6)
-                        {
-                            mapCell.IndicateImage.sprite = FireStage2;
-                        }
-                        if (mapCell.MapZone.burnFactor==9)
-                        {
-                            mapCell.IndicateImage.sprite = FireStage3;
-                        }
-                    }
+                    case 1:
+                        if(turnNumber >= 5) 
+                            foreach (MapCell cell in zone.BurningCells)
+                            {
+                                SetBurningCell(cell);
+                            }
+                        break;
+                    case 2:
+                        if(turnNumber >= 10) 
+                            foreach (MapCell cell in zone.BurningCells)
+                            {
+                                SetBurningCell(cell);
+                            }
+                        break;
+                    case 3:
+                        if(turnNumber >= 15) 
+                            foreach (MapCell cell in zone.BurningCells)
+                            {
+                                SetBurningCell(cell);
+                            }
+                        break;
+                    case 4:
+                        if(turnNumber >= 20) 
+                            foreach (MapCell cell in zone.BurningCells)
+                            {
+                                SetBurningCell(cell);
+                            }
+                        break;
+                    case 5:
+                        if(turnNumber >= 25) 
+                            foreach (MapCell cell in zone.BurningCells)
+                            {
+                                SetBurningCell(cell);
+                            }
+                        break;
                 }
             }
         }

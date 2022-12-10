@@ -38,30 +38,8 @@ namespace TTBattle.UI
         private void MapScripts()
         {
             _map.SetPlayersMapCells();
-            if (_turnsNumerator.TurnsCount == 5 && _newTurnsChecker==0)
-            {
-                _map.SetBurningZones(1 );
-            }
-            if (_turnsNumerator.TurnsCount == 10 && _newTurnsChecker==0) 
-            {
-                 _map.SetBurningZones(2);
-                 _map.SetBurningZones(1); 
-            }
-            if (_turnsNumerator.TurnsCount == 15 && _newTurnsChecker==0)
-            {
-                _map.SetBurningZones(3);
-                _map.SetBurningZones(2);
-                _map.SetBurningZones(1);
-            }
-            if (_turnsNumerator.TurnsCount == 20 && _newTurnsChecker==0)
-            {
-                _map.SetBurningZones(3);
-                _map.SetBurningZones(2);
-            }
-            if (_turnsNumerator.TurnsCount == 25 && _newTurnsChecker==0)
-            {
-                _map.SetBurningZones(3);
-            }
+            if (_newTurnsChecker != 0 || _turnsNumerator.TurnsCount % 5 != 0) return;
+            _map.SetBurningZones(_turnsNumerator.TurnsCount);
         }
 
         private void SetBurningDamageToPlayers()

@@ -94,9 +94,6 @@ MonoBehaviour:
   _steamerInfluenceText: {fileID: 2913558482589546380}
   _mageInfluenceText: {fileID: 9038207239339960823}
   _nextCellCard: {fileID: 7293625383348607467}
-  _green: {r: 0.18431373, g: 0.6901961, b: 0, a: 1}
-  _red: {r: 0.654902, g: 0, b: 0, a: 1}
-  _yellow: {r: 1, g: 0.3372549, b: 0, a: 1}
 --- !u!1 &220050946470859902
 GameObject:
   m_ObjectHideFlags: 0
@@ -4566,21 +4563,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40ff6b19a7af451582bd0806d89178b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fistBurningZone:
-  - {fileID: 4517603561661945668}
-  - {fileID: 2845973150314476039}
-  - {fileID: 5617782701633437161}
-  _secondBurningZone:
-  - {fileID: 7004916863425863114}
-  - {fileID: 4816031264755805683}
-  - {fileID: 2009542867731857019}
-  _thirdBurningZone:
-  - {fileID: 5086244505460238572}
-  - {fileID: 6073227610995258830}
-  - {fileID: 4683357524711719385}
-  - {fileID: 1244002464697696997}
-  - {fileID: 3014456347209909898}
-  - {fileID: 308044179687844684}
+  BurningZones:
+  - OrderIndicator: 1
+    BurningCells:
+    - {fileID: 4517603561661945668}
+    - {fileID: 2845973150314476039}
+    - {fileID: 5617782701633437161}
+  - OrderIndicator: 2
+    BurningCells:
+    - {fileID: 7004916863425863114}
+    - {fileID: 4816031264755805683}
+    - {fileID: 2009542867731857019}
+  - OrderIndicator: 3
+    BurningCells:
+    - {fileID: 5086244505460238572}
+    - {fileID: 6073227610995258830}
+    - {fileID: 4683357524711719385}
+    - {fileID: 1244002464697696997}
+    - {fileID: 3014456347209909898}
+    - {fileID: 308044179687844684}
+  - OrderIndicator: 4
+    BurningCells:
+    - {fileID: 5311525882441098954}
+    - {fileID: 5452968594096011289}
+    - {fileID: 4957478298820687839}
+  - OrderIndicator: 5
+    BurningCells:
+    - {fileID: 7984799905734660028}
   MakeTurn: {fileID: 222851555}
   FireStage1: {fileID: 21300000, guid: ddfe9e8adb0a7734ba6ecc232ae50c3c, type: 3}
   FireStage2: {fileID: 21300000, guid: 4611d3fe9cc37e74a923ef4379a5ef5a, type: 3}

@@ -28,5 +28,29 @@ namespace Army
 
         public float WeakCoeficient = 0.5f;
         public float StrongCoefitient = 1.5f;
+
+        [PropertySpace(50f)]
+        [Button(Name = "RESET TO DEFAULT VALUE", Icon = SdfIconType.Backspace, Stretch = false, ButtonHeight = 50, IconAlignment = IconAlignment.LeftEdge)]
+        public void ResetToDefaultValue()
+        {
+            switch (UnitType)
+            {
+                case UnitType.Warrior:
+                    Attack = 10;
+                    Health = 90;
+                    break;
+                case UnitType.Steamer:
+                    Attack = 10;
+                    Health = 30;
+                    break;
+                case UnitType.Mage:
+                    Attack = 30;
+                    Health = 30;
+                    break;
+            }
+
+            WeakCoeficient = 0.5f;
+            StrongCoefitient = 1.5f;
+        }
     }
 }

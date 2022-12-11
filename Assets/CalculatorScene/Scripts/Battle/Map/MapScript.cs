@@ -105,11 +105,13 @@ namespace TTBattle.UI
                 }
                 else
                 {
+                    PlayerSelector.playerData.PlayerMapCell.IsAccasible = false;
                     foreach (MapCell mapCell in MapCell.NextCell)
                     {
                         mapCell.IsAccasible = false;
                     }
                     _newMapCell = null;
+                    PlayerSelector.playerData.PlayerMapCell.SetCellColorAsPlayers(PlayerSelector.playerData);
                 }
             }
         }

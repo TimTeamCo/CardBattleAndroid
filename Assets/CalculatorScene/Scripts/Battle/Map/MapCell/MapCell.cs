@@ -17,7 +17,7 @@ namespace TTBattle.UI
         [SerializeField] public Image IndicateImage;
         [SerializeField] public MapZone MapZone;
         [SerializeField] public MapScript _map;
-        [SerializeField] public bool IsAccasible;   
+        [SerializeField] public bool IsAccasible;
         [SerializeField] public bool IsTaken;
         [SerializeField] private Image _cellBG;
         
@@ -37,7 +37,6 @@ namespace TTBattle.UI
             if (IsAccasible && IsTaken && _map.MapCell != this)
             {
                 SetImageColorToSelected();
-                //_map.NewMapCell = _map.MapCell;
                 _map.MapCell.IsAccasible = false;
                 _map.NewMapCell = _map.MapCell;
                 foreach (MapCell mapCell in _map.MapCell.NextCell)
@@ -92,8 +91,7 @@ namespace TTBattle.UI
 
         public void CellIsLeaved()
         {
-            _lastColor = UsualColor;
-            _cellBG.color = _lastColor;
+            RevertColor();
             IsTaken = false;
             IsAccasible = false;
             foreach (MapCell mapCell in NextCell)
@@ -104,6 +102,12 @@ namespace TTBattle.UI
             IndicateImage.sprite = null;
             IndicateImage.preserveAspect = false;
             SetFireSpriteToImage();
+        }
+
+        private void RevertColor()
+        {
+            _lastColor = UsualColor;
+            _cellBG.color = _lastColor;
         }
 
         public void CellIsTaken()

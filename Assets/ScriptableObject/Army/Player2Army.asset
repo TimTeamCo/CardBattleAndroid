@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Squads:
   - Count: 10
-    SquadUnit: {fileID: 11400000, guid: 34f7a9ff036d256458572fa0712107cf, type: 2}
+    SquadUnit: {fileID: 11400000, guid: 9fa3f431c9f11db48a8d76f2f538f4f8, type: 2}
   - Count: 10
-    SquadUnit: {fileID: 11400000, guid: 5f49282f6c15f1c4b8309a52074c15b3, type: 2}
+    SquadUnit: {fileID: 11400000, guid: 42ed5c01f38c2d3469f40f73fa25ec2a, type: 2}
   - Count: 10
-    SquadUnit: {fileID: 11400000, guid: ff2746632e101e24dbacbe90aefef86b, type: 2}
+    SquadUnit: {fileID: 11400000, guid: 0efea71b518d6a847820339985767a38, type: 2}

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49c2226e03514fc193f5a97871d7b2c2, type: 3}
+  m_Name: Player1Army
+  m_EditorClassIdentifier: 
+  Squads:
+  - Count: 10
+    SquadUnit: {fileID: 11400000, guid: 406160707b2564345ba97c83ec29b9b2, type: 2}
+  - Count: 10
+    SquadUnit: {fileID: 11400000, guid: fdbe345ff35a0c142a895e535f70376c, type: 2}
+  - Count: 10
+    SquadUnit: {fileID: 11400000, guid: df3d9cf67eaa1534cab1dae7f118890f, type: 2}

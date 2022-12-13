@@ -22,3 +22,7 @@ MonoBehaviour:
     buffValue: -30
   - unitType: 2
     buffValue: -30
+  neighboringAreas:
+  - {fileID: 11400000, guid: 68d72502903fd904ab13da519faaa182, type: 2}
+  - {fileID: 11400000, guid: 57aba3503d4866c41ba9580f4bda283d, type: 2}
+  - {fileID: 11400000, guid: a669464c75071304b8c1ca76800ebbfe, type: 2}

@@ -1,5 +1,3 @@
-using System;
-using System.Runtime.InteropServices.ComTypes; //not use this library
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -30,8 +28,7 @@ namespace TTBattle.UI
         public void DoMakeTurn()
         {
             SetNewTurnCount();
-             Attack();
-            ReplaceArmy.Execute(_army1, _army2);
+            Attack();
             MapScripts();
             SetBurningDamageToPlayers();
             SetTextOfCellAtributesToArmys();
@@ -41,45 +38,23 @@ namespace TTBattle.UI
         private void MapScripts()
         {
             _map.SetPlayersMapCells();
-            if (_turnsNumerator.TurnsCount == 5 && _newTurnsChecker==0)
-            {
-                _map.SetBurningZones(1 );
-            }
-            if (_turnsNumerator.TurnsCount == 10 && _newTurnsChecker==0) 
-            {
-                 _map.SetBurningZones(2);
-                 _map.SetBurningZones(1); 
-            }
-            if (_turnsNumerator.TurnsCount == 15 && _newTurnsChecker==0)
-            {
-                _map.SetBurningZones(3);
-                _map.SetBurningZones(2);
-                _map.SetBurningZones(1);
-            }
-            if (_turnsNumerator.TurnsCount == 20 && _newTurnsChecker==0)
-            {
-                _map.SetBurningZones(3);
-                _map.SetBurningZones(2);
-            }
-            if (_turnsNumerator.TurnsCount == 25 && _newTurnsChecker==0)
-            {
-                _map.SetBurningZones(3);
-            }
+            if (_newTurnsChecker != 0 || _turnsNumerator.TurnsCount % 5 != 0) return;
+            _map.SetBurningZones(_turnsNumerator.TurnsCount);
         }
 
         private void SetBurningDamageToPlayers()
         {
             if (_newTurnsChecker == 0)
             {
-                _army1.Player.BurningDamageToUnits();
-                _army2.Player.BurningDamageToUnits();    
+                _army1.playerData.playerArmy.AddBurningDamageToUnits(_army1.playerData.MapZone.burnFactor);
+                _army2.playerData.playerArmy.AddBurningDamageToUnits(_army2.playerData.MapZone.burnFactor);
             }
         }
         
         private void SetTextOfCellAtributesToArmys()
         {
-            _army1.SetTextOfCardsAtributes();
-            _army2.SetTextOfCardsAtributes();
+            _army1.SetTextOfCardsAttributes();
+            _army2.SetTextOfCardsAttributes();
         }
         
         private void SetNewTurnCount()
@@ -107,12 +82,16 @@ namespace TTBattle.UI
 
         private void Attack()
         {
-            if (IsAttack)
+            if (IsAttack == false)
             {
-                _squadAttack.Attack(_army1, _army2, _turnsNumerator);
-                _army1.UnitDropdown.gameObject.SetActive(false);
-                _army2.UnitDropdown.gameObject.SetActive(false);
+                return;
             }
+
+            _squadAttack.Attack(_army1, _army2, _turnsNumerator);
+            _army1.UnitDropdown.gameObject.SetActive(false);
+            _army2.UnitDropdown.gameObject.SetActive(false);
+            _army1.SetTextOfUnitsAmount();
+            _army2.SetTextOfUnitsAmount();
         }
 
         public void ExecuteWithAttack()
@@ -134,4 +113,3 @@ namespace TTBattle.UI
         }
     }
 }
-

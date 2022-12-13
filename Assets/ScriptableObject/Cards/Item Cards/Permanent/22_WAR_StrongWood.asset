@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 22
   cardName: Strong Wood
-  crystal: {fileID: 0}
-  frame: {fileID: 0}
-  art: {fileID: 0}
+  crystal: {fileID: 21300000, guid: 30763be4a7ce1b24f9b2eeade4d56471, type: 3}
+  frame: {fileID: 21300000, guid: a03f3f0d25b078543b37cb71b01b7dfa, type: 3}
+  art: {fileID: 21300000, guid: 86e1bb6ab535efa439f0597eaf24e413, type: 3}
   cardTypeBig: 1
   cardTypeSmall: 0
   AttackEffect: 0

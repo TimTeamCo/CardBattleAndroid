@@ -87,7 +87,7 @@ namespace TTBattle.UI
                 return;
             }
 
-            _squadAttack.Attack(_army1, _army2, _turnsNumerator);
+            _squadAttack.Attack(_map.PlayerSelector, _map.PlayerInferior, _turnsNumerator);
             _army1.UnitDropdown.gameObject.SetActive(false);
             _army2.UnitDropdown.gameObject.SetActive(false);
             _army1.SetTextOfUnitsAmount();

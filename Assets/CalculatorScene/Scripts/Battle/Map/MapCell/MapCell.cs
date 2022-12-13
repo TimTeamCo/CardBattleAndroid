@@ -114,13 +114,13 @@ namespace TTBattle.UI
         {
             IsTaken = true;
             IsAccasible = true;
-            SetCellColorAsPlayers(_map.PlayerSelector.playerData);
+            SetCellColorAsPlayers(_map.PlayerMenagerScript.PlayerSelector.playerData);
             foreach (MapCell mapCell in NextCell)
             {
                 mapCell.IsAccasible = true;
             }
 
-            SetChipSpriteToImage(_map.PlayerSelector.playerData.PlayerChip);
+            SetChipSpriteToImage(_map.PlayerMenagerScript.PlayerSelector.playerData.PlayerChip);
         }
 
         public void SetCellColorAsPlayers(PlayerDataCalculator player)

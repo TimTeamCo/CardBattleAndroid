@@ -962,8 +962,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2eb6590d31e46e2835599a7155828c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _army1: {fileID: 6352339776815411115}
-  _army2: {fileID: 3584774192112977581}
+  _playerMenagerScript: {fileID: 6248449803911520606}
   _turnsNumerator: {fileID: 969372377}
   _squadAttack: {fileID: 7020764794598376750}
   _map: {fileID: 3229954036369533614}
@@ -2875,6 +2874,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _turnText: {fileID: 220050948032627530}
+  _defaultBattleButton: {fileID: 114363180}
   TurnsCount: 1
   MoveCount: 0
 --- !u!1 &220050948047516319
@@ -3516,6 +3516,8 @@ GameObject:
   - component: {fileID: 220050948477549717}
   - component: {fileID: 220050948477549716}
   - component: {fileID: 220050948477549739}
+  - component: {fileID: 6248449803911520606}
+  - component: {fileID: 145361431}
   m_Layer: 5
   m_Name: Battle
   m_TagString: Untagged
@@ -3612,6 +3614,35 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 55
+--- !u!114 &6248449803911520606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 220050948477549738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3b7c1e8ec3b43349a74ae587e54f6a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerSelector: {fileID: 6352339776815411115}
+  PlayerInferior: {fileID: 3584774192112977581}
+--- !u!114 &145361431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 220050948477549738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cde8714b84ef59e4baf4dad81928fd6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _defaultBattleButton: {fileID: 114363182}
+  _army1: {fileID: 6352339776815411115}
+  _army2: {fileID: 3584774192112977581}
 --- !u!1 &220050948558346572
 GameObject:
   m_ObjectHideFlags: 0
@@ -4926,11 +4957,10 @@ MonoBehaviour:
     BurningCells:
     - {fileID: 7984799905734660028}
   MakeTurn: {fileID: 222851555}
+  PlayerMenagerScript: {fileID: 6248449803911520606}
   FireStage1: {fileID: 21300000, guid: ddfe9e8adb0a7734ba6ecc232ae50c3c, type: 3}
   FireStage2: {fileID: 21300000, guid: 4611d3fe9cc37e74a923ef4379a5ef5a, type: 3}
   FireStage3: {fileID: 21300000, guid: 00e8b66707f30e64bbc3f6b2c30e65d0, type: 3}
-  PlayerSelector: {fileID: 6352339776815411115}
-  PlayerInferior: {fileID: 3584774192112977581}
   MapCell: {fileID: 7984799905734660028}
   NextCellInformer: {fileID: 733971665}
 --- !u!1 &7854950037199832301

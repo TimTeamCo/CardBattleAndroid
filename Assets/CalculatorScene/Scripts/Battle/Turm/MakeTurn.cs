@@ -5,8 +5,7 @@ namespace TTBattle.UI
 {
     public class MakeTurn : MonoBehaviour
     {
-        [SerializeField] private ArmyPanel _army1;
-        [SerializeField] private ArmyPanel _army2;
+        [SerializeField] private PlayerMenagerScript _playerMenagerScript;
         [SerializeField] private TurnsNumerator _turnsNumerator;
         [SerializeField] private SquadAttack _squadAttack;
         [SerializeField] private MapScript _map;
@@ -15,11 +14,15 @@ namespace TTBattle.UI
         [SerializeField] private Image _attackImage;
         [SerializeField] public Color EnabledButtonColor;
         [SerializeField] public Color DisabledButtonColor;
+        private ArmyPanel _armySelector;
+        private ArmyPanel _armyInferior;
         private int _newTurnsChecker;
         public bool IsAttack;
         
         private void Awake()
         {
+            _armySelector = _playerMenagerScript.PlayerSelector;
+            _armyInferior = _playerMenagerScript.PlayerInferior;
             MakeTurnButtonDisabled();
             _attackImage.gameObject.SetActive(true);
             _attackImage.enabled = false;
@@ -29,6 +32,7 @@ namespace TTBattle.UI
         {
             SetNewTurnCount();
             Attack();
+            ChangePlayersRoles();
             MapScripts();
             SetBurningDamageToPlayers();
             SetTextOfCellAtributesToArmys();
@@ -46,15 +50,15 @@ namespace TTBattle.UI
         {
             if (_newTurnsChecker == 0)
             {
-                _army1.playerData.playerArmy.AddBurningDamageToUnits(_army1.playerData.MapZone.burnFactor);
-                _army2.playerData.playerArmy.AddBurningDamageToUnits(_army2.playerData.MapZone.burnFactor);
+                _armySelector.playerData.playerArmy.AddBurningDamageToUnits(_armySelector.playerData.MapZone.burnFactor);
+                _armyInferior.playerData.playerArmy.AddBurningDamageToUnits(_armyInferior.playerData.MapZone.burnFactor);
             }
         }
         
         private void SetTextOfCellAtributesToArmys()
         {
-            _army1.SetTextOfCardsAttributes();
-            _army2.SetTextOfCardsAttributes();
+            _armySelector.SetTextOfCardsAttributes();
+            _armyInferior.SetTextOfCardsAttributes();
         }
         
         private void SetNewTurnCount()
@@ -87,11 +91,11 @@ namespace TTBattle.UI
                 return;
             }
 
-            _squadAttack.Attack(_map.PlayerSelector, _map.PlayerInferior, _turnsNumerator);
-            _army1.UnitDropdown.gameObject.SetActive(false);
-            _army2.UnitDropdown.gameObject.SetActive(false);
-            _army1.SetTextOfUnitsAmount();
-            _army2.SetTextOfUnitsAmount();
+            _squadAttack.Attack(_armySelector, _armyInferior, _turnsNumerator);
+            _armySelector.UnitDropdown.gameObject.SetActive(false);
+            _armyInferior.UnitDropdown.gameObject.SetActive(false);
+            _armySelector.SetTextOfUnitsAmount();
+            _armyInferior.SetTextOfUnitsAmount();
         }
 
         public void ExecuteWithAttack()
@@ -99,8 +103,8 @@ namespace TTBattle.UI
             IsAttack = true;
             MakeTurnButtonEnabled();
             _attackImage.enabled = true;
-            _army1.UnitDropdown.gameObject.SetActive(true);
-            _army2.UnitDropdown.gameObject.SetActive(true);
+            _armySelector.UnitDropdown.gameObject.SetActive(true);
+            _armyInferior.UnitDropdown.gameObject.SetActive(true);
         }
 
         private void EndOfTurn()
@@ -110,6 +114,13 @@ namespace TTBattle.UI
             IsAttack = false;
             _map.NextCellInformer.gameObject.SetActive(true);
             _map.NextCellInformer.IsNotCelected();
+        }
+
+        private void ChangePlayersRoles()
+        {
+            _playerMenagerScript.ChangePlayersRoles();
+            _armySelector = _playerMenagerScript.PlayerSelector;
+            _armyInferior = _playerMenagerScript.PlayerInferior;
         }
     }
 }

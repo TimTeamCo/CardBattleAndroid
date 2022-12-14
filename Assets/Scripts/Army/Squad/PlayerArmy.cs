@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -8,6 +9,15 @@ namespace Army
     public class PlayerArmy : ScriptableObject
     {
         public List<PlayerSquad> Squads;
+
+        private void OnValidate()
+        {
+            foreach (PlayerSquad playerSquad in Squads)
+            {
+                var value = playerSquad.Count;
+                playerSquad.Count = (value >= 0)? value: 0;
+            }
+        }
 
         public void AddBurningDamageToUnits(int burningDamage)
         {

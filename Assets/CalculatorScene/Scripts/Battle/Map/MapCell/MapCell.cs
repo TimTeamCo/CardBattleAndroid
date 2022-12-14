@@ -39,6 +39,8 @@ namespace TTBattle.UI
                 SetImageColorToSelected();
                 _map.MapCell.IsAccasible = false;
                 _map.NewMapCell = _map.MapCell;
+                _map.PlayerSelector.playerData.PlayerMapCell.SetCellColorAsPlayers(_map.PlayerSelector.playerData);
+                _map.PlayerSelector.playerData.PlayerMapCell.SetChipSpriteToImage(_map.PlayerSelector);
                 foreach (MapCell mapCell in _map.MapCell.NextCell)
                 {
                     mapCell.IsAccasible = false;
@@ -120,7 +122,7 @@ namespace TTBattle.UI
                 mapCell.IsAccasible = true;
             }
 
-            SetChipSpriteToImage(_map.PlayerMenagerScript.PlayerSelector.playerData.PlayerChip);
+            SetChipSpriteToImage(_map.PlayerMenagerScript.PlayerSelector);
         }
 
         public void SetCellColorAsPlayers(PlayerDataCalculator player)
@@ -142,8 +144,9 @@ namespace TTBattle.UI
             _cellBG.color = _lastColor;
         }
 
-        public void SetChipSpriteToImage(Sprite chipSprite)
+        public void SetChipSpriteToImage(ArmyPanel armyPanel)
         {
+            Sprite chipSprite = armyPanel.playerData.PlayerChip;
             IndicateImage.sprite = chipSprite;
             IndicateImage.preserveAspect = true;
             IndicateImage.rectTransform.sizeDelta = new Vector2(145, 145);

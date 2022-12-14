@@ -14,7 +14,7 @@ namespace TTBattle.UI
         public Sprite FireStage1;
         public Sprite FireStage2;
         public Sprite FireStage3;
-        private ArmyPanel PlayerSelector;
+        [HideInInspector] public ArmyPanel PlayerSelector;
         private ArmyPanel PlayerInferior;
         public MapCell MapCell;
         public NextCellInformer NextCellInformer;
@@ -38,11 +38,6 @@ namespace TTBattle.UI
                 if (_newMapCell.IsTaken == false)
                 { 
                     _newMapCell.SetImageColorToUsual();
-                    _newMapCell = value;
-                }
-                else
-                {
-                    PlayerSelector.playerData.PlayerMapCell.SetCellColorAsPlayers(PlayerSelector.playerData);
                     _newMapCell = value;
                 }
             }
@@ -107,7 +102,7 @@ namespace TTBattle.UI
                     MapCell.IsTaken = true;
                     MapCell.SetCellColorAsPlayers(PlayerInferior.playerData);
                     InitializePLayersMapCells(PlayerInferior);
-                    MapCell.SetChipSpriteToImage(PlayerInferior.playerData.PlayerChip);
+                    MapCell.SetChipSpriteToImage(PlayerInferior);
                     _lastMapCell.CellIsLeaved();
                     _newMapCell = null;
                 }

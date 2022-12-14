@@ -21,8 +21,7 @@ namespace TTBattle.UI
         
         private void Awake()
         {
-            _armySelector = _playerMenagerScript.PlayerSelector;
-            _armyInferior = _playerMenagerScript.PlayerInferior;
+            SetArmys();
             MakeTurnButtonDisabled();
             _attackImage.gameObject.SetActive(true);
             _attackImage.enabled = false;
@@ -121,6 +120,11 @@ namespace TTBattle.UI
         private void ChangePlayersRoles()
         {
             _playerMenagerScript.ChangePlayersRoles();
+            SetArmys();
+        }
+
+        public void SetArmys()
+        {
             _armySelector = _playerMenagerScript.PlayerSelector;
             _armyInferior = _playerMenagerScript.PlayerInferior;
         }

@@ -4,9 +4,11 @@ using UnityEngine.UI;
 
 public class BattleControllerView : MonoBehaviour
 {
+    [SerializeField] private MakeTurn _makeTurn;
+    [SerializeField] private PlayerMenagerScript _playerMenagerScript;
     [SerializeField] private Button _defaultBattleButton;
-    [SerializeField] private ArmyPanel _army1;
-    [SerializeField] private ArmyPanel _army2;
+    private ArmyPanel _armySelector;
+    private ArmyPanel _armyInferrior;
 
     private void Start()
     {
@@ -15,7 +17,29 @@ public class BattleControllerView : MonoBehaviour
 
     private void RefreshArmyStatsToDefault()
     {
-        _army1.playerData.playerArmy.ResetToDefaultValue();
-        _army2.playerData.playerArmy.ResetToDefaultValue();
+        SetPlayers();
+        _armySelector.playerData.playerArmy.ResetToDefaultValue();
+        _armyInferrior.playerData.playerArmy.ResetToDefaultValue();
+        SetNewArmysValues();
+        ReturnNewArmysValuesToTurnScript();
+    }
+
+    private void SetPlayers()
+    {
+        _armySelector = _playerMenagerScript.PlayerSelector;
+        _armyInferrior = _playerMenagerScript.PlayerInferior;
+    }
+
+    private void SetNewArmysValues()
+    {
+        _armySelector.SetArmyValues();
+        _armyInferrior.SetArmyValues();
+        _armySelector.SetTextOfUnitsAmount();
+        _armyInferrior.SetTextOfUnitsAmount();
+    }
+
+    private void ReturnNewArmysValuesToTurnScript()
+    {
+        _makeTurn.SetArmys();
     }
 }

@@ -96,6 +96,9 @@ namespace TTBattle.UI
             _armyInferior.UnitDropdown.gameObject.SetActive(false);
             _armySelector.SetTextOfUnitsAmount();
             _armyInferior.SetTextOfUnitsAmount();
+            _attackImage.enabled = false;
+            IsAttack = false;
+            _playerMenagerScript.PlayerSelector.ShowAtackerNotification(false);
         }
 
         public void ExecuteWithAttack()
@@ -105,13 +108,12 @@ namespace TTBattle.UI
             _attackImage.enabled = true;
             _armySelector.UnitDropdown.gameObject.SetActive(true);
             _armyInferior.UnitDropdown.gameObject.SetActive(true);
+            _playerMenagerScript.PlayerSelector.ShowAtackerNotification(true);
         }
 
         private void EndOfTurn()
         {
             MakeTurnButtonDisabled();
-            _attackImage.enabled = false;
-            IsAttack = false;
             _map.NextCellInformer.gameObject.SetActive(true);
             _map.NextCellInformer.IsNotCelected();
         }

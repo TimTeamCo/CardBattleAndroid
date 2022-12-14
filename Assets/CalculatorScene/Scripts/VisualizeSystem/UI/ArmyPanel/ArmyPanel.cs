@@ -9,6 +9,7 @@ namespace TTBattle.UI
     //add name changer
     public class ArmyPanel : MonoBehaviour
     {
+        [SerializeField] private Image _attackerNotificationImage;
         [SerializeField] private Image _armyPanelImage;
         [SerializeField] private Image _nameImage;
         [SerializeField] private Text _playerName;
@@ -31,6 +32,7 @@ namespace TTBattle.UI
             SetArmyValues();
             SetBackgroundColor();
             SetTextOfCardsAttributes();
+            ShowAtackerNotification(false);
             UnitDropdown.gameObject.SetActive(false);
         }
 
@@ -85,6 +87,11 @@ namespace TTBattle.UI
         {
             _armyPanelImage.color = playerData.PlayerColor;
             _nameImage.color = playerData.PlayerColor;
+        }
+
+        public void ShowAtackerNotification(bool value)
+        {
+            _attackerNotificationImage.gameObject.SetActive(value);
         }
     }
 }

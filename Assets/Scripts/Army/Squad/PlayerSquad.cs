@@ -10,17 +10,7 @@ namespace Army
         public int Count
         {
             get => _count;
-            set
-            {
-                if (value < 0)
-                {
-                    _count = 0;
-                }
-                else
-                {
-                    _count = value;
-                }
-            }
+            set => _count = (value >= 0)? value: 0;
         }
     }
 }

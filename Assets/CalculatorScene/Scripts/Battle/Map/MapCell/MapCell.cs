@@ -37,10 +37,9 @@ namespace TTBattle.UI
             if (IsAccasible && IsTaken && _map.MapCell != this)
             {
                 SetImageColorToSelected();
+                SetBGImageToUsual();
                 _map.MapCell.IsAccasible = false;
                 _map.NewMapCell = _map.MapCell;
-                _map.PlayerSelector.playerData.PlayerMapCell.SetCellColorAsPlayers(_map.PlayerSelector.playerData);
-                _map.PlayerSelector.playerData.PlayerMapCell.SetChipSpriteToImage(_map.PlayerSelector);
                 foreach (MapCell mapCell in _map.MapCell.NextCell)
                 {
                     mapCell.IsAccasible = false;
@@ -132,10 +131,18 @@ namespace TTBattle.UI
             _cellBG.color = _lastColor;
         }
 
-        public void SetImageColorToUsual()
+        public void SetBGImageToUsual()
         {
-            _lastColor = UsualColor;
-            _cellBG.color = _lastColor;
+            if (IsTaken)
+            {
+                _map.PlayerSelector.playerData.PlayerMapCell.SetCellColorAsPlayers(_map.PlayerSelector.playerData);
+                _map.PlayerSelector.playerData.PlayerMapCell.SetChipSpriteToImage(_map.PlayerSelector);
+            }
+            else
+            {
+                _lastColor = UsualColor;
+                _cellBG.color = _lastColor;
+            }
         }
 
         private void SetImageColorToSelected()

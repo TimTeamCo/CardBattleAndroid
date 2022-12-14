@@ -35,11 +35,8 @@ namespace TTBattle.UI
                     return;
                 }
                 
-                if (_newMapCell.IsTaken == false)
-                { 
-                    _newMapCell.SetImageColorToUsual();
-                    _newMapCell = value;
-                }
+                _newMapCell.SetBGImageToUsual();
+                _newMapCell = value;
             }
         }
 

@@ -16,9 +16,8 @@ namespace TTBattle.UI
         [SerializeField] private SquadCard _warriorCard;
         [SerializeField] private SquadCard _steamerCard;
         [SerializeField] private SquadCard _mageCard;
-        [SerializeField] public Dropdown UnitDropdown;
-        [SerializeField] public Image UnitDropdownImage;
-        [SerializeField] public Image UnitDropdownTemplateImage;
+        //[SerializeField] public Dropdown UnitDropdown;
+        [SerializeField] public DropdownCalculator UnitDropdown;
         [SerializeField] public PlayerDataCalculator playerData;
         
         private PlayerSquad _warrior;

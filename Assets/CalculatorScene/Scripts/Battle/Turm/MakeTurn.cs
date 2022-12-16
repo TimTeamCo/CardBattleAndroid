@@ -23,6 +23,7 @@ namespace TTBattle.UI
         {
             SetArmys();
             MakeTurnButtonDisabled();
+            ShowPlayerSelectorNotification();
             _attackImage.gameObject.SetActive(true);
             _attackImage.enabled = false;
         }
@@ -32,12 +33,19 @@ namespace TTBattle.UI
             SetNewTurnCount();
             Attack();
             ChangePlayersRoles();
+            ShowPlayerSelectorNotification();
             MapScripts();
             SetBurningDamageToPlayers();
             SetTextOfCellAtributesToArmys();
             EndOfTurn();
         }
 
+        private void ShowPlayerSelectorNotification()
+        {
+            _armySelector.ShowPlayerSelectorNotification(true);
+            _armyInferior.ShowPlayerSelectorNotification(false);
+        }
+        
         private void MapScripts()
         {
             _map.SetPlayersMapCells();
@@ -97,7 +105,6 @@ namespace TTBattle.UI
             _armyInferior.SetTextOfUnitsAmount();
             _attackImage.enabled = false;
             IsAttack = false;
-            _playerMenagerScript.PlayerSelector.ShowAtackerNotification(false);
         }
 
         public void ExecuteWithAttack()
@@ -106,7 +113,6 @@ namespace TTBattle.UI
             _attackImage.enabled = true;
             _armySelector.UnitDropdown.gameObject.SetActive(true);
             _armyInferior.UnitDropdown.gameObject.SetActive(true);
-            _playerMenagerScript.PlayerSelector.ShowAtackerNotification(true);
         }
 
         private void EndOfTurn()

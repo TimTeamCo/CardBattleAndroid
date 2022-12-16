@@ -1,4 +1,5 @@
-﻿using Army;
+﻿using System;
+using Army;
 using Map;
 using PlayerData;
 using UnityEngine;
@@ -16,7 +17,6 @@ namespace TTBattle.UI
         [SerializeField] private SquadCard _warriorCard;
         [SerializeField] private SquadCard _steamerCard;
         [SerializeField] private SquadCard _mageCard;
-        //[SerializeField] public Dropdown UnitDropdown;
         [SerializeField] public DropdownCalculator UnitDropdown;
         [SerializeField] public PlayerDataCalculator playerData;
         
@@ -31,7 +31,6 @@ namespace TTBattle.UI
             SetArmyValues();
             SetBackgroundColor();
             SetTextOfCardsAttributes();
-            ShowAtackerNotification(false);
             UnitDropdown.gameObject.SetActive(false);
         }
 
@@ -88,7 +87,7 @@ namespace TTBattle.UI
             _nameImage.color = playerData.PlayerColor;
         }
 
-        public void ShowAtackerNotification(bool value)
+        public void ShowPlayerSelectorNotification(bool value)
         {
             _attackerNotificationImage.gameObject.SetActive(value);
         }

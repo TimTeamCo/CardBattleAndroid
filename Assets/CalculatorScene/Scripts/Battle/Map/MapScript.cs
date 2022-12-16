@@ -15,7 +15,7 @@ namespace TTBattle.UI
         public Sprite FireStage2;
         public Sprite FireStage3;
         [HideInInspector] public ArmyPanel PlayerSelector;
-        private ArmyPanel PlayerInferior;
+        [HideInInspector] public ArmyPanel PlayerInferior;
         public MapCell MapCell;
         public NextCellInformer NextCellInformer;
 
@@ -34,7 +34,13 @@ namespace TTBattle.UI
                 {
                     return;
                 }
-                
+
+                if (_newMapCell == PlayerInferior.playerData.PlayerMapCell)
+                {
+                    MakeTurn.IsAttack = false;
+                    PlayerInferior.UnitDropdown.gameObject.SetActive(false);
+                    PlayerSelector.UnitDropdown.gameObject.SetActive(false);
+                }
                 _newMapCell.SetBGImageToUsual();
                 _newMapCell = value;
             }

@@ -12,6 +12,7 @@ public class DropdownCalculator : MonoBehaviour
     [SerializeField] private DropdownItem _content1;
     [SerializeField] private DropdownItem _content2;
     [SerializeField] private DropdownItem _content3;
+    [SerializeField] private Text _everything0Text;
     private PlayerArmy _playerArmy;
     
     private void Awake()
@@ -22,6 +23,7 @@ public class DropdownCalculator : MonoBehaviour
     private void OnEnable()
     {
         DropDownImage.sprite = ShowNotNullSprite();
+        ShowEverything0Text(DropDownImage.sprite);
     }
 
     private void UpdateViewDropdownImage()
@@ -38,6 +40,8 @@ public class DropdownCalculator : MonoBehaviour
                     break;
                 case UnitType.Mage :
                     _content3.gameObject.SetActive(squad.Count != 0);
+                    break;
+                default:
                     break;
             }
         }
@@ -82,10 +86,17 @@ public class DropdownCalculator : MonoBehaviour
         _content.SetActive(!isShow);
         if (isShow) return;
         UpdateViewDropdownImage();
+        ShowEverything0Text(DropDownImage.sprite);
     }
 
     public void HideContent()
     {
         _content.SetActive(!_content.activeInHierarchy);
+    }
+
+    private void ShowEverything0Text(Sprite sprite)
+    {
+        _everything0Text.gameObject.SetActive(sprite == null);
+        DropDownImage.gameObject.SetActive(sprite != null);
     }
 }

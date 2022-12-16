@@ -103,7 +103,6 @@ namespace TTBattle.UI
         public void ExecuteWithAttack()
         {
             IsAttack = true;
-            MakeTurnButtonEnabled();
             _attackImage.enabled = true;
             _armySelector.UnitDropdown.gameObject.SetActive(true);
             _armyInferior.UnitDropdown.gameObject.SetActive(true);

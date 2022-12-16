@@ -6891,31 +6891,15 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8276370209932331072, guid: 9fa57d85977ad914691c2ea553d330e1, type: 3}
   m_PrefabInstance: {fileID: 7348873915332595232}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1668552020080772705 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8276370209932331073, guid: 9fa57d85977ad914691c2ea553d330e1, type: 3}
-  m_PrefabInstance: {fileID: 7348873915332595232}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1668552020080772707 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8276370209932331075, guid: 9fa57d85977ad914691c2ea553d330e1, type: 3}
   m_PrefabInstance: {fileID: 7348873915332595232}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1668552020080772705}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d5241d0f383780144810e50fc97c74d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &8284758041205271694 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1658783064493482670, guid: 9fa57d85977ad914691c2ea553d330e1, type: 3}
-  m_PrefabInstance: {fileID: 7348873915332595232}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9221502250651453074}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &9221502250651453074 stripped
@@ -6923,62 +6907,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1874951633654450354, guid: 9fa57d85977ad914691c2ea553d330e1, type: 3}
   m_PrefabInstance: {fileID: 7348873915332595232}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1148561606
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9221502250651453074}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 8284758041205271694}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1668552020080772705}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1001 &7659259938324315041
 PrefabInstance:
   m_ObjectHideFlags: 0

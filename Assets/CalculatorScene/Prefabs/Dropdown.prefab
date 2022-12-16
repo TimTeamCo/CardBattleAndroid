@@ -226,12 +226,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Value: 0
   DropDownImage: {fileID: 1658783064493482670}
-  PlayerArmy: {fileID: 0}
-  _dropdownButton: {fileID: 0}
+  ArmyPanel: {fileID: 0}
   _content: {fileID: 8276370210488139622}
-  _content1: {fileID: 8276370211197672006}
-  _content2: {fileID: 8276370211092862424}
-  _content3: {fileID: 8276370211293245336}
+  _content1: {fileID: 3021333629719739293}
+  _content2: {fileID: 5706019089969147466}
+  _content3: {fileID: 4224705947381421452}
 --- !u!1 &8276370210488139622
 GameObject:
   m_ObjectHideFlags: 0
@@ -244,6 +243,7 @@ GameObject:
   - component: {fileID: 8276370210488139624}
   - component: {fileID: 2902313479658101917}
   - component: {fileID: 8987825174792853573}
+  - component: {fileID: 4157237950843330464}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -338,6 +338,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4157237950843330464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8276370210488139622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!1 &8276370211092862424
 GameObject:
   m_ObjectHideFlags: 0
@@ -506,8 +520,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Value: 1
-  _dropdownCalculator: {fileID: 8276370209932331075}
   _itemSprite: {fileID: 21300000, guid: cc3e4fdaa0236b345a692f0862e644f7, type: 3}
+  _dropdownCalculator: {fileID: 8276370209932331075}
 --- !u!1 &8276370211197672006
 GameObject:
   m_ObjectHideFlags: 0
@@ -676,8 +690,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Value: 0
-  _dropdownCalculator: {fileID: 8276370209932331075}
   _itemSprite: {fileID: 21300000, guid: 6ac80c8e422988a4ba97817dec035087, type: 3}
+  _dropdownCalculator: {fileID: 8276370209932331075}
 --- !u!1 &8276370211293245336
 GameObject:
   m_ObjectHideFlags: 0
@@ -846,5 +860,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Value: 2
-  _dropdownCalculator: {fileID: 8276370209932331075}
   _itemSprite: {fileID: 21300000, guid: 232ba08b92252a84ba27792c56d333cc, type: 3}
+  _dropdownCalculator: {fileID: 8276370209932331075}

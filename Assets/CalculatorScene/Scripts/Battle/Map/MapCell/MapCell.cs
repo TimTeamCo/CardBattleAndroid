@@ -37,7 +37,7 @@ namespace TTBattle.UI
             if (IsAccasible && IsTaken && _map.MapCell != this)
             {
                 SetImageColorToSelected();
-                _map.NewMapCell = this;
+                _map.NewMapCell = _map.PlayerSelector.playerData.PlayerMapCell;
                 _map.MakeTurn.ExecuteWithAttack();
                 _map.MakeTurn.MakeTurnButtonEnabled();
             }

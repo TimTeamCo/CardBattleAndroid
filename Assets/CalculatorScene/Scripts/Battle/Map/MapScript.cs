@@ -32,15 +32,21 @@ namespace TTBattle.UI
 
                 if (value.MapZone.zoneID == _newMapCell.MapZone.zoneID)
                 {
+                    if(MakeTurn.IsAttack) CancelAttack();
                     return;
                 }
 
-                if (_newMapCell == PlayerInferior.playerData.PlayerMapCell)
+                if (MakeTurn.IsAttack) CancelAttack();
+                
+
+                void CancelAttack()
                 {
                     MakeTurn.IsAttack = false;
                     PlayerInferior.UnitDropdown.gameObject.SetActive(false);
                     PlayerSelector.UnitDropdown.gameObject.SetActive(false);
+                    PlayerInferior.playerData.PlayerMapCell.SetBGImageToUsual();
                 }
+                
                 _newMapCell.SetBGImageToUsual();
                 _newMapCell = value;
             }

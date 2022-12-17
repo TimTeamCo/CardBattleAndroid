@@ -17,6 +17,7 @@ namespace PlayerData
 
         private void OnValidate()
         {
+#if UNITY_EDITOR
             foreach (ArmyPanel armyPanel in FindObjectsOfType<ArmyPanel>())
             {
                 if (armyPanel.playerData == this)
@@ -24,6 +25,7 @@ namespace PlayerData
                     armyPanel.ShowPlayerName();
                 }
             }
+#endif
         }
     }
 }

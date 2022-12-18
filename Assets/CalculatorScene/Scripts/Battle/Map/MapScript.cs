@@ -9,7 +9,7 @@ namespace TTBattle.UI
     {
         [SerializeField] private List<BurningZone> BurningZones = new List<BurningZone>();
         [SerializeField] public MakeTurn MakeTurn;
-        [SerializeField] public PlayerMenagerScript PlayerMenagerScript;
+        [SerializeField] public ArmyPanelManager armyPanelManager;
         
         public Sprite FireStage1;
         public Sprite FireStage2;
@@ -32,20 +32,13 @@ namespace TTBattle.UI
 
                 if (value.MapZone.zoneID == _newMapCell.MapZone.zoneID)
                 {
-                    if(MakeTurn.IsAttack) CancelAttack();
+                    if (MakeTurn.IsAttack == false) return;
+                    MakeTurn.UndoAttack();
+                    PlayerInferior.playerData.PlayerMapCell.SetBGImageToUsual();
                     return;
                 }
 
-                if (MakeTurn.IsAttack) CancelAttack();
-                
-
-                void CancelAttack()
-                {
-                    MakeTurn.IsAttack = false;
-                    PlayerInferior.UnitDropdown.gameObject.SetActive(false);
-                    PlayerSelector.UnitDropdown.gameObject.SetActive(false);
-                    PlayerInferior.playerData.PlayerMapCell.SetBGImageToUsual();
-                }
+                if (MakeTurn.IsAttack) MakeTurn.UndoAttack();
                 
                 _newMapCell.SetBGImageToUsual();
                 _newMapCell = value;
@@ -85,8 +78,8 @@ namespace TTBattle.UI
 
         private void SetPlayers()
         {
-            PlayerSelector = PlayerMenagerScript.PlayerSelector;
-            PlayerInferior = PlayerMenagerScript.PlayerInferior;
+            PlayerSelector = armyPanelManager.PlayerSelector;
+            PlayerInferior = armyPanelManager.PlayerInferior;
         }
         
         private void InitializePLayersMapCells()

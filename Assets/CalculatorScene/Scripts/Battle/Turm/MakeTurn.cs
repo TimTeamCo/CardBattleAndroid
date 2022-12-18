@@ -5,8 +5,9 @@ namespace TTBattle.UI
 {
     public class MakeTurn : MonoBehaviour
     {
-        [SerializeField] private PlayerMenagerScript _playerMenagerScript;
+        [SerializeField] private ArmyPanelManager armyPanelManager;
         [SerializeField] private TurnsNumerator _turnsNumerator;
+        [SerializeField] private NextCellInformer _nextCellInformer;
         [SerializeField] private SquadAttack _squadAttack;
         [SerializeField] private MapScript _map;
         [SerializeField] private Button _turnButton;
@@ -85,7 +86,7 @@ namespace TTBattle.UI
             _turnImage.color = EnabledButtonColor;
         }
 
-        public void MakeTurnButtonDisabled()
+        private void MakeTurnButtonDisabled()
         {
             _turnButton.enabled = false;
             _turnImage.color = DisabledButtonColor;
@@ -111,6 +112,7 @@ namespace TTBattle.UI
         {
             IsAttack = true;
             _attackImage.enabled = true;
+            _nextCellInformer.gameObject.SetActive(false);
             _armySelector.UnitDropdown.gameObject.SetActive(true);
             _armyInferior.UnitDropdown.gameObject.SetActive(true);
         }
@@ -124,14 +126,23 @@ namespace TTBattle.UI
 
         private void ChangePlayersRoles()
         {
-            _playerMenagerScript.ChangePlayersRoles();
+            armyPanelManager.ChangePlayersRoles();
             SetArmys();
         }
 
         public void SetArmys()
         {
-            _armySelector = _playerMenagerScript.PlayerSelector;
-            _armyInferior = _playerMenagerScript.PlayerInferior;
+            _armySelector = armyPanelManager.PlayerSelector;
+            _armyInferior = armyPanelManager.PlayerInferior;
+        }
+
+        public void UndoAttack()
+        {
+            IsAttack = false;
+            _attackImage.enabled = false;
+            _nextCellInformer.gameObject.SetActive(true);
+            _armySelector.UnitDropdown.gameObject.SetActive(false);
+            _armyInferior.UnitDropdown.gameObject.SetActive(false); 
         }
     }
 }

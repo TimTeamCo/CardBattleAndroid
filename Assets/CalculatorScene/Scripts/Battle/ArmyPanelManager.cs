@@ -2,7 +2,7 @@ using System;
 using TTBattle.UI;
 using UnityEngine;
 
-public class PlayerMenagerScript : MonoBehaviour
+public class ArmyPanelManager : MonoBehaviour
 {
     [SerializeField] public ArmyPanel PlayerSelector; 
     [SerializeField] public ArmyPanel PlayerInferior;

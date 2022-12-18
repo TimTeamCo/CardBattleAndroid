@@ -108,13 +108,13 @@ namespace TTBattle.UI
         {
             IsTaken = true;
             IsAccasible = true;
-            SetCellColorAsPlayers(_map.PlayerMenagerScript.PlayerSelector.playerData);
+            SetCellColorAsPlayers(_map.armyPanelManager.PlayerSelector.playerData);
             foreach (MapCell mapCell in NextCell)
             {
                 mapCell.IsAccasible = true;
             }
 
-            SetChipSpriteToImage(_map.PlayerMenagerScript.PlayerSelector);
+            SetChipSpriteToImage(_map.armyPanelManager.PlayerSelector);
         }
 
         public void SetCellColorAsPlayers(PlayerDataCalculator player)

@@ -38,6 +38,7 @@ namespace TTBattle.UI
             {
                 SetImageColorToSelected();
                 _map.NewMapCell = _map.PlayerSelector.playerData.PlayerMapCell;
+                _map.PlayerSelector.playerData.PlayerMapCell.SetBGImageToUsual();
                 _map.MakeTurn.ExecuteWithAttack();
                 _map.MakeTurn.MakeTurnButtonEnabled();
             }
@@ -126,12 +127,12 @@ namespace TTBattle.UI
 
         public void SetBGImageToUsual()
         {
-            if (this == _map.PlayerSelector.playerData.PlayerMapCell)
+            if (this.MapZone.zoneID == _map.PlayerSelector.playerData.PlayerMapCell.MapZone.zoneID)
             {
                 SetCellColorAsPlayers(_map.PlayerSelector.playerData);
                 SetChipSpriteToImage(_map.PlayerSelector);
             }
-            else if (this == _map.PlayerInferior.playerData.PlayerMapCell)
+            else if (this.MapZone.zoneID == _map.PlayerInferior.playerData.PlayerMapCell.MapZone.zoneID)
             {
                 SetCellColorAsPlayers(_map.PlayerInferior.playerData);
                 SetChipSpriteToImage(_map.PlayerInferior);

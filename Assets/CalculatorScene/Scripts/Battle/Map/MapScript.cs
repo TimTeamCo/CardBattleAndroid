@@ -9,12 +9,13 @@ namespace TTBattle.UI
     {
         [SerializeField] private List<BurningZone> BurningZones = new List<BurningZone>();
         [SerializeField] public MakeTurn MakeTurn;
+        [SerializeField] public ArmyPanelManager armyPanelManager;
         
         public Sprite FireStage1;
         public Sprite FireStage2;
         public Sprite FireStage3;
-        public ArmyPanel PlayerSelector;
-        public ArmyPanel PlayerInferior;
+        [HideInInspector] public ArmyPanel PlayerSelector;
+        [HideInInspector] public ArmyPanel PlayerInferior;
         public MapCell MapCell;
         public NextCellInformer NextCellInformer;
 
@@ -31,19 +32,16 @@ namespace TTBattle.UI
 
                 if (value.MapZone.zoneID == _newMapCell.MapZone.zoneID)
                 {
+                    if (MakeTurn.IsAttack == false) return;
+                    MakeTurn.UndoAttack();
+                    PlayerInferior.playerData.PlayerMapCell.SetBGImageToUsual();
                     return;
                 }
+
+                if (MakeTurn.IsAttack) MakeTurn.UndoAttack();
                 
-                if (_newMapCell.IsTaken == false)
-                { 
-                    _newMapCell.SetImageColorToUsual();
-                    _newMapCell = value;
-                }
-                else
-                {
-                    PlayerSelector.playerData.PlayerMapCell.SetCellColorAsPlayers(PlayerSelector.playerData);
-                    _newMapCell = value;
-                }
+                _newMapCell.SetBGImageToUsual();
+                _newMapCell = value;
             }
         }
 
@@ -69,6 +67,7 @@ namespace TTBattle.UI
         
         public void Awake()
         {
+            SetPlayers();
             InitializePLayersMapCells();
         }
 
@@ -77,6 +76,12 @@ namespace TTBattle.UI
             MapCell.CellIsTaken();
         }
 
+        private void SetPlayers()
+        {
+            PlayerSelector = armyPanelManager.PlayerSelector;
+            PlayerInferior = armyPanelManager.PlayerInferior;
+        }
+        
         private void InitializePLayersMapCells()
         {
             InitializePLayersMapCells(PlayerSelector);
@@ -89,7 +94,7 @@ namespace TTBattle.UI
             player.playerData.MapZone = MapCell.MapZone;
         }
         
-        private void SetPlayerSelectorMapCell()
+        private void SetPlayerInferiorMapCell()
         {
             {
                 if (_newMapCell.MapZone.zoneID != MapCell.MapZone.zoneID)
@@ -97,37 +102,37 @@ namespace TTBattle.UI
                     _lastMapCell = MapCell;
                     MapCell = NewMapCell;
                     MapCell.IsTaken = true;
-                    MapCell.SetCellColorAsPlayers(PlayerSelector.playerData);
-                    InitializePLayersMapCells(PlayerSelector);
-                    MapCell.SetChipSpriteToImage(PlayerSelector.playerData.PlayerChip);
+                    MapCell.SetCellColorAsPlayers(PlayerInferior.playerData);
+                    InitializePLayersMapCells(PlayerInferior);
+                    MapCell.SetChipSpriteToImage(PlayerInferior);
                     _lastMapCell.CellIsLeaved();
                     _newMapCell = null;
                 }
                 else
                 {
-                    PlayerSelector.playerData.PlayerMapCell.IsAccasible = false;
+                    PlayerInferior.playerData.PlayerMapCell.IsAccasible = false;
                     foreach (MapCell mapCell in MapCell.NextCell)
                     {
                         mapCell.IsAccasible = false;
                     }
                     _newMapCell = null;
-                    PlayerSelector.playerData.PlayerMapCell.SetCellColorAsPlayers(PlayerSelector.playerData);
+                    PlayerInferior.playerData.PlayerMapCell.SetCellColorAsPlayers(PlayerInferior.playerData);
                 }
             }
         }
 
-        private void SwapPlayersRoles()
+        private void SetPlayerSelectorMapCell2()
         {
-            (PlayerInferior, PlayerSelector) = (PlayerSelector, PlayerInferior);
             MapCell = PlayerSelector.playerData.PlayerMapCell;
             MapCell.CellIsTaken();
             PlayerSelector.playerData.PlayerMapCell = MapCell;
         }
-
+        
         public void SetPlayersMapCells()
         {
-            SetPlayerSelectorMapCell();
-            SwapPlayersRoles();
+            SetPlayers();
+            SetPlayerInferiorMapCell();
+            SetPlayerSelectorMapCell2();
         }
         
         private void SetBurningCell(MapCell cell)

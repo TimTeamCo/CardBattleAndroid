@@ -37,15 +37,10 @@ namespace TTBattle.UI
             if (IsAccasible && IsTaken && _map.MapCell != this)
             {
                 SetImageColorToSelected();
-                _map.MapCell.IsAccasible = false;
-                _map.NewMapCell = _map.MapCell;
-                foreach (MapCell mapCell in _map.MapCell.NextCell)
-                {
-                    mapCell.IsAccasible = false;
-                }
-
+                _map.NewMapCell = _map.PlayerSelector.playerData.PlayerMapCell;
+                _map.PlayerSelector.playerData.PlayerMapCell.SetBGImageToUsual();
                 _map.MakeTurn.ExecuteWithAttack();
-                _map.NextCellInformer.gameObject.SetActive(false);
+                _map.MakeTurn.MakeTurnButtonEnabled();
             }
             else if (IsAccasible && !IsTaken || _map.MapCell == this)
             {
@@ -114,13 +109,13 @@ namespace TTBattle.UI
         {
             IsTaken = true;
             IsAccasible = true;
-            SetCellColorAsPlayers(_map.PlayerSelector.playerData);
+            SetCellColorAsPlayers(_map.armyPanelManager.PlayerSelector.playerData);
             foreach (MapCell mapCell in NextCell)
             {
                 mapCell.IsAccasible = true;
             }
 
-            SetChipSpriteToImage(_map.PlayerSelector.playerData.PlayerChip);
+            SetChipSpriteToImage(_map.armyPanelManager.PlayerSelector);
         }
 
         public void SetCellColorAsPlayers(PlayerDataCalculator player)
@@ -130,10 +125,23 @@ namespace TTBattle.UI
             _cellBG.color = _lastColor;
         }
 
-        public void SetImageColorToUsual()
+        public void SetBGImageToUsual()
         {
-            _lastColor = UsualColor;
-            _cellBG.color = _lastColor;
+            if (this.MapZone.zoneID == _map.PlayerSelector.playerData.PlayerMapCell.MapZone.zoneID)
+            {
+                SetCellColorAsPlayers(_map.PlayerSelector.playerData);
+                SetChipSpriteToImage(_map.PlayerSelector);
+            }
+            else if (this.MapZone.zoneID == _map.PlayerInferior.playerData.PlayerMapCell.MapZone.zoneID)
+            {
+                SetCellColorAsPlayers(_map.PlayerInferior.playerData);
+                SetChipSpriteToImage(_map.PlayerInferior);
+            }
+            else
+            {
+                _lastColor = UsualColor;
+                _cellBG.color = _lastColor;
+            }
         }
 
         private void SetImageColorToSelected()
@@ -142,8 +150,9 @@ namespace TTBattle.UI
             _cellBG.color = _lastColor;
         }
 
-        public void SetChipSpriteToImage(Sprite chipSprite)
+        public void SetChipSpriteToImage(ArmyPanel armyPanel)
         {
+            Sprite chipSprite = armyPanel.playerData.PlayerChip;
             IndicateImage.sprite = chipSprite;
             IndicateImage.preserveAspect = true;
             IndicateImage.rectTransform.sizeDelta = new Vector2(145, 145);

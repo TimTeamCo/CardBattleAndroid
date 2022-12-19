@@ -1,4 +1,5 @@
-﻿using Army;
+﻿using System;
+using Army;
 using Map;
 using PlayerData;
 using UnityEngine;
@@ -9,15 +10,14 @@ namespace TTBattle.UI
     //add name changer
     public class ArmyPanel : MonoBehaviour
     {
+        [SerializeField] private Image _attackerNotificationImage;
         [SerializeField] private Image _armyPanelImage;
         [SerializeField] private Image _nameImage;
         [SerializeField] private Text _playerName;
         [SerializeField] private SquadCard _warriorCard;
         [SerializeField] private SquadCard _steamerCard;
         [SerializeField] private SquadCard _mageCard;
-        [SerializeField] public Dropdown UnitDropdown;
-        [SerializeField] public Image UnitDropdownImage;
-        [SerializeField] public Image UnitDropdownTemplateImage;
+        [SerializeField] public DropdownCalculator UnitDropdown;
         [SerializeField] public PlayerDataCalculator playerData;
         
         private PlayerSquad _warrior;
@@ -85,6 +85,11 @@ namespace TTBattle.UI
         {
             _armyPanelImage.color = playerData.PlayerColor;
             _nameImage.color = playerData.PlayerColor;
+        }
+
+        public void ShowPlayerSelectorNotification(bool value)
+        {
+            _attackerNotificationImage.gameObject.SetActive(value);
         }
     }
 }

@@ -1,5 +1,8 @@
-﻿using Army;
+﻿using System;
+using System.Collections.Generic;
+using Army;
 using Map;
+using TTBattle.UI;
 using UnityEngine;
 
 namespace PlayerData
@@ -11,5 +14,18 @@ namespace PlayerData
         public PlayerHand PlayerHand;
         public MapZone MapZone;
         public PlayerArmy playerArmy;
+
+        private void OnValidate()
+        {
+#if UNITY_EDITOR
+            foreach (ArmyPanel armyPanel in FindObjectsOfType<ArmyPanel>())
+            {
+                if (armyPanel.playerData == this)
+                {
+                    armyPanel.ShowPlayerName();
+                }
+            }
+#endif
+        }
     }
 }

@@ -123,42 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &114363180 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 114363180, guid: e66cfe70be244784e986233280477dba, type: 3}
-  m_PrefabInstance: {fileID: 1925029200}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &114363182 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 114363182, guid: e66cfe70be244784e986233280477dba, type: 3}
-  m_PrefabInstance: {fileID: 1925029200}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 114363180}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!1 &145361426 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 220050948477549738, guid: e66cfe70be244784e986233280477dba, type: 3}
-  m_PrefabInstance: {fileID: 1925029200}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &145361431
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 145361426}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cde8714b84ef59e4baf4dad81928fd6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _defaultBattleButton: {fileID: 114363182}
-  _army1: {fileID: 1850725082}
-  _army2: {fileID: 1854098160}
 --- !u!1 &179743027
 GameObject:
   m_ObjectHideFlags: 0
@@ -1677,28 +1641,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1412746908}
   m_CullTransparentMesh: 1
---- !u!114 &1850725082 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6352339776815411115, guid: e66cfe70be244784e986233280477dba, type: 3}
-  m_PrefabInstance: {fileID: 1925029200}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7696977a78e74f4b89846cd774308685, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1854098160 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3584774192112977581, guid: e66cfe70be244784e986233280477dba, type: 3}
-  m_PrefabInstance: {fileID: 1925029200}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7696977a78e74f4b89846cd774308685, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1892443753
 GameObject:
   m_ObjectHideFlags: 0
@@ -1790,10 +1732,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 969372377, guid: e66cfe70be244784e986233280477dba, type: 3}
-      propertyPath: _defaultBattleButton
-      value: 
-      objectReference: {fileID: 114363180}
     - target: {fileID: 220050948477549717, guid: e66cfe70be244784e986233280477dba, type: 3}
       propertyPath: m_Camera
       value: 

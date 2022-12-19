@@ -9,6 +9,15 @@ namespace Army
     {
         public List<PlayerSquad> Squads;
 
+        private void OnValidate()
+        {
+            foreach (PlayerSquad playerSquad in Squads)
+            {
+                var value = playerSquad.Count;
+                playerSquad.Count = (value >= 0)? value: 0;
+            }
+        }
+
         public void AddBurningDamageToUnits(int burningDamage)
         {
             foreach (var playerSquad in Squads)

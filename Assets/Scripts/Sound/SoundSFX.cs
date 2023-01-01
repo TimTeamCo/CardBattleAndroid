@@ -3,10 +3,10 @@ using UnityEngine;
 public class SoundSFX : MonoBehaviour
 {
    public AudioSource myFx;
-   public AudioClip StartButtonsound;
+   public AudioClip ButtonClickSound;
 
    public void StartButton()
    {
-      myFx.PlayOneShot(StartButtonsound);
+      myFx.PlayOneShot(ButtonClickSound);
    }
 }

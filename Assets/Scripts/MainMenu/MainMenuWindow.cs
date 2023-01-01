@@ -1,10 +1,9 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MainMenueScript : MonoBehaviour
+public class MainMenuWindow : MonoBehaviour
 {
     [SerializeField] private Button _optionsButton;
     [SerializeField] private Button _shopButton;
@@ -24,6 +23,11 @@ public class MainMenueScript : MonoBehaviour
     private void OnClickOptionsButton()
     {
         Debug.Log("Options Button was Clicked");
+        Sequence sequence = DOTween.Sequence();
+        sequence.Append(_optionsButton.transform.DORotate(
+            new Vector3(_optionsButton.transform.localRotation.x, _optionsButton.transform.localRotation.y, -720f), 2,
+            RotateMode.FastBeyond360));
+        _optionsButton.GetComponent<SoundSFX>().StartButton();
     }
 
     private void OnClickShopButton()

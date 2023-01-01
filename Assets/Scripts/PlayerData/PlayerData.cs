@@ -24,7 +24,7 @@ namespace PlayerData
                 {
                     armyPanel.ShowPlayerName();
                 }
-            }
+            }   
 #endif
         }
     }

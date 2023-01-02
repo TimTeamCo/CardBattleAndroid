@@ -11,6 +11,8 @@ public class MainMenuWindow : MonoBehaviour
     [SerializeField] private StartButtonView _startButtonView;
     [SerializeField] private ShopButtonView _shopButtonView;
     [SerializeField] private InventoryButtonView _inventoryButtonView;
+    [SerializeField] private RectTransform _xpRect;
+    [SerializeField] private RectTransform _dustRect;
     private Sequence _optionSequence;
 
     private bool _searchMatchStart;
@@ -50,6 +52,14 @@ public class MainMenuWindow : MonoBehaviour
         _startButtonView.AnimateOnClick();
     }
 
+    public void LevelUp()
+    {
+        var sequence = DOTween.Sequence();
+        sequence.Append(DOTween.To(() => _xpRect.offsetMax, x => _xpRect.offsetMax = x, new Vector2(0, 0), 2))
+            .Append(DOTween.To(() => _xpRect.offsetMax, x => _xpRect.offsetMax = x, new Vector2( -1000, 0), 0.01f))
+            .Append(DOTween.To(() => _xpRect.offsetMax, x => _xpRect.offsetMax = x, new Vector2(-700, 0), 1));
+    }
+    
     private void OnDestroy()
     {
         _optionsButton.onClick.RemoveListener(OnClickOptionsButton);

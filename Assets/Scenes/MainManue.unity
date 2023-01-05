@@ -3042,5 +3042,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: RightBackStage
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3427584841053861566, guid: fa4c25d8d535dad4492a8270cc61db3f, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: fa4c25d8d535dad4492a8270cc61db3f, type: 3}

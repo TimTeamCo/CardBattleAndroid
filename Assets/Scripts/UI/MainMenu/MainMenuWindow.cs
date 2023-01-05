@@ -7,8 +7,6 @@ public class MainMenuWindow : MonoBehaviour
     [SerializeField] private Button _optionsButton;
     [SerializeField] private Button _shopButton;
     [SerializeField] private Button _inventoryButton;
-    [SerializeField] private Button _startMatch;
-    [SerializeField] private StartButtonView _startButtonView;
     [SerializeField] private ShopButtonView _shopButtonView;
     [SerializeField] private InventoryButtonView _inventoryButtonView;
     [SerializeField] private RectTransform _xpRect;
@@ -21,7 +19,6 @@ public class MainMenuWindow : MonoBehaviour
         _optionsButton.onClick.AddListener(OnClickOptionsButton);
         _shopButton.onClick.AddListener(OnClickShopButton);
         _inventoryButton.onClick.AddListener(OnClickInventoryButton);
-        _startMatch.onClick.AddListener(OnClickStartMatch);
     }
 
     private void OnClickOptionsButton()
@@ -35,21 +32,18 @@ public class MainMenuWindow : MonoBehaviour
         _optionSequence.Append(_optionsButton.transform.DOLocalRotate(
             new Vector3(_optionsButton.transform.localRotation.x, _optionsButton.transform.localRotation.y, -720f), 2,
             RotateMode.FastBeyond360));
+        
+        Initer.Instance.LobbyManager.DebugSMTH();
     }
 
     private void OnClickShopButton()
     {
-        _shopButtonView.AnimateOnClick();
+        // open window shop maybe send data to window or window get data and delete from this script this
     }
 
     private void OnClickInventoryButton()
     {
-        _inventoryButtonView.AnimateOnClick();
-    }
-
-    private void OnClickStartMatch()
-    {
-        _startButtonView.AnimateOnClick();
+        // open window Inventory maybe send data to window or window get data and delete from this script this
     }
 
     public void LevelUp()
@@ -65,6 +59,5 @@ public class MainMenuWindow : MonoBehaviour
         _optionsButton.onClick.RemoveListener(OnClickOptionsButton);
         _shopButton.onClick.RemoveListener(OnClickShopButton);
         _inventoryButton.onClick.RemoveListener(OnClickInventoryButton);
-        _startMatch.onClick.RemoveListener(OnClickStartMatch);
     }
 }

@@ -1,16 +1,28 @@
 using System;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StartButtonView : MonoBehaviour
 {
+    [SerializeField] private Button _button;
     [SerializeField] private GameObject _bottomCircle;
     [SerializeField] private GameObject _middleCircle;
     [SerializeField] private GameObject _upCircle;
     private bool isSelected;
     private Sequence _searchSequence;
 
-    public void AnimateOnClick()
+    private void Start()
+    {
+        _button.onClick.AddListener(OnClickShopButton);
+    }
+    
+    private void OnClickShopButton()
+    {
+        AnimateOnClick();
+    }
+
+    private void AnimateOnClick()
     {
         Sequence sequence = DOTween.Sequence();
         sequence

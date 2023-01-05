@@ -10,6 +10,8 @@ namespace NetCode.Lobby
         void JoinLobbyByID(string lobbyID);
         
         void JoinLobbyByLobbyCode(string lobbyCode);
+
+        void QuickJoin();
         
         void DeleteAllCreatedLobbies();
         

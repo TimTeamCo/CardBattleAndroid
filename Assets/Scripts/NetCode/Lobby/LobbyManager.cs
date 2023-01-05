@@ -98,6 +98,32 @@ namespace NetCode.Lobby
             }
         }
 
+        public async void QuickJoin()
+        {
+            //sample
+            try
+            {
+                // Quick-join a random lobby with a maximum capacity of 10 or more players.
+                QuickJoinLobbyOptions options = new QuickJoinLobbyOptions();
+
+                options.Filter = new List<QueryFilter>()
+                {
+                    new QueryFilter(
+                        field: QueryFilter.FieldOptions.MaxPlayers,
+                        op: QueryFilter.OpOptions.GE,
+                        value: "10")
+                };
+
+                var lobby = await LobbyService.Instance.QuickJoinLobbyAsync(options);
+
+                // ...
+            }
+            catch (LobbyServiceException e)
+            {
+                Debug.LogError(e);
+            }
+        }
+
         public void DeleteAllCreatedLobbies()
         {
             if (_heartbeatLobbyCoroutine != null)

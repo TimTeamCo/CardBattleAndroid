@@ -1,17 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace NetCode.Lobby
 {
     public interface ILobby
     {
-        void CreateLobby();
+        void CreateLobby(Action<string> result);
         
         void JoinLobbyByID(string lobbyID);
         
         void JoinLobbyByLobbyCode(string lobbyCode);
         
-        void QuickJoin();
+        void QuickJoin(Action<string> result);
         
         void DeleteAllCreatedLobbies();
         
@@ -27,6 +28,8 @@ namespace NetCode.Lobby
         
         Task Reconnect(string lobbyId);
 
-        void LeaveLobby(string lobbyId);
+        void LeaveLobby();
+
+        Task GetLobby(string lobbyId, Action<string> result);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,10 +13,27 @@ namespace NetCode.Lobby
     public class LobbyManager : MonoBehaviour, ILobby
     {
         private IEnumerator _heartbeatLobbyCoroutine;
-        private ConcurrentQueue<string> _createdLobbyIds;
+        private ConcurrentQueue<string> _createdLobbyIds = new ConcurrentQueue<string>();
+        private string _lobbyID;
 
-        public async void CreateLobby()
+        public async void CreateLobby(Action<string> result)
         {
+            string lobbyName = await GenerateLobbyName();
+            Debug.Log($"Tim lobbyName {lobbyName}");
+            int maxPlayers = 2;
+            CreateLobbyOptions options = new CreateLobbyOptions();
+            options.IsPrivate = false;
+            
+            Unity.Services.Lobbies.Models.Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, options);
+
+            Debug.Log($"Tim  lobby.Id {lobby.Id}");
+            _createdLobbyIds.Enqueue(lobby.Id);
+            _heartbeatLobbyCoroutine = HeartbeatLobbyCoroutine(lobby.Id, 15);
+            
+            StartCoroutine(_heartbeatLobbyCoroutine);
+            result.Invoke($"Lobby created {lobbyName}");
+            
+            /* Sample
             string lobbyName = "new lobby";
             int maxPlayers = 2;
             CreateLobbyOptions options = new CreateLobbyOptions();
@@ -72,6 +90,33 @@ namespace NetCode.Lobby
             _heartbeatLobbyCoroutine = HeartbeatLobbyCoroutine(lobby.Id, 15);
             // Heartbeat the lobby every 15 seconds.
             StartCoroutine(_heartbeatLobbyCoroutine);
+            */
+        }
+
+        private async Task<string> GenerateLobbyName()
+        {
+            int id = 0;
+            var lobbyName = String.Empty;
+            bool isBreak = false;
+            for (int i = 0; i >= id; i++)
+            {
+                
+                 await GetLobby(i.ToString(), result =>
+                {
+                    if (result == String.Empty)
+                    {
+                        lobbyName = $"Lobby{i}";
+                        isBreak = true;
+                    }
+                });
+                 
+                 if (isBreak)
+                 {
+                     break;
+                 }
+            }
+
+            return lobbyName;
         }
 
         public async void JoinLobbyByID(string lobbyID)
@@ -98,9 +143,35 @@ namespace NetCode.Lobby
             }
         }
 
-        public async void QuickJoin()
+        public async void QuickJoin(Action<string> result)
         {
-            //sample
+            try
+            {
+                QuickJoinLobbyOptions options = new QuickJoinLobbyOptions();
+
+                // options.Filter = new List<QueryFilter>()
+                // {
+                //     new QueryFilter(
+                //         field: QueryFilter.FieldOptions.MaxPlayers,
+                //         op: QueryFilter.OpOptions.GE,
+                //         value: "10")
+                // };
+
+                var lobby = await LobbyService.Instance.QuickJoinLobbyAsync(options);
+                _lobbyID = lobby.Id;
+                result.Invoke($"Joined into lobby {_lobbyID}");
+            }
+            catch (LobbyServiceException e)
+            {
+                Debug.LogError(e);
+                result.Invoke($"Can't join into lobby :(");
+                CreateLobby(res =>
+                {
+                    result.Invoke($"{res}");
+                });
+            }
+            
+            /* Sample
             try
             {
                 // Quick-join a random lobby with a maximum capacity of 10 or more players.
@@ -122,6 +193,7 @@ namespace NetCode.Lobby
             {
                 Debug.LogError(e);
             }
+            */
         }
 
         public void DeleteAllCreatedLobbies()
@@ -303,18 +375,32 @@ namespace NetCode.Lobby
             await LobbyService.Instance.ReconnectToLobbyAsync(lobbyId);
         }
 
-        public async void LeaveLobby(string lobbyId)
+        public async void LeaveLobby()
         {
             try
             {
                 //Ensure you sign-in before calling Authentication Instance
                 //See IAuthenticationService interface
                 string playerId = AuthenticationService.Instance.PlayerId;
-                await LobbyService.Instance.RemovePlayerAsync(lobbyId, playerId);
+                await LobbyService.Instance.RemovePlayerAsync(_lobbyID, playerId);
             }
             catch (LobbyServiceException e)
             {
-                Debug.Log(e);
+                Debug.LogError(e);
+            }
+        }
+
+        public async Task GetLobby(string lobbyId, Action<string> result)
+        {
+            try
+            {
+                var lobby = await LobbyService.Instance.GetLobbyAsync(lobbyId);
+                result.Invoke(lobby.Id);
+            }
+            catch (LobbyServiceException e)
+            {
+                Debug.LogError(e);
+                result.Invoke(String.Empty);
             }
         }
 

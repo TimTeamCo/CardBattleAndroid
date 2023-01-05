@@ -1,3 +1,4 @@
+using System;
 using NetCode.Authentication;
 using NetCode.Lobby;
 using Unity.Services.Authentication;
@@ -57,5 +58,10 @@ public class Initer : MonoBehaviour
         {
             Debug.Log("Player session could not be refreshed and expired.");
         };
+    }
+
+    private void OnApplicationQuit()
+    {
+        LobbyManager.LeaveLobby();
     }
 }

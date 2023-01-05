@@ -68,6 +68,10 @@ public class StartButtonView : MonoBehaviour
     {
         if (isSelected == false) return;
         _hamsterDialog.text = $"Searching...";
+        Initer.Instance.LobbyManager.QuickJoin(result =>
+        {
+            _hamsterDialog.text = $"{result}";
+        });
         _searchSequence = DOTween.Sequence();
         _searchSequence.Append(_middleCircle.transform.DORotate(new Vector3(0, 0,
                 _middleCircle.transform.localRotation.z + 25f), 0.25f, RotateMode.FastBeyond360).SetRelative(true).SetEase(Ease.Linear))

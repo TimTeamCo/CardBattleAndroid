@@ -111,7 +111,7 @@ namespace TTBattle
         }
 
         private IEnumerator MageAttack(UnitType defUnitType, PlayerSquad attacker, PlayerSquad defender,
-            PlayerData.PlayerData playerDefender, PlayerData.PlayerData playerAttacker, TurnsNumerator turnsNumerator, ArmyPanel armyDefender, ArmyPanel armyAttacker = null)
+            PlayerData.PlayerData playerDefender, PlayerData.PlayerData playerAttacker, TurnsNumerator turnsNumerator, ArmyPanel armyDefender, ArmyPanel armyAttacker)
         {
             int numerator;
             var mapZone = playerDefender.MapZone;

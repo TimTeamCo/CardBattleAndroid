@@ -137,6 +137,18 @@ namespace NetCode.Lobby
             }
         }
 
+        public async void DeleteLobby(string lobbyId)
+        {
+            try
+            {
+                await LobbyService.Instance.DeleteLobbyAsync("lobbyId");
+            }
+            catch (LobbyServiceException e)
+            {
+                Debug.LogError(e);
+            }
+        }
+
         public async Task<List<string>> GetJoinedLobbies()
         {
             try
@@ -284,6 +296,26 @@ namespace NetCode.Lobby
                     value: "Conquest")
             };
             #endregion
+        }
+
+        public async Task Reconnect(string lobbyId)
+        {
+            await LobbyService.Instance.ReconnectToLobbyAsync(lobbyId);
+        }
+
+        public async void LeaveLobby(string lobbyId)
+        {
+            try
+            {
+                //Ensure you sign-in before calling Authentication Instance
+                //See IAuthenticationService interface
+                string playerId = AuthenticationService.Instance.PlayerId;
+                await LobbyService.Instance.RemovePlayerAsync(lobbyId, playerId);
+            }
+            catch (LobbyServiceException e)
+            {
+                Debug.Log(e);
+            }
         }
 
 

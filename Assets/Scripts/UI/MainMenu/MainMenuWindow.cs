@@ -32,8 +32,6 @@ public class MainMenuWindow : MonoBehaviour
         _optionSequence.Append(_optionsButton.transform.DOLocalRotate(
             new Vector3(_optionsButton.transform.localRotation.x, _optionsButton.transform.localRotation.y, -720f), 2,
             RotateMode.FastBeyond360));
-        
-        Initer.Instance.LobbyManager.DebugSMTH();
     }
 
     private void OnClickShopButton()

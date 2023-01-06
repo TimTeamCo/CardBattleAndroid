@@ -1,6 +1,5 @@
-using System;
-using NetCode.Authentication;
-using NetCode.Lobby;
+using NetCodeTT.Authentication;
+using NetCodeTT.Lobby;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using UnityEngine;
@@ -63,5 +62,6 @@ public class Initer : MonoBehaviour
     private void OnApplicationQuit()
     {
         LobbyManager.LeaveLobby();
+        StopAllCoroutines();
     }
 }

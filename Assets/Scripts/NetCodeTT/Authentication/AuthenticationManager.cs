@@ -4,7 +4,7 @@ using Unity.Services.Core;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace NetCode.Authentication
+namespace NetCodeTT.Authentication
 {
     public class AuthenticationManager : IAuth
     {

@@ -8,7 +8,7 @@ using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
 
-namespace NetCode.Lobby
+namespace NetCodeTT.Lobby
 {
     public class LobbyManager : MonoBehaviour, ILobby
     {
@@ -95,25 +95,40 @@ namespace NetCode.Lobby
 
         private async Task<string> GenerateLobbyName()
         {
-            int id = 0;
             var lobbyName = String.Empty;
-            bool isBreak = false;
-            for (int i = 0; i >= id; i++)
+            try
             {
-                
-                 await GetLobby(i.ToString(), result =>
+                QueryLobbiesOptions options = new QueryLobbiesOptions();
+
+                QueryResponse lobbies = await Lobbies.Instance.QueryLobbiesAsync(options);
+
+                int id = 0;
+                if (lobbies.Results.Count > 0)
                 {
-                    if (result == String.Empty)
+                    bool isBreak = false;
+                    for (int i = 0; i >= id; i++)
                     {
-                        lobbyName = $"Lobby{i}";
-                        isBreak = true;
-                    }
-                });
+                        await GetLobby(lobbies.Results[i].Id, result =>
+                        {
+                            if (result != String.Empty) return;
+                            lobbyName = $"Lobby{i}";
+                            isBreak = true;
+                        });
                  
-                 if (isBreak)
-                 {
-                     break;
-                 }
+                        if (isBreak)
+                        {
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    lobbyName = $"Lobby0";
+                }
+            }
+            catch (LobbyServiceException e)
+            {
+                Debug.LogError(e);
             }
 
             return lobbyName;
@@ -159,7 +174,7 @@ namespace NetCode.Lobby
 
                 var lobby = await LobbyService.Instance.QuickJoinLobbyAsync(options);
                 _lobbyID = lobby.Id;
-                result.Invoke($"Joined into lobby {_lobbyID}");
+                result.Invoke($"Joined into lobby {lobby.Name}");
             }
             catch (LobbyServiceException e)
             {

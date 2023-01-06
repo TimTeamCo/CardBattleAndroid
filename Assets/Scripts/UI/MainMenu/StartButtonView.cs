@@ -49,11 +49,11 @@ public class StartButtonView : MonoBehaviour
             return;
         }
 
-        if (isSelected)
-        {
-            _searchSequence.Kill();
-            ResetButton();
-        }
+        if (isSelected == false) return;
+        
+        _searchSequence.Kill();
+        _searchSequence = null;
+        ResetButton();
     }
 
     private void ResetButton()
@@ -61,6 +61,7 @@ public class StartButtonView : MonoBehaviour
         _middleCircle.transform.localEulerAngles = Vector3.zero;
         _bottomCircle.transform.localEulerAngles = Vector3.zero;
         _upCircle.transform.localEulerAngles = Vector3.zero;
+        Initer.Instance.LobbyManager.LeaveLobby();
         _hamsterDialog.text = $"Bla - bla - bla - bla - bla - bla...";
     }
 

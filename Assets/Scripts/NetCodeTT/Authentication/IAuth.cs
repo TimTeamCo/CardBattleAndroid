@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace NetCode.Authentication
+namespace NetCodeTT.Authentication
 {
     public interface IAuth
     {

@@ -19,20 +19,20 @@ namespace NetCodeTT.Lobby
         public async void CreateLobby(Action<string> result)
         {
             string lobbyName = await GenerateLobbyName();
-            Debug.Log($"Tim lobbyName {lobbyName}");
             int maxPlayers = 2;
             CreateLobbyOptions options = new CreateLobbyOptions();
             options.IsPrivate = false;
             
             Unity.Services.Lobbies.Models.Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, options);
 
-            Debug.Log($"Tim  lobby.Id {lobby.Id}");
             _createdLobbyIds.Enqueue(lobby.Id);
+            _lobbyID = lobby.Id;
             _heartbeatLobbyCoroutine = HeartbeatLobbyCoroutine(lobby.Id, 15);
             
             StartCoroutine(_heartbeatLobbyCoroutine);
             result.Invoke($"Lobby created {lobbyName}");
-            
+            Debug.Log($"LobbyName {lobbyName} lobby.Id {lobby.Id}");
+
             /* Sample
             string lobbyName = "new lobby";
             int maxPlayers = 2;
@@ -103,22 +103,22 @@ namespace NetCodeTT.Lobby
                 QueryResponse lobbies = await Lobbies.Instance.QueryLobbiesAsync(options);
 
                 int id = 0;
-                if (lobbies.Results.Count > 0)
+                var lobbieses = lobbies.Results;
+                if (lobbieses.Count > 0)
                 {
-                    bool isBreak = false;
                     for (int i = 0; i >= id; i++)
                     {
-                        await GetLobby(lobbies.Results[i].Id, result =>
+                        if (i >= lobbieses.Count)
                         {
-                            if (result != String.Empty) return;
-                            lobbyName = $"Lobby{i}";
-                            isBreak = true;
-                        });
-                 
-                        if (isBreak)
-                        {
-                            break;
+                            return lobbyName = $"Lobby{i}";
                         }
+                        
+                        var lobby = lobbies.Results[i];
+                        await GetLobby(lobby.Id, result =>
+                        {
+                            if (result != String.Empty) 
+                                return;
+                        });
                     }
                 }
                 else

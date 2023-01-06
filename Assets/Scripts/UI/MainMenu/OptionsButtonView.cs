@@ -15,7 +15,7 @@ public class OptionsButtonView : MonoBehaviour
     
     private void OnClickOptionsButton()
     {
-        if (_optionSequence.IsPlaying())
+        if (_optionSequence != null && _optionSequence.IsPlaying())
         {
             return;
         }

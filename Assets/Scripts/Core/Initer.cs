@@ -1,3 +1,4 @@
+using DG.Tweening;
 using NetCodeTT.Authentication;
 using NetCodeTT.Lobby;
 using Unity.Services.Authentication;
@@ -21,6 +22,7 @@ public class Initer : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(this);
         BindManagers();
+        DOTween.Init();
     }
 
     private void BindManagers()

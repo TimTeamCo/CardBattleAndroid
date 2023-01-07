@@ -30,8 +30,8 @@ namespace NetCodeTT.Lobby
             _heartbeatLobbyCoroutine = HeartbeatLobbyCoroutine(lobby.Id, 15);
             
             StartCoroutine(_heartbeatLobbyCoroutine);
-            result.Invoke($"Lobby created {lobbyName}");
             Debug.Log($"LobbyName {lobbyName} lobby.Id {lobby.Id}");
+            result.Invoke($"Lobby created {lobbyName}");
 
             /* Sample
             string lobbyName = "new lobby";

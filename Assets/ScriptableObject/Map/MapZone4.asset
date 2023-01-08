@@ -20,3 +20,5 @@ MonoBehaviour:
     buffValue: -20
   - unitType: 2
     buffValue: -20
+  - unitType: 1
+    buffValue: 0

@@ -18,3 +18,7 @@ MonoBehaviour:
   buffsZone:
   - unitType: 1
     buffValue: 50
+  - unitType: 0
+    buffValue: 0
+  - unitType: 2
+    buffValue: 0

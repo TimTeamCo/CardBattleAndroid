@@ -1,3 +1,4 @@
+using Army;
 using TTBattle.UI;
 using UnityEngine;
 using UnityEngine.UI;
@@ -5,101 +6,74 @@ using UnityEngine.UI;
 public class NextCellInformer : MonoBehaviour
 {
     [SerializeField] private Text _warriorInfluenceText;
-    [SerializeField] private Text _assasinInfluenceText;
+    [SerializeField] private Text _steamerInfluenceText;
     [SerializeField] private Text _mageInfluenceText;
     [SerializeField] private Text _nextCellCard;
-    [SerializeField] private Color _green;
-    [SerializeField] private Color _red;
-    [SerializeField] private Color _yellow;
+    
+    private Color _green = Color.green;
+    private Color _red = Color.red;
+    private Color _yellow = Color.yellow;
     private bool _isSelected;
     private float _warriorInfluenceValue;
-    private float _assasinInfluenceValue;
+    private float _steamerInfluenceValue;
     private float _mageInfluenceValue;
 
-    private void OnEnable()
+    private void Start()
     {
         _warriorInfluenceText.color = Color.white;
-        _assasinInfluenceText.color = Color.white;
+        _steamerInfluenceText.color = Color.white;
         _mageInfluenceText.color = Color.white;
         _warriorInfluenceText.text = "--";
-        _assasinInfluenceText.text = "--";
+        _steamerInfluenceText.text = "--";
         _mageInfluenceText.text = "--";
     }
 
     public void SetUnitsIfluenceText(MapCell mapCell, bool cellIsSelected)
     {
-        float warriorInfluence = (mapCell.uintsInfluence[0] * 100) - 100;
-        float assasinInfluence = (mapCell.uintsInfluence[1] * 100) - 100;
-        float mageInfluence = (mapCell.uintsInfluence[2] * 100) - 100;
+        float warriorInfluence = mapCell.MapZone.GetUnitInfluence(UnitType.Warrior);
+        float steamerInfluence = mapCell.MapZone.GetUnitInfluence(UnitType.Steamer);
+        float mageInfluence = mapCell.MapZone.GetUnitInfluence(UnitType.Mage);
         
-        if (warriorInfluence > 0)
-        {
-            _warriorInfluenceText.color = _green;
-            _warriorInfluenceText.text = $"+{warriorInfluence}%";
-        }
-        if (warriorInfluence == 0)
-        {
-            _warriorInfluenceText.color = Color.white;
-            _warriorInfluenceText.text = "--";
-        }
-        if (warriorInfluence < 0)
-        {
-            _warriorInfluenceText.color = _red;
-            _warriorInfluenceText.text = $"-{warriorInfluence}%";
-        }
-        
-        
-        if (assasinInfluence > 0)
-        {
-            _assasinInfluenceText.color = _green;
-            _assasinInfluenceText.text = $"+{assasinInfluence}%";
-        }
-        if (assasinInfluence == 0)
-        {
-            _assasinInfluenceText.color = Color.white;
-            _assasinInfluenceText.text = "--";
-        }
-        if (assasinInfluence < 0)
-        {
-            _assasinInfluenceText.color = _red;
-            _assasinInfluenceText.text = $"-{assasinInfluence}%";
-        }
-        
-        
-        if (mageInfluence > 0)
-        {
-            _mageInfluenceText.color = _green;
-            _mageInfluenceText.text = $"+{mageInfluence}%";
-        }
-        if (mageInfluence == 0)
-        {
-            _mageInfluenceText.color = Color.white;
-            _mageInfluenceText.text = "--";
-        }
-        if (mageInfluence < 0)
-        {
-            _mageInfluenceText.color = _red;
-            _mageInfluenceText.text = $"-{mageInfluence}%";
-        }
+        WriteInfluence(warriorInfluence, _warriorInfluenceText);
+        WriteInfluence(steamerInfluence, _steamerInfluenceText);
+        WriteInfluence(mageInfluence, _mageInfluenceText);
 
-        if (cellIsSelected)
-        {
-            _isSelected = true;
-            _warriorInfluenceText.color = _yellow;
-            _assasinInfluenceText.color = _yellow;
-            _mageInfluenceText.color = _yellow;
-            _warriorInfluenceValue = warriorInfluence;
-            _assasinInfluenceValue = assasinInfluence;
-            _mageInfluenceValue = mageInfluence;
-        }
+        if (cellIsSelected == false) return;
+        
+        _isSelected = true;
+        _warriorInfluenceText.color = _yellow;
+        _steamerInfluenceText.color = _yellow;
+        _mageInfluenceText.color = _yellow;
+        _warriorInfluenceValue = warriorInfluence;
+        _steamerInfluenceValue = steamerInfluence;
+        _mageInfluenceValue = mageInfluence;
     }
 
+    private void WriteInfluence(float influence, Text influenceText)
+    {
+        switch (influence)
+        {
+            case > 0:
+                influenceText.color = _green;
+                influenceText.text = $"+{influence}%";
+                break;
+            case 0:
+                influenceText.color = Color.white;
+                influenceText.text = "--";
+                break;
+            case < 0:
+                influenceText.color = _red;
+                influenceText.text = $"-{influence}%";
+                break;
+        }
+    }
+    
     public void ExitCell()
     {
         if (_isSelected)
         {
             _warriorInfluenceText.color = _yellow;
-            _assasinInfluenceText.color = _yellow;
+            _steamerInfluenceText.color = _yellow;
             _mageInfluenceText.color = _yellow;
             if (_warriorInfluenceValue > 0)
             {
@@ -115,17 +89,17 @@ public class NextCellInformer : MonoBehaviour
             }
         
         
-            if (_assasinInfluenceValue > 0)
+            if (_steamerInfluenceValue > 0)
             {
-                _assasinInfluenceText.text = $"+{_assasinInfluenceValue}%";
+                _steamerInfluenceText.text = $"+{_steamerInfluenceValue}%";
             }
-            if (_assasinInfluenceValue == 0)
+            if (_steamerInfluenceValue == 0)
             {
-                _assasinInfluenceText.text = "--";
+                _steamerInfluenceText.text = "--";
             }
-            if (_assasinInfluenceValue < 0)
+            if (_steamerInfluenceValue < 0)
             {
-                _assasinInfluenceText.text = $"-{_assasinInfluenceValue}%";
+                _steamerInfluenceText.text = $"-{_steamerInfluenceValue}%";
             }
         
         

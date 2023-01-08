@@ -1,40 +1,33 @@
-using System;
 using System.Collections.Generic;
+using Map;
+using PlayerData;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-//using Image = UnityEngine.UI.Image; //?
 namespace TTBattle.UI
 {
     [RequireComponent(typeof(PolygonCollider2D))]
     public class MapCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
-    {        
-        [SerializeField] private float _warriorInfluence;
-        [SerializeField] private float _assasinInfluence;
-        [SerializeField] private float _mageInfluence;
+    {
         [SerializeField] public List<MapCell> NextCell;
-        [SerializeField] public int id;
         [SerializeField] public Color ActiveChoiseColor;
         [SerializeField] public Color ChoisedCellColor;
         [SerializeField] public Color UsualColor;
         [SerializeField] public Image IndicateImage;
+        [SerializeField] public MapZone MapZone;
+        [SerializeField] public MapScript _map;
+        [SerializeField] public bool IsAccasible;
+        [SerializeField] public bool IsTaken;
+        [SerializeField] private Image _cellBG;
+        
         private Color _lastColor;
-        private Image _cellBG;
-        public MapScript _map;
-        public int BurningDamage;
-        public float[] uintsInfluence = new float [3];
-        public bool IsAccasible;
-        public bool IsTaken;
 
         private void Awake()
         {
-            _map = GetComponentInParent<MapScript>();
-            _cellBG = GetComponent<Image>();
             _lastColor = UsualColor;
             _cellBG.color = _lastColor;
             GetComponent<Image>().alphaHitTestMinimumThreshold = 0.1f;
-            SetUnitsInfluence();
             SetAlphaChipSprite(0f);
             IndicateImage.transform.localScale = gameObject.transform.localScale;
         }
@@ -43,16 +36,11 @@ namespace TTBattle.UI
         {
             if (IsAccasible && IsTaken && _map.MapCell != this)
             {
-                SetImageColorToSelected(); 
-                //_map.NewMapCell = _map.MapCell;
-                _map.MapCell.IsAccasible = false;
-                _map.NewMapCell = _map.MapCell;
-                foreach (MapCell mapCell in _map.MapCell.NextCell) 
-                { 
-                    mapCell.IsAccasible = false;
-                }
+                SetImageColorToSelected();
+                _map.NewMapCell = _map.PlayerSelector.playerData.PlayerMapCell;
+                _map.PlayerSelector.playerData.PlayerMapCell.SetBGImageToUsual();
                 _map.MakeTurn.ExecuteWithAttack();
-                _map.NextCellInformer.gameObject.SetActive(false);
+                _map.MakeTurn.MakeTurnButtonEnabled();
             }
             else if (IsAccasible && !IsTaken || _map.MapCell == this)
             {
@@ -65,18 +53,20 @@ namespace TTBattle.UI
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (IsAccasible && !IsTaken)
+            if (IsAccasible == false) return;
+            
+            if (IsTaken)
+            {
+                _cellBG.color = ActiveChoiseColor;
+                ActiveChoiseColor.a = 0.4f;
+                _map.NextCellInformer.SetUnitsIfluenceText(this, false);
+            }
+            else
             {
                 _cellBG.color = ActiveChoiseColor;
                 _map.NextCellInformer.SetUnitsIfluenceText(this, false);
             }
-            else if (IsAccasible && IsTaken)
-                {
-                    _cellBG.color = ActiveChoiseColor;
-                    ActiveChoiseColor.a = 0.4f;
-                    _map.NextCellInformer.SetUnitsIfluenceText(this, false);
-                }
-            }
+        }
 
         public void OnPointerExit(PointerEventData eventData)
         {
@@ -94,61 +84,75 @@ namespace TTBattle.UI
             }
         }
 
-        private void SetUnitsInfluence()
-        {
-            uintsInfluence[0] = (100 + _warriorInfluence) / 100;
-            uintsInfluence[1] = (100 + _assasinInfluence) / 100;
-            uintsInfluence[2] = (100 + _mageInfluence) / 100;
-        }
-
         public void CellIsLeaved()
         {
-            _lastColor = UsualColor;
-            _cellBG.color = _lastColor;
+            RevertColor();
             IsTaken = false;
             IsAccasible = false;
             foreach (MapCell mapCell in NextCell)
             {
                 mapCell.IsAccasible = false;
             }
+
             IndicateImage.sprite = null;
             IndicateImage.preserveAspect = false;
-           SetFireSpriteToImage();
+            SetFireSpriteToImage();
         }
-        
+
+        private void RevertColor()
+        {
+            _lastColor = UsualColor;
+            _cellBG.color = _lastColor;
+        }
+
         public void CellIsTaken()
         {
             IsTaken = true;
             IsAccasible = true;
-            SetCellCollorAsPlayers(_map.PlayerSelector.Player);
+            SetCellColorAsPlayers(_map.armyPanelManager.PlayerSelector.playerData);
             foreach (MapCell mapCell in NextCell)
             {
                 mapCell.IsAccasible = true;
             }
-            SetChipSpriteToImage(_map.PlayerSelector.Player.PlayerChip);
+
+            SetChipSpriteToImage(_map.armyPanelManager.PlayerSelector);
         }
 
-        public void SetCellCollorAsPlayers(Player player)
+        public void SetCellColorAsPlayers(PlayerDataCalculator player)
         {
             _lastColor = player.PlayerColor;
             _lastColor.a = 0.8f;
             _cellBG.color = _lastColor;
         }
 
-        public void SetImageColorToUsual()
+        public void SetBGImageToUsual()
         {
-            _lastColor = UsualColor;
-            _cellBG.color = _lastColor;
+            if (this.MapZone.zoneID == _map.PlayerSelector.playerData.PlayerMapCell.MapZone.zoneID)
+            {
+                SetCellColorAsPlayers(_map.PlayerSelector.playerData);
+                SetChipSpriteToImage(_map.PlayerSelector);
+            }
+            else if (this.MapZone.zoneID == _map.PlayerInferior.playerData.PlayerMapCell.MapZone.zoneID)
+            {
+                SetCellColorAsPlayers(_map.PlayerInferior.playerData);
+                SetChipSpriteToImage(_map.PlayerInferior);
+            }
+            else
+            {
+                _lastColor = UsualColor;
+                _cellBG.color = _lastColor;
+            }
         }
-        
+
         private void SetImageColorToSelected()
         {
             _lastColor = ChoisedCellColor;
             _cellBG.color = _lastColor;
         }
 
-        public void SetChipSpriteToImage(Sprite chipSprite)
+        public void SetChipSpriteToImage(ArmyPanel armyPanel)
         {
+            Sprite chipSprite = armyPanel.playerData.PlayerChip;
             IndicateImage.sprite = chipSprite;
             IndicateImage.preserveAspect = true;
             IndicateImage.rectTransform.sizeDelta = new Vector2(145, 145);
@@ -164,25 +168,20 @@ namespace TTBattle.UI
 
         public void SetFireSpriteToImage()
         {
-            if (BurningDamage == 0)
+            if (MapZone.burnFactor == 0)
             {
                 SetAlphaChipSprite(0f);
             }
             else
             {
                 IndicateImage.rectTransform.sizeDelta = new Vector2(130, 130);
-                if (BurningDamage == 3)
+                IndicateImage.sprite = MapZone.burnFactor switch
                 {
-                    IndicateImage.sprite = _map.FireStage1;
-                }
-                if (BurningDamage == 6)
-                {
-                    IndicateImage.sprite = _map.FireStage2;
-                }
-                if (BurningDamage == 9)
-                {
-                    IndicateImage.sprite = _map.FireStage3;
-                }
+                    3 => _map.FireStage1,
+                    6 => _map.FireStage2,
+                    >=9 => _map.FireStage3,
+                    _ => IndicateImage.sprite
+                };
             }
         }
     }

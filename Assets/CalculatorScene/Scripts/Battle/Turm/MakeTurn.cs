@@ -1,5 +1,3 @@
-using System;
-using System.Runtime.InteropServices.ComTypes; //not use this library
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,9 +5,9 @@ namespace TTBattle.UI
 {
     public class MakeTurn : MonoBehaviour
     {
-        [SerializeField] private ArmyPanel _army1;
-        [SerializeField] private ArmyPanel _army2;
+        [SerializeField] private ArmyPanelManager armyPanelManager;
         [SerializeField] private TurnsNumerator _turnsNumerator;
+        [SerializeField] private NextCellInformer _nextCellInformer;
         [SerializeField] private SquadAttack _squadAttack;
         [SerializeField] private MapScript _map;
         [SerializeField] private Button _turnButton;
@@ -17,12 +15,16 @@ namespace TTBattle.UI
         [SerializeField] private Image _attackImage;
         [SerializeField] public Color EnabledButtonColor;
         [SerializeField] public Color DisabledButtonColor;
+        private ArmyPanel _armySelector;
+        private ArmyPanel _armyInferior;
         private int _newTurnsChecker;
         public bool IsAttack;
         
         private void Awake()
         {
+            SetArmys();
             MakeTurnButtonDisabled();
+            ShowPlayerSelectorNotification();
             _attackImage.gameObject.SetActive(true);
             _attackImage.enabled = false;
         }
@@ -30,56 +32,41 @@ namespace TTBattle.UI
         public void DoMakeTurn()
         {
             SetNewTurnCount();
-             Attack();
-            ReplaceArmy.Execute(_army1, _army2);
+            Attack();
+            ChangePlayersRoles();
+            ShowPlayerSelectorNotification();
             MapScripts();
             SetBurningDamageToPlayers();
             SetTextOfCellAtributesToArmys();
             EndOfTurn();
         }
 
+        private void ShowPlayerSelectorNotification()
+        {
+            _armySelector.ShowPlayerSelectorNotification(true);
+            _armyInferior.ShowPlayerSelectorNotification(false);
+        }
+        
         private void MapScripts()
         {
             _map.SetPlayersMapCells();
-            if (_turnsNumerator.TurnsCount == 5 && _newTurnsChecker==0)
-            {
-                _map.SetBurningZones(1 );
-            }
-            if (_turnsNumerator.TurnsCount == 10 && _newTurnsChecker==0) 
-            {
-                 _map.SetBurningZones(2);
-                 _map.SetBurningZones(1); 
-            }
-            if (_turnsNumerator.TurnsCount == 15 && _newTurnsChecker==0)
-            {
-                _map.SetBurningZones(3);
-                _map.SetBurningZones(2);
-                _map.SetBurningZones(1);
-            }
-            if (_turnsNumerator.TurnsCount == 20 && _newTurnsChecker==0)
-            {
-                _map.SetBurningZones(3);
-                _map.SetBurningZones(2);
-            }
-            if (_turnsNumerator.TurnsCount == 25 && _newTurnsChecker==0)
-            {
-                _map.SetBurningZones(3);
-            }
+            if (_newTurnsChecker != 0 || _turnsNumerator.TurnsCount % 5 != 0) return;
+            _map.SetBurningZones(_turnsNumerator.TurnsCount);
         }
 
         private void SetBurningDamageToPlayers()
         {
             if (_newTurnsChecker == 0)
             {
-                _army1.Player.BurningDamageToUnits();
-                _army2.Player.BurningDamageToUnits();    
+                _armySelector.playerData.playerArmy.AddBurningDamageToUnits(_armySelector.playerData.MapZone.burnFactor);
+                _armyInferior.playerData.playerArmy.AddBurningDamageToUnits(_armyInferior.playerData.MapZone.burnFactor);
             }
         }
         
         private void SetTextOfCellAtributesToArmys()
         {
-            _army1.SetTextOfCardsAtributes();
-            _army2.SetTextOfCardsAtributes();
+            _armySelector.SetTextOfCardsAttributes();
+            _armyInferior.SetTextOfCardsAttributes();
         }
         
         private void SetNewTurnCount()
@@ -99,7 +86,7 @@ namespace TTBattle.UI
             _turnImage.color = EnabledButtonColor;
         }
 
-        public void MakeTurnButtonDisabled()
+        private void MakeTurnButtonDisabled()
         {
             _turnButton.enabled = false;
             _turnImage.color = DisabledButtonColor;
@@ -107,31 +94,55 @@ namespace TTBattle.UI
 
         private void Attack()
         {
-            if (IsAttack)
+            if (IsAttack == false)
             {
-                _squadAttack.Attack(_army1, _army2, _turnsNumerator);
-                _army1.UnitDropdown.gameObject.SetActive(false);
-                _army2.UnitDropdown.gameObject.SetActive(false);
+                return;
             }
+
+            _squadAttack.Attack(_armySelector, _armyInferior, _turnsNumerator);
+            _armySelector.UnitDropdown.gameObject.SetActive(false);
+            _armyInferior.UnitDropdown.gameObject.SetActive(false);
+            _armySelector.SetTextOfUnitsAmount();
+            _armyInferior.SetTextOfUnitsAmount();
+            _attackImage.enabled = false;
+            IsAttack = false;
         }
 
         public void ExecuteWithAttack()
         {
             IsAttack = true;
-            MakeTurnButtonEnabled();
             _attackImage.enabled = true;
-            _army1.UnitDropdown.gameObject.SetActive(true);
-            _army2.UnitDropdown.gameObject.SetActive(true);
+            _nextCellInformer.gameObject.SetActive(false);
+            _armySelector.UnitDropdown.gameObject.SetActive(true);
+            _armyInferior.UnitDropdown.gameObject.SetActive(true);
         }
 
         private void EndOfTurn()
         {
             MakeTurnButtonDisabled();
-            _attackImage.enabled = false;
-            IsAttack = false;
             _map.NextCellInformer.gameObject.SetActive(true);
             _map.NextCellInformer.IsNotCelected();
         }
+
+        private void ChangePlayersRoles()
+        {
+            armyPanelManager.ChangePlayersRoles();
+            SetArmys();
+        }
+
+        public void SetArmys()
+        {
+            _armySelector = armyPanelManager.PlayerSelector;
+            _armyInferior = armyPanelManager.PlayerInferior;
+        }
+
+        public void UndoAttack()
+        {
+            IsAttack = false;
+            _attackImage.enabled = false;
+            _nextCellInformer.gameObject.SetActive(true);
+            _armySelector.UnitDropdown.gameObject.SetActive(false);
+            _armyInferior.UnitDropdown.gameObject.SetActive(false); 
+        }
     }
 }
-

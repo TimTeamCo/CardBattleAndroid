@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 28
   cardName: Dual Pistols
-  crystal: {fileID: 0}
-  frame: {fileID: 0}
-  art: {fileID: 0}
+  crystal: {fileID: 21300000, guid: a8760ea7db78ea34e8ccb1563463131a, type: 3}
+  frame: {fileID: 21300000, guid: a03f3f0d25b078543b37cb71b01b7dfa, type: 3}
+  art: {fileID: 21300000, guid: 14a2fc1e55940be4ea0cfd9b97a85266, type: 3}
   cardTypeBig: 1
   cardTypeSmall: 0
   AttackEffect: 2
   HealthEffect: 0
   UnitType: 1
-  Description: ' +2 ATK FOR ASSASINS'
+  Description: ' +2 ATK FOR STEAMERS'

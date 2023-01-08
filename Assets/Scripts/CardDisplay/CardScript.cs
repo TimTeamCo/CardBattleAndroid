@@ -17,6 +17,11 @@ public class CardScript : MonoBehaviour
        {
            return;
        }
+
+       if (_cardData is UnitCard)
+       {
+           
+       }
        
       _frame.sprite = _cardData.frame;
       _crystal.sprite = _cardData.crystal;

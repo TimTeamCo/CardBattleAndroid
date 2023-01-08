@@ -19,7 +19,7 @@ namespace TTBattle
             {
                 case UnitType.Warrior:
                     WarriorLogicBattle(turnsNumerator, defUnitType, defender, playerDefender, attacker,
-                        playerAttacker, army2);
+                        playerAttacker);
                     break;
                 case UnitType.Steamer:
                     SteamerLogicBattle(defUnitType, defender, playerDefender, attacker,
@@ -27,13 +27,13 @@ namespace TTBattle
                     break;
                 case UnitType.Mage:
                     MageLogicBattle(defUnitType, turnsNumerator, defender, playerDefender, attacker,
-                        playerAttacker, army2);
+                        playerAttacker, army2, army1);
                     break;
             }
         }
 
         private void WarriorLogicBattle(TurnsNumerator turnsNumerator, UnitType defUnitType, PlayerSquad defender,
-            PlayerData.PlayerData playerDefender, PlayerSquad attacker, PlayerData.PlayerData playerAttacker, ArmyPanel armyDefender)
+            PlayerData.PlayerData playerDefender, PlayerSquad attacker, PlayerData.PlayerData playerAttacker)
         {
             switch (defUnitType)
             {
@@ -54,8 +54,6 @@ namespace TTBattle
                     CalculateDefenderCount(defender, attacker,  
                         playerDefender.MapZone.GetUnitInfluence(UnitType.Mage), 
                         playerAttacker.MapZone.GetUnitInfluence(UnitType.Warrior));
-                    StartCoroutine(MageAttack(UnitType.Warrior, defender, attacker,
-                        playerDefender, playerAttacker, turnsNumerator, armyDefender));
                     break;
             }
         }
@@ -70,6 +68,9 @@ namespace TTBattle
                         playerDefender.MapZone.GetUnitInfluence(UnitType.Warrior), 
                         playerAttacker.MapZone.GetUnitInfluence(UnitType.Steamer),
                         attacker.SquadUnit.WeakCoeficient);
+                    CalculateDefenderCount(attacker, defender,  
+                        playerAttacker.MapZone.GetUnitInfluence(UnitType.Steamer),
+                        playerDefender.MapZone.GetUnitInfluence(UnitType.Warrior));
                     break;
                 case UnitType.Steamer:
                     CalculateDefenderCount(defender, attacker,  
@@ -87,10 +88,10 @@ namespace TTBattle
 
 
         private void MageLogicBattle(UnitType defUnitType, TurnsNumerator turnsNumerator, PlayerSquad defender,
-            PlayerData.PlayerData playerDefender, PlayerSquad attacker, PlayerData.PlayerData playerAttacker, ArmyPanel armyDefender)
+            PlayerData.PlayerData playerDefender, PlayerSquad attacker, PlayerData.PlayerData playerAttacker, ArmyPanel armyDefender, ArmyPanel armyAttacker)
         {
             StartCoroutine(MageAttack(defUnitType, attacker, defender,
-                playerDefender, playerAttacker, turnsNumerator, armyDefender));
+                playerDefender, playerAttacker, turnsNumerator, armyDefender, armyAttacker));
         }
 
         private void CalculateDefenderCount(PlayerSquad defender, PlayerSquad attacker, float unitsInfluenceDefender, float unitsInfluenceAttacker, float coefficient = 1)
@@ -110,7 +111,7 @@ namespace TTBattle
         }
 
         private IEnumerator MageAttack(UnitType defUnitType, PlayerSquad attacker, PlayerSquad defender,
-            PlayerData.PlayerData playerDefender, PlayerData.PlayerData playerAttacker, TurnsNumerator turnsNumerator, ArmyPanel armyDefender)
+            PlayerData.PlayerData playerDefender, PlayerData.PlayerData playerAttacker, TurnsNumerator turnsNumerator, ArmyPanel armyDefender, ArmyPanel armyAttacker)
         {
             int numerator;
             var mapZone = playerDefender.MapZone;
@@ -124,7 +125,11 @@ namespace TTBattle
                         playerDefender.MapZone.GetUnitInfluence(UnitType.Warrior), 
                         playerAttacker.MapZone.GetUnitInfluence(UnitType.Mage),
                         attacker.SquadUnit.StrongCoefitient);
-                    yield return defender.Count;
+                    CalculateDefenderCount( attacker, defender,
+                        playerAttacker.MapZone.GetUnitInfluence(UnitType.Mage),
+                        playerDefender.MapZone.GetUnitInfluence(UnitType.Warrior));
+                    yield return (defender.Count, attacker.Count);
+                    armyAttacker.SetTextOfUnitsAmount();
                     break;
                 case UnitType.Steamer:
                     CalculateDefenderCount(defender, attacker, 

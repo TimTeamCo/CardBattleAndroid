@@ -1,12 +1,15 @@
 using System;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.LowLevel;
 
 public class StartButtonView : MonoBehaviour
 {
     [SerializeField] private GameObject _bottomCircle;
     [SerializeField] private GameObject _middleCircle;
     [SerializeField] private GameObject _upCircle;
+    public AudioSource Circle;
+    public AudioSource FoundMatch;
     private bool isSelected;
     private Sequence _searchSequence;
 
@@ -40,7 +43,11 @@ public class StartButtonView : MonoBehaviour
             _searchSequence.Kill();
             ResetButton();
         }
+        Circle.Stop();
+        FoundMatch.Play();
+        
     }
+    
 
     private void ResetButton()
     {
@@ -60,5 +67,7 @@ public class StartButtonView : MonoBehaviour
             .Append(_upCircle.transform.DOLocalRotate(new Vector3(0, 0,
                 _upCircle.transform.localRotation.z - 15f), 0.25f, RotateMode.FastBeyond360).SetRelative(true).SetEase(Ease.Linear))
             .SetLoops(Int32.MaxValue, LoopType.Incremental);
+        Circle.Play();
     }
+    
 }

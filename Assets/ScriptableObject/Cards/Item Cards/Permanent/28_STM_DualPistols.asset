@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 28
   cardName: Dual Pistols
   crystal: {fileID: 21300000, guid: a8760ea7db78ea34e8ccb1563463131a, type: 3}
-  frame: {fileID: 21300000, guid: a03f3f0d25b078543b37cb71b01b7dfa, type: 3}
+  frame: {fileID: 21300000, guid: fecbb6ac7348f3d42af8f5c060b843a8, type: 3}
   art: {fileID: 21300000, guid: 14a2fc1e55940be4ea0cfd9b97a85266, type: 3}
   cardTypeBig: 1
   cardTypeSmall: 0

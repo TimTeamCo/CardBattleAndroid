@@ -36,7 +36,7 @@ namespace CardSpace
                 return;
             }
             
-            var cardScript = GameObject.Find("Canvas/Card").GetComponent<CardScript>();
+            var cardScript = GameObject.Find("Canvas/Card").GetComponent<CardView>();
             if (cardScript == null) {return;}
 
             cardScript._cardData = this;

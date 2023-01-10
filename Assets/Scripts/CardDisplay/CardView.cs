@@ -3,29 +3,28 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CardScript : MonoBehaviour
+public class CardView : MonoBehaviour
 {
-   [SerializeField] private Image _frame;
-   [SerializeField] private Image _crystal;
-   [SerializeField] private Image _art;   
-   [SerializeField] private TextMeshProUGUI _name;   
+   [SerializeField] protected Image _frame;
+   [SerializeField] protected Image _crystal;
+   [SerializeField] protected Image _art;   
+   [SerializeField] protected TextMeshProUGUI _name;
    [SerializeField] public Card _cardData;
    
-   public void OnValidate()
+   public virtual void OnValidate()
    {
        if (_cardData == null)
        {
            return;
-       }
-
-       if (_cardData is UnitCard)
-       {
-           
        }
        
       _frame.sprite = _cardData.frame;
       _crystal.sprite = _cardData.crystal;
       _art.sprite = _cardData.art;
       _name.text = _cardData.cardName;
+   }
+   private void Start()
+   {
+        
    }
 }

@@ -15,8 +15,8 @@ MonoBehaviour:
   id: 0
   cardName: Deep Roots
   crystal: {fileID: 21300000, guid: 931329782b056de4bb7c0d8b42db183d, type: 3}
-  frame: {fileID: 21300000, guid: a03f3f0d25b078543b37cb71b01b7dfa, type: 3}
-  art: {fileID: 21300000, guid: 5c438451e122e7040883b587411c7510, type: 3}
+  frame: {fileID: 21300000, guid: b0a0c1cf6fc596f4e9a22080313e8ec1, type: 3}
+  art: {fileID: 21300000, guid: 86e1bb6ab535efa439f0597eaf24e413, type: 3}
   cardTypeBig: 0
   cardTypeSmall: 2
   Warriors: 3

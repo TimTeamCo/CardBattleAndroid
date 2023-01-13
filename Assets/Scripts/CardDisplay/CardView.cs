@@ -23,8 +23,4 @@ public class CardView : MonoBehaviour
       _art.sprite = _cardData.art;
       _name.text = _cardData.cardName;
    }
-   private void Start()
-   {
-        
-   }
 }

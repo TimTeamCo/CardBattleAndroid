@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 2
   cardName: Primary Source
-  crystal: {fileID: 0}
-  frame: {fileID: 0}
-  art: {fileID: 0}
+  crystal: {fileID: 21300000, guid: 931329782b056de4bb7c0d8b42db183d, type: 3}
+  frame: {fileID: 21300000, guid: fecbb6ac7348f3d42af8f5c060b843a8, type: 3}
+  art: {fileID: 21300000, guid: 2d37b4363e361bf47a50c935d2caa883, type: 3}
   cardTypeBig: 0
   cardTypeSmall: 2
   Warriors: 0

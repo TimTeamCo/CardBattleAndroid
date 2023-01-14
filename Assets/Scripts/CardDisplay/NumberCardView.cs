@@ -1,3 +1,4 @@
+using System;
 using CardSpace;
 using TMPro;
 using UnityEngine;
@@ -8,14 +9,27 @@ public class NumberCardView : CardView
     [SerializeField] private GameObject Substate1;
     [SerializeField] private GameObject Substate2;
     [SerializeField] private GameObject Substate3;
-    [SerializeField] private TextMeshProUGUI Sub1Sta1;
-    [SerializeField] private TextMeshProUGUI Sub2Sta1;
-    [SerializeField] private TextMeshProUGUI Sub2Sta2;
-    [SerializeField] private TextMeshProUGUI Sub3Sta1;
-    [SerializeField] private TextMeshProUGUI Sub3Sta2;
-    [SerializeField] private TextMeshProUGUI Sub3Sta3;
+
+    [SerializeField] private Sprite _statWarrior;
+    [SerializeField] private Sprite _statSteamer;
+    [SerializeField] private Sprite _statMage;
+    
+    [SerializeField] private Image Sub1Sta1img;
+    [SerializeField] private Image Sub2Sta1img;
+    [SerializeField] private Image Sub2Sta2img;
+    [SerializeField] private Image Sub3Sta1img;
+    [SerializeField] private Image Sub3Sta2img;
+    [SerializeField] private Image Sub3Sta3img;
+    
+    [SerializeField] private TextMeshProUGUI Sub1Sta1txt;
+    [SerializeField] private TextMeshProUGUI Sub2Sta1txt;
+    [SerializeField] private TextMeshProUGUI Sub2Sta2txt;
+    [SerializeField] private TextMeshProUGUI Sub3Sta1txt;
+    [SerializeField] private TextMeshProUGUI Sub3Sta2txt;
+    [SerializeField] private TextMeshProUGUI Sub3Sta3txt;
     private NumberCard _numberCard;
     private int[] _squadValues = new int[3];
+    private Sprite[] _statSprites = new Sprite[3];
 
     public override void OnValidate()
     {
@@ -32,6 +46,10 @@ public class NumberCardView : CardView
         _squadValues[0] = _numberCard.Warriors;
         _squadValues[1] = _numberCard.Assasin;
         _squadValues[2] = _numberCard.Mage;
+
+        _statSprites[0] = _statWarrior;
+        _statSprites[1] = _statSteamer;
+        _statSprites[2] = _statMage;
 
         Substate1.SetActive(false);
         Substate2.SetActive(false);
@@ -68,7 +86,8 @@ public class NumberCardView : CardView
         {
             if (value != 0)
             {
-                Sub1Sta1.text = $"{value}";
+                Sub1Sta1txt.text = $"{value}";
+                Sub1Sta1img.sprite = _statSprites[Array.IndexOf(_squadValues, value)];
                 return;
             }
         }
@@ -86,13 +105,15 @@ public class NumberCardView : CardView
             if (k == 1)
             {
                 k++;
-                Sub2Sta1.text = $"{value}";
+                Sub2Sta1txt.text = $"{value}";
+                Sub2Sta1img.sprite = _statSprites[Array.IndexOf(_squadValues, value)];
                 continue;
             }
 
             if (k == 2)
             {
-                Sub2Sta2.text = $"{value}";
+                Sub2Sta2txt.text = $"{value}";
+                Sub2Sta2img.sprite = _statSprites[Array.IndexOf(_squadValues, value)];
             }
         }
     }
@@ -100,8 +121,11 @@ public class NumberCardView : CardView
     private void SetSubstance3()
     {
         Substate3.SetActive(true);
-        Sub3Sta1.text = $"{_squadValues[0]}";
-        Sub3Sta2.text = $"{_squadValues[1]}";
-        Sub3Sta3.text = $"{_squadValues[2]}";
+        Sub3Sta1txt.text = $"{_squadValues[1]}";
+        Sub3Sta2txt.text = $"{_squadValues[2]}";
+        Sub3Sta3txt.text = $"{_squadValues[0]}";
+        Sub3Sta1img.sprite = _statSprites[1];
+        Sub3Sta2img.sprite = _statSprites[2];
+        Sub3Sta3img.sprite = _statSprites[0];
     }
 }

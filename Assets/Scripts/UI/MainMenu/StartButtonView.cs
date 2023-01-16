@@ -8,8 +8,8 @@ public class StartButtonView : MonoBehaviour
     [SerializeField] private GameObject _bottomCircle;
     [SerializeField] private GameObject _middleCircle;
     [SerializeField] private GameObject _upCircle;
-    public AudioSource Circle;
-    public AudioSource FoundMatch;
+    [SerializeField] private AudioSource Circle;
+    [SerializeField] private AudioSource FoundMatch;
     private bool isSelected;
     private Sequence _searchSequence;
 
@@ -45,10 +45,8 @@ public class StartButtonView : MonoBehaviour
         }
         Circle.Stop();
         FoundMatch.Play();
-        
     }
     
-
     private void ResetButton()
     {
         _middleCircle.transform.localEulerAngles = Vector3.zero;
@@ -69,5 +67,4 @@ public class StartButtonView : MonoBehaviour
             .SetLoops(Int32.MaxValue, LoopType.Incremental);
         Circle.Play();
     }
-    
 }

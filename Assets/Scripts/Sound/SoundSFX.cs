@@ -7,9 +7,7 @@ public class SoundSFX : MonoBehaviour
     public AudioSource myFx;
     public AudioClip ButtonClickSound;
     private AudioSource Circle;
-
-
-
+    
     public void StartButton()
     {
         myFx.PlayOneShot(ButtonClickSound);

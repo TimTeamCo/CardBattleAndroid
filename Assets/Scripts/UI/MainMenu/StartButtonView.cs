@@ -1,15 +1,17 @@
 using System;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.LowLevel;
 
 public class StartButtonView : MonoBehaviour
 {
     [SerializeField] private GameObject _bottomCircle;
     [SerializeField] private GameObject _middleCircle;
     [SerializeField] private GameObject _upCircle;
-    [SerializeField] private AudioSource Circle;
-    [SerializeField] private AudioSource FoundMatch;
+    [SerializeField] private AudioSource _startButtonAudioSource;
+    [SerializeField] private AudioClip _startMatchEffect;
+    [SerializeField] private AudioClip _searchingLoopEffect;
+    [SerializeField] private AudioClip _foundMatchEffect;
+
     private bool isSelected;
     private Sequence _searchSequence;
 
@@ -19,7 +21,10 @@ public class StartButtonView : MonoBehaviour
         sequence
             .PrependCallback(() =>
             {
-                StopSearchAnimation();
+                if (isSelected)
+                {
+                    StopSearchAnimation();
+                }
                 isSelected = !isSelected;
             })
             .Append(_upCircle.transform.DOScale(new Vector3(1.1f, 1.1f, 1.1f), 0.25f))
@@ -28,7 +33,14 @@ public class StartButtonView : MonoBehaviour
             .Append(_upCircle.transform.DOScale(new Vector3(1f, 1f, 1f), 0.25f))
             .Join(_middleCircle.transform.DOScale(new Vector3(1f, 1f, 1f), 0.25f))
             .Join(_bottomCircle.transform.DOScale(new Vector3(1f, 1f, 1f), 0.25f))
-            .AppendCallback(StartSearchAnimation);
+            .AppendCallback(()=> {
+                _startButtonAudioSource.clip = _searchingLoopEffect;
+                _startButtonAudioSource.loop = isSelected;
+                _startButtonAudioSource.Play();
+                StartSearchAnimation();
+                });
+        _startButtonAudioSource.clip = _startMatchEffect;
+        _startButtonAudioSource.Play();
     }
 
     private void StopSearchAnimation()
@@ -43,8 +55,9 @@ public class StartButtonView : MonoBehaviour
             _searchSequence.Kill();
             ResetButton();
         }
-        Circle.Stop();
-        FoundMatch.Play();
+
+        //Circle.Stop();
+        //FoundMatch.Play();
     }
     
     private void ResetButton()
@@ -65,6 +78,6 @@ public class StartButtonView : MonoBehaviour
             .Append(_upCircle.transform.DOLocalRotate(new Vector3(0, 0,
                 _upCircle.transform.localRotation.z - 15f), 0.25f, RotateMode.FastBeyond360).SetRelative(true).SetEase(Ease.Linear))
             .SetLoops(Int32.MaxValue, LoopType.Incremental);
-        Circle.Play();
+        //Circle.Play();
     }
 }

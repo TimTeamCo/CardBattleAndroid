@@ -397,6 +397,10 @@ namespace NetCodeTT.Lobby
                 //Ensure you sign-in before calling Authentication Instance
                 //See IAuthenticationService interface
                 string playerId = AuthenticationService.Instance.PlayerId;
+                if (playerId == null || _lobbyID == null)
+                {
+                    return;
+                }
                 await LobbyService.Instance.RemovePlayerAsync(_lobbyID, playerId);
             }
             catch (LobbyServiceException e)

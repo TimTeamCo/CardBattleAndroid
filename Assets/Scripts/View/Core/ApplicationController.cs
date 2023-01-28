@@ -5,9 +5,9 @@ using Unity.Services.Authentication;
 using Unity.Services.Core;
 using UnityEngine;
 
-public class Initer : MonoBehaviour
+public class ApplicationController : MonoBehaviour
 {
-    public static Initer Instance { get; private set; }
+    public static ApplicationController Instance { get; private set; }
     public ILobby LobbyManager { get; private set; }
     public IAuth AuthenticationManager { get; private set; }
     

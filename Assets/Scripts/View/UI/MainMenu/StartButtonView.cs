@@ -60,7 +60,7 @@ public class StartButtonView : MonoBehaviour
         _middleCircle.transform.localEulerAngles = Vector3.zero;
         _bottomCircle.transform.localEulerAngles = Vector3.zero;
         _upCircle.transform.localEulerAngles = Vector3.zero;
-        Initer.Instance.LobbyManager.LeaveLobby();
+        ApplicationController.Instance.LobbyManager.LeaveLobby();
         _hamsterDialog.text = $"Bla - bla - bla - bla - bla - bla...";
     }
 
@@ -68,7 +68,7 @@ public class StartButtonView : MonoBehaviour
     {
         if (isSelected == false) return;
         _hamsterDialog.text = $"Searching...";
-        Initer.Instance.LobbyManager.QuickJoin(result =>
+        ApplicationController.Instance.LobbyManager.QuickJoin(result =>
         {
             _hamsterDialog.text = $"{result}";
         });

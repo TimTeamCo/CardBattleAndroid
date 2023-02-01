@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
-public static class PlayerDataSavingSistem
+public static class PlayerDataSavingSystem
 {
     public static void SetPlayerNickname(string nickname)
     {
@@ -16,7 +15,7 @@ public static class PlayerDataSavingSistem
             return PlayerPrefs.GetString("Nickname");
         }
 
-        Debug.Log("Nickname doesnt set");
-        return null;
+        Debug.LogError("Nickname doesnt set");
+        return String.Empty;
     }
 }

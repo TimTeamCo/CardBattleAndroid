@@ -10,7 +10,6 @@ public class CardScript : MonoBehaviour
    [SerializeField] private Image _art;   
    [SerializeField] private TextMeshProUGUI _name;   
    [SerializeField] public Card _cardData;
-
    
    public void OnValidate()
    {

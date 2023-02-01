@@ -1,12 +1,21 @@
+using System.Collections;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
 public class Initer : MonoBehaviour
 {
-    async void Start()
+    [SerializeField] private ViewPopup _viewPopup;
+
+    void Start()
+    {
+        StartCoroutine(TestInternetConection());
+    }
+
+    private async void StartIniter()
     {
         await UnityServices.InitializeAsync();
         Debug.Log(UnityServices.State);
@@ -34,14 +43,14 @@ public class Initer : MonoBehaviour
             Debug.Log("Player session could not be refreshed and expired.");
         };
     }
-    
+
     async Task SignInAnonymouslyAsync()
     {
         try
         {
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
             Debug.Log("Sign in anonymously succeeded!");
-        
+
             // Shows how to get the playerID
             Debug.Log($"SignInAnonymouslyAsync PlayerID: {AuthenticationService.Instance.PlayerId}");
             SceneManager.LoadScene(1);
@@ -57,6 +66,36 @@ public class Initer : MonoBehaviour
             // Compare error code to CommonErrorCodes
             // Notify the player with the proper error message
             Debug.LogException(ex);
+        }
+    }
+
+    public IEnumerator TestInternetConection()
+    {
+        string[] _urls =
+        {
+            "https://www.google.com", "https://www.facebook.com", "https://www.wikipedia.org", "https://www.apple.com",
+            "https://www.un.org"
+        };
+
+        while (true)
+        {
+            Debug.Log("Test Internet Conection");
+            foreach (var url in _urls)
+            {
+                UnityWebRequest request = UnityWebRequest.Get(url);
+
+                yield return request.SendWebRequest();
+
+                if (request.result != UnityWebRequest.Result.Success) continue;
+                Debug.Log("Is Internet");
+                _viewPopup.ShowPopup(false);
+                StartIniter();
+                yield break;
+            }
+
+            Debug.Log("No Internet");
+            _viewPopup.ShowPopup(true);
+            yield return new WaitForSeconds(3f);
         }
     }
 }

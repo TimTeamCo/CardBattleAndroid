@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Logic.Connection;
 using NetCodeTT.Authentication;
 using NetCodeTT.Lobby;
 using Unity.Services.Authentication;
@@ -10,6 +11,8 @@ public class ApplicationController : MonoBehaviour
     public static ApplicationController Instance { get; private set; }
     public ILobby LobbyManager { get; private set; }
     public IAuth AuthenticationManager { get; private set; }
+    
+    public IConnection ConnectionManager { get; private set; }
     
     private void Awake()
     {
@@ -27,8 +30,10 @@ public class ApplicationController : MonoBehaviour
 
     private void BindManagers()
     {
-        LobbyManager = gameObject.AddComponent<LobbyManager>();
+        ConnectionManager = gameObject.AddComponent<ConnectionManager>();
+        ConnectionManager.Init();
         AuthenticationManager = new AuthenticationManager();
+        LobbyManager = gameObject.AddComponent<LobbyManager>();
         Debug.Log($"Binded managers");
     }
 

@@ -2,7 +2,7 @@ using Logic.Connection;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ViewPopup : MonoBehaviour
+public class InternetConnectionWindow : MonoBehaviour
 {
     [SerializeField] private Button _retryButton;
     private ConnectionManager _connectionManager;

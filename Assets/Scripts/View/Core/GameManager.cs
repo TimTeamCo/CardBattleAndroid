@@ -31,14 +31,11 @@ public class GameManager : MonoBehaviour
     public LocalLobbyList LobbyList { get; private set; } = new LocalLobbyList();
 
     public GameState LocalGameState { get; private set; }
-    [SerializeField] SetupInGame m_setupInGame;
-    [SerializeField] Countdown m_countdown;
+    // [SerializeField] SetupInGame m_setupInGame;
+    // [SerializeField] Countdown m_countdown;
 
     LocalPlayer m_LocalUser;
     LocalLobby m_LocalLobby;
-
-    vivox.VivoxSetup m_VivoxSetup = new vivox.VivoxSetup();
-    [SerializeField] List<vivox.VivoxUserHandler> m_vivoxUserHandlers;
 
     LobbyColor m_lobbyColorFilter;
 
@@ -59,12 +56,12 @@ public class GameManager : MonoBehaviour
     {
         try
         {
-            var lobby = await LobbyManager.CreateLobbyAsync(
-                name,
-                maxPlayers,
-                isPrivate, m_LocalUser);
+            // var lobby = await LobbyManager.CreateLobbyAsync(
+                // name,
+                // maxPlayers,
+                // isPrivate, m_LocalUser);
 
-            LobbyConverters.RemoteToLocal(lobby, m_LocalLobby);
+            // LobbyConverters.RemoteToLocal(lobby, m_LocalLobby);
             await CreateLobby();
         }
         catch (Exception exception)
@@ -78,10 +75,10 @@ public class GameManager : MonoBehaviour
     {
         try
         {
-            var lobby = await LobbyManager.JoinLobbyAsync(lobbyID, lobbyCode,
-                m_LocalUser);
+            // var lobby = await LobbyManager.JoinLobbyAsync(lobbyID, lobbyCode,
+                // m_LocalUser);
 
-            LobbyConverters.RemoteToLocal(lobby, m_LocalLobby);
+            // LobbyConverters.RemoteToLocal(lobby, m_LocalLobby);
             await JoinLobby();
         }
         catch (Exception exception)
@@ -94,24 +91,24 @@ public class GameManager : MonoBehaviour
     public async void QueryLobbies()
     {
         LobbyList.QueryState.Value = LobbyQueryState.Fetching;
-        var qr = await LobbyManager.RetrieveLobbyListAsync(m_lobbyColorFilter);
-        if (qr == null)
+        // var qr = await LobbyManager.RetrieveLobbyListAsync(m_lobbyColorFilter);
+        // if (qr == null)
         {
             return;
         }
 
-        SetCurrentLobbies(LobbyConverters.QueryToLocalList(qr));
+        // SetCurrentLobbies(LobbyConverters.QueryToLocalList(qr));
     }
 
     public async void QuickJoin()
     {
-        var lobby = await LobbyManager.QuickJoinLobbyAsync(m_LocalUser, m_lobbyColorFilter);
-        if (lobby != null)
+        // var lobby = await LobbyManager.QuickJoinLobbyAsync(m_LocalUser, m_lobbyColorFilter);
+        // if (lobby != null)
         {
-            LobbyConverters.RemoteToLocal(lobby, m_LocalLobby);
+            // LobbyConverters.RemoteToLocal(lobby, m_LocalLobby);
             await JoinLobby();
         }
-        else
+        // else
         {
             SetGameState(GameState.JoinMenu);
         }
@@ -121,8 +118,8 @@ public class GameManager : MonoBehaviour
     {
         if (string.IsNullOrWhiteSpace(name))
         {
-            LogHandlerSettings.Instance.SpawnErrorPopup(
-                "Empty Name not allowed."); // Lobby error type, then HTTP error type.
+            // LogHandlerSettings.Instance.SpawnErrorPopup(
+                // "Empty Name not allowed."); // Lobby error type, then HTTP error type.
             return;
         }
 
@@ -130,11 +127,11 @@ public class GameManager : MonoBehaviour
         SendLocalUserData();
     }
 
-    public void SetLocalUserEmote(EmoteType emote)
-    {
-        m_LocalUser.Emote.Value = emote;
-        SendLocalUserData();
-    }
+    // public void SetLocalUserEmote(EmoteType emote)
+    // {
+        // m_LocalUser.Emote.Value = emote;
+        // SendLocalUserData();
+    // }
 
     public void SetLocalUserStatus(PlayerStatus status)
     {
@@ -154,12 +151,12 @@ public class GameManager : MonoBehaviour
 
     async void SendLocalLobbyData()
     {
-        await LobbyManager.UpdateLobbyDataAsync(LobbyConverters.LocalToRemoteLobbyData(m_LocalLobby));
+        // await LobbyManager.UpdateLobbyDataAsync(LobbyConverters.LocalToRemoteLobbyData(m_LocalLobby));
     }
 
     async void SendLocalUserData()
     {
-        await LobbyManager.UpdatePlayerDataAsync(LobbyConverters.LocalToRemoteUserData(m_LocalUser));
+        // await LobbyManager.UpdatePlayerDataAsync(LobbyConverters.LocalToRemoteUserData(m_LocalUser));
     }
 
     public void UIChangeMenuState(GameState state)
@@ -210,20 +207,20 @@ public class GameManager : MonoBehaviour
     void BeginCountDown()
     {
         Debug.Log("Beginning Countdown.");
-        m_countdown.StartCountDown();
+        // m_countdown.StartCountDown();
     }
 
     void CancelCountDown()
     {
         Debug.Log("Countdown Cancelled.");
-        m_countdown.CancelCountDown();
+        // m_countdown.CancelCountDown();
     }
 
     public void FinishedCountDown()
     {
         m_LocalUser.UserStatus.Value = PlayerStatus.InGame;
         m_LocalLobby.LocalLobbyState.Value = LobbyState.InGame;
-        m_setupInGame.StartNetworkedGame(m_LocalLobby, m_LocalUser);
+        // m_setupInGame.StartNetworkedGame(m_LocalLobby, m_LocalUser);
     }
 
     public void BeginGame()
@@ -239,7 +236,7 @@ public class GameManager : MonoBehaviour
     public void ClientQuitGame()
     {
         EndGame();
-        m_setupInGame?.OnGameEnd();
+        // m_setupInGame?.OnGameEnd();
     }
 
     public void EndGame()
@@ -261,29 +258,28 @@ public class GameManager : MonoBehaviour
         Application.wantsToQuit += OnWantToQuit;
         m_LocalUser = new LocalPlayer("", 0, false, "LocalPlayer");
         m_LocalLobby = new LocalLobby {LocalLobbyState = {Value = LobbyState.Lobby}};
-        LobbyManager = ApplicationController.Instance.LobbyManager;
+        // LobbyManager = ApplicationController.Instance.LobbyManager;
 
         await InitializeServices();
         AuthenticatePlayer();
-        StartVivoxLogin();
     }
 
     async Task InitializeServices()
     {
         string serviceProfileName = "player";
 #if UNITY_EDITOR
-        serviceProfileName = $"{serviceProfileName}_{ClonesManager.GetCurrentProject().name}";
+        // serviceProfileName = $"{serviceProfileName}_{ClonesManager.GetCurrentProject().name}";
 #endif
-        await Auth.Authenticate(serviceProfileName);
+        // await Auth.Authenticate(serviceProfileName);
     }
 
     void AuthenticatePlayer()
     {
         var localId = AuthenticationService.Instance.PlayerId;
-        var randomName = NameGenerator.GetName(localId);
+        // var randomName = NameGenerator.GetName(localId);
 
         m_LocalUser.ID.Value = localId;
-        m_LocalUser.DisplayName.Value = randomName;
+        // m_LocalUser.DisplayName.Value = randomName;
     }
 
     #endregion
@@ -337,48 +333,18 @@ public class GameManager : MonoBehaviour
 
     async Task BindLobby()
     {
-        await LobbyManager.BindLocalLobbyToRemote(m_LocalLobby.LobbyID.Value, m_LocalLobby);
+        // await LobbyManager.BindLocalLobbyToRemote(m_LocalLobby.LobbyID.Value, m_LocalLobby);
         m_LocalLobby.LocalLobbyState.onChanged += OnLobbyStateChanged;
         SetLobbyView();
-        StartVivoxJoin();
     }
 
     public void LeaveLobby()
     {
         m_LocalUser.ResetState();
 #pragma warning disable 4014
-        LobbyManager.LeaveLobbyAsync();
+        // LobbyManager.LeaveLobbyAsync();
 #pragma warning restore 4014
         ResetLocalLobby();
-        m_VivoxSetup.LeaveLobbyChannel();
-    }
-
-    void StartVivoxLogin()
-    {
-        m_VivoxSetup.Initialize(m_vivoxUserHandlers, OnVivoxLoginComplete);
-
-        void OnVivoxLoginComplete(bool didSucceed)
-        {
-            if (!didSucceed)
-            {
-                Debug.LogError("Vivox login failed! Retrying in 5s...");
-                StartCoroutine(RetryConnection(StartVivoxLogin, m_LocalLobby.LobbyID.Value));
-            }
-        }
-    }
-
-    void StartVivoxJoin()
-    {
-        m_VivoxSetup.JoinLobbyChannel(m_LocalLobby.LobbyID.Value, OnVivoxJoinComplete);
-
-        void OnVivoxJoinComplete(bool didSucceed)
-        {
-            if (!didSucceed)
-            {
-                Debug.LogError("Vivox connection failed! Retrying in 5s...");
-                StartCoroutine(RetryConnection(StartVivoxJoin, m_LocalLobby.LobbyID.Value));
-            }
-        }
     }
 
     IEnumerator RetryConnection(Action doConnection, string lobbyId)
@@ -425,7 +391,7 @@ public class GameManager : MonoBehaviour
     void OnDestroy()
     {
         ForceLeaveAttempt();
-        LobbyManager.Dispose();
+        // LobbyManager.Dispose();
     }
 
     void ForceLeaveAttempt()
@@ -433,7 +399,7 @@ public class GameManager : MonoBehaviour
         if (!string.IsNullOrEmpty(m_LocalLobby?.LobbyID.Value))
         {
 #pragma warning disable 4014
-            LobbyManager.LeaveLobbyAsync();
+            // LobbyManager.LeaveLobbyAsync();
 #pragma warning restore 4014
             m_LocalLobby = null;
         }

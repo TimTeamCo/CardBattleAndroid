@@ -37,7 +37,7 @@ namespace NetCodeTT.Lobby
                 },
             };
             
-            Unity.Services.Lobbies.Models.Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, options);
+            Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, options);
 
             _createdLobbyIds.Enqueue(lobby.Id);
             _lobbyID = lobby.Id;

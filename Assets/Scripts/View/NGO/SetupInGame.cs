@@ -20,7 +20,7 @@ namespace LobbyRelaySample.ngo
         [SerializeField]
         private GameObject[] m_disableWhileInGame = default;
 
-        private InGameRunner m_inGameRunner;
+        // private InGameRunner m_inGameRunner;
 
         private bool m_doesNeedCleanup = false;
         private bool m_hasConnectedViaNGO = false;
@@ -40,9 +40,9 @@ namespace LobbyRelaySample.ngo
         async Task CreateNetworkManager(LocalLobby localLobby, LocalPlayer localPlayer)
         {
             m_lobby = localLobby;
-            m_inGameRunner = Instantiate(m_IngameRunnerPrefab).GetComponentInChildren<InGameRunner>();
-            m_inGameRunner.Initialize(OnConnectionVerified, m_lobby.PlayerCount, OnGameBegin, OnGameEnd,
-                localPlayer);
+            // m_inGameRunner = Instantiate(m_IngameRunnerPrefab).GetComponentInChildren<InGameRunner>();
+            // m_inGameRunner.Initialize(OnConnectionVerified, m_lobby.PlayerCount, OnGameBegin, OnGameEnd,
+                // localPlayer);
             if (localPlayer.IsHost.Value)
             {
                 await SetRelayHostData();
@@ -72,7 +72,7 @@ namespace LobbyRelaySample.ngo
 
             var allocation = await Relay.Instance.CreateAllocationAsync(m_lobby.MaxPlayerCount.Value);
             var joincode = await Relay.Instance.GetJoinCodeAsync(allocation.AllocationId);
-            GameManager.Instance.HostSetRelayCode(joincode);
+            // GameManager.Instance.HostSetRelayCode(joincode);
 
             bool isSecure = false;
             var endpoint = GetEndpointForAllocation(allocation.ServerEndpoints,
@@ -144,7 +144,7 @@ namespace LobbyRelaySample.ngo
             if (!m_hasConnectedViaNGO)
             {
                 // If this localPlayer hasn't successfully connected via NGO, forcibly exit the minigame.
-                LogHandlerSettings.Instance.SpawnErrorPopup("Failed to join the game.");
+                // LogHandlerSettings.Instance.SpawnErrorPopup("Failed to join the game.");
                 OnGameEnd();
             }
         }
@@ -157,12 +157,12 @@ namespace LobbyRelaySample.ngo
             if (m_doesNeedCleanup)
             {
                 NetworkManager.Singleton.Shutdown(true);
-                Destroy(m_inGameRunner
-                    .transform.parent
-                    .gameObject); // Since this destroys the NetworkManager, that will kick off cleaning up networked objects.
+                // Destroy(m_inGameRunner
+                    // .transform.parent
+                    // .gameObject); // Since this destroys the NetworkManager, that will kick off cleaning up networked objects.
                 SetMenuVisibility(true);
                 m_lobby.RelayCode.Value = "";
-                GameManager.Instance.EndGame();
+                // GameManager.Instance.EndGame();
                 m_doesNeedCleanup = false;
             }
         }

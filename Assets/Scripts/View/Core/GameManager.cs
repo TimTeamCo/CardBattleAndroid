@@ -4,41 +4,67 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Logic.Game;
 using NetCodeTT.Lobby;
+using Saver;
 using Unity.Services.Authentication;
 using UnityEngine;
 
-/// <summary>
-/// Current state of the local game.
-/// Set as a flag to allow for the Inspector to select multiple valid states for various UI features.
-/// </summary>
 [Flags]
 public enum GameState
 {
     Menu = 1,
     Lobby = 2,
-    JoinMenu = 4,
+    Game = 4,
 }
 
-/// <summary>
-/// Sets up and runs the entire sample.
-/// All the Data that is important gets updated in here, the GameManager in the mainScene has all the references
-/// needed to run the game.
-/// </summary>
 public class GameManager : MonoBehaviour
 {
-    public LocalLobby LocalLobby => m_LocalLobby;
+    public LocalLobby LocalLobby => _localLobby;
     public Action<GameState> onGameStateChanged;
-    public LocalLobbyList LobbyList { get; private set; } = new LocalLobbyList();
-
+    public LocalLobbyList LobbyList { get; private set; } = new ();
     public GameState LocalGameState { get; private set; }
+    
     // [SerializeField] SetupInGame m_setupInGame;
     // [SerializeField] Countdown m_countdown;
 
-    LocalPlayer m_LocalUser;
-    LocalLobby m_LocalLobby;
+    LocalPlayer _localUser;
+    LocalLobby _localLobby;
 
     LobbyColor m_lobbyColorFilter;
 
+    private LobbyManager _lobbyManager;
+    #region Setup
+
+    public void Init()
+    {
+        if (String.IsNullOrEmpty(LocalSaver.GetPlayerNickname()))
+        {
+            ApplicationController.Instance._welcomeWindow.ShowWindow();
+        }
+        else
+        {
+            CreateLocalData();
+        }
+
+        _lobbyManager = ApplicationController.Instance.LobbyManager;
+    }
+
+    public void CreateLocalData()
+    {
+        _localUser = new LocalPlayer("", 0, false, "No name yet");
+        _localLobby = new LocalLobby {LocalLobbyState = {Value = LobbyState.Lobby}};
+        AuthenticatePlayer();
+    }
+
+    void AuthenticatePlayer()
+    {
+        var localId = AuthenticationService.Instance.PlayerId;
+
+        _localUser.ID.Value = localId;
+        _localUser.DisplayName.Value = LocalSaver.GetPlayerNickname();
+    }
+
+    #endregion
+    
     /// <summary>Rather than a setter, this is usable in-editor. It won't accept an enum, however.</summary>
     public void SetLobbyColorFilter(int color)
     {
@@ -47,9 +73,9 @@ public class GameManager : MonoBehaviour
 
     public async Task<LocalPlayer> AwaitLocalUserInitialization()
     {
-        while (m_LocalUser == null)
+        while (_localUser == null)
             await Task.Delay(100);
-        return m_LocalUser;
+        return _localUser;
     }
 
     public async void CreateLobby(string name, bool isPrivate, int maxPlayers = 4)
@@ -66,7 +92,7 @@ public class GameManager : MonoBehaviour
         }
         catch (Exception exception)
         {
-            SetGameState(GameState.JoinMenu);
+            // SetGameState(GameState.JoinMenu);
             Debug.LogError($"Error creating lobby : {exception} ");
         }
     }
@@ -83,7 +109,7 @@ public class GameManager : MonoBehaviour
         }
         catch (Exception exception)
         {
-            SetGameState(GameState.JoinMenu);
+            // SetGameState(GameState.JoinMenu);
             Debug.LogError($"Error joining lobby : {exception} ");
         }
     }
@@ -110,7 +136,7 @@ public class GameManager : MonoBehaviour
         }
         // else
         {
-            SetGameState(GameState.JoinMenu);
+            // SetGameState(GameState.JoinMenu);
         }
     }
 
@@ -123,7 +149,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        m_LocalUser.DisplayName.Value = name;
+        _localUser.DisplayName.Value = name;
         SendLocalUserData();
     }
 
@@ -135,15 +161,15 @@ public class GameManager : MonoBehaviour
 
     public void SetLocalUserStatus(PlayerStatus status)
     {
-        m_LocalUser.UserStatus.Value = status;
+        _localUser.UserStatus.Value = status;
         SendLocalUserData();
     }
 
     public void SetLocalLobbyColor(int color)
     {
-        if (m_LocalLobby.PlayerCount < 1)
+        if (_localLobby.PlayerCount < 1)
             return;
-        m_LocalLobby.LocalLobbyColor.Value = (LobbyColor) color;
+        _localLobby.LocalLobbyColor.Value = (LobbyColor) color;
         SendLocalLobbyData();
     }
 
@@ -162,7 +188,7 @@ public class GameManager : MonoBehaviour
     public void UIChangeMenuState(GameState state)
     {
         var isQuittingGame = LocalGameState == GameState.Lobby &&
-                             m_LocalLobby.LocalLobbyState.Value == LobbyState.InGame;
+                             _localLobby.LocalLobbyState.Value == LobbyState.InGame;
 
         if (isQuittingGame)
         {
@@ -176,22 +202,22 @@ public class GameManager : MonoBehaviour
 
     public void HostSetRelayCode(string code)
     {
-        m_LocalLobby.RelayCode.Value = code;
+        _localLobby.RelayCode.Value = code;
         SendLocalLobbyData();
     }
 
     //Only Host needs to listen to this and change state.
     void OnPlayersReady(int readyCount)
     {
-        if (readyCount == m_LocalLobby.PlayerCount &&
-            m_LocalLobby.LocalLobbyState.Value != LobbyState.CountDown)
+        if (readyCount == _localLobby.PlayerCount &&
+            _localLobby.LocalLobbyState.Value != LobbyState.CountDown)
         {
-            m_LocalLobby.LocalLobbyState.Value = LobbyState.CountDown;
+            _localLobby.LocalLobbyState.Value = LobbyState.CountDown;
             SendLocalLobbyData();
         }
-        else if (m_LocalLobby.LocalLobbyState.Value == LobbyState.CountDown)
+        else if (_localLobby.LocalLobbyState.Value == LobbyState.CountDown)
         {
-            m_LocalLobby.LocalLobbyState.Value = LobbyState.Lobby;
+            _localLobby.LocalLobbyState.Value = LobbyState.Lobby;
             SendLocalLobbyData();
         }
     }
@@ -218,17 +244,17 @@ public class GameManager : MonoBehaviour
 
     public void FinishedCountDown()
     {
-        m_LocalUser.UserStatus.Value = PlayerStatus.InGame;
-        m_LocalLobby.LocalLobbyState.Value = LobbyState.InGame;
+        _localUser.UserStatus.Value = PlayerStatus.InGame;
+        _localLobby.LocalLobbyState.Value = LobbyState.InGame;
         // m_setupInGame.StartNetworkedGame(m_LocalLobby, m_LocalUser);
     }
 
     public void BeginGame()
     {
-        if (m_LocalUser.IsHost.Value)
+        if (_localUser.IsHost.Value)
         {
-            m_LocalLobby.LocalLobbyState.Value = LobbyState.InGame;
-            m_LocalLobby.Locked.Value = true;
+            _localLobby.LocalLobbyState.Value = LobbyState.InGame;
+            _localLobby.Locked.Value = true;
             SendLocalLobbyData();
         }
     }
@@ -241,61 +267,30 @@ public class GameManager : MonoBehaviour
 
     public void EndGame()
     {
-        if (m_LocalUser.IsHost.Value)
+        if (_localUser.IsHost.Value)
         {
-            m_LocalLobby.LocalLobbyState.Value = LobbyState.Lobby;
-            m_LocalLobby.Locked.Value = false;
+            _localLobby.LocalLobbyState.Value = LobbyState.Lobby;
+            _localLobby.Locked.Value = false;
             SendLocalLobbyData();
         }
 
         SetLobbyView();
     }
 
-    #region Setup
-
-    async void Awake()
-    {
-        Application.wantsToQuit += OnWantToQuit;
-        m_LocalUser = new LocalPlayer("", 0, false, "LocalPlayer");
-        m_LocalLobby = new LocalLobby {LocalLobbyState = {Value = LobbyState.Lobby}};
-        // LobbyManager = ApplicationController.Instance.LobbyManager;
-
-        await InitializeServices();
-        AuthenticatePlayer();
-    }
-
-    async Task InitializeServices()
-    {
-        string serviceProfileName = "player";
-#if UNITY_EDITOR
-        // serviceProfileName = $"{serviceProfileName}_{ClonesManager.GetCurrentProject().name}";
-#endif
-        // await Auth.Authenticate(serviceProfileName);
-    }
-
-    void AuthenticatePlayer()
-    {
-        var localId = AuthenticationService.Instance.PlayerId;
-        // var randomName = NameGenerator.GetName(localId);
-
-        m_LocalUser.ID.Value = localId;
-        // m_LocalUser.DisplayName.Value = randomName;
-    }
-
-    #endregion
+    
 
     void SetGameState(GameState state)
     {
-        var isLeavingLobby = (state == GameState.Menu || state == GameState.JoinMenu) &&
-                             LocalGameState == GameState.Lobby;
+        // var isLeavingLobby = (state == GameState.Menu || state == GameState.JoinMenu) &&
+                             // LocalGameState == GameState.Lobby;
         LocalGameState = state;
 
         Debug.Log($"Switching Game State to : {LocalGameState}");
 
-        if (isLeavingLobby)
-        {
-            LeaveLobby();
-        }
+        // if (isLeavingLobby)
+        // {
+            // LeaveLobby();
+        // }
 
         onGameStateChanged.Invoke(LocalGameState);
     }
@@ -312,8 +307,8 @@ public class GameManager : MonoBehaviour
 
     async Task CreateLobby()
     {
-        m_LocalUser.IsHost.Value = true;
-        m_LocalLobby.onUserReadyChange = OnPlayersReady;
+        _localUser.IsHost.Value = true;
+        _localLobby.onUserReadyChange = OnPlayersReady;
         try
         {
             await BindLobby();
@@ -327,20 +322,20 @@ public class GameManager : MonoBehaviour
     async Task JoinLobby()
     {
         //Trigger UI Even when same value
-        m_LocalUser.IsHost.ForceSet(false);
+        _localUser.IsHost.ForceSet(false);
         await BindLobby();
     }
 
     async Task BindLobby()
     {
         // await LobbyManager.BindLocalLobbyToRemote(m_LocalLobby.LobbyID.Value, m_LocalLobby);
-        m_LocalLobby.LocalLobbyState.onChanged += OnLobbyStateChanged;
+        _localLobby.LocalLobbyState.onChanged += OnLobbyStateChanged;
         SetLobbyView();
     }
 
     public void LeaveLobby()
     {
-        m_LocalUser.ResetState();
+        _localUser.ResetState();
 #pragma warning disable 4014
         // LobbyManager.LeaveLobbyAsync();
 #pragma warning restore 4014
@@ -350,7 +345,7 @@ public class GameManager : MonoBehaviour
     IEnumerator RetryConnection(Action doConnection, string lobbyId)
     {
         yield return new WaitForSeconds(5);
-        if (m_LocalLobby != null && m_LocalLobby.LobbyID.Value == lobbyId && !string.IsNullOrEmpty(lobbyId)
+        if (_localLobby != null && _localLobby.LobbyID.Value == lobbyId && !string.IsNullOrEmpty(lobbyId)
            ) // Ensure we didn't leave the lobby during this waiting period.
             doConnection?.Invoke();
     }
@@ -364,8 +359,8 @@ public class GameManager : MonoBehaviour
 
     void ResetLocalLobby()
     {
-        m_LocalLobby.ResetLobby();
-        m_LocalLobby.RelayServer = null;
+        _localLobby.ResetLobby();
+        _localLobby.RelayServer = null;
     }
 
     #region Teardown
@@ -381,9 +376,9 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
 
-    bool OnWantToQuit()
+    public bool OnWantToQuit()
     {
-        bool canQuit = string.IsNullOrEmpty(m_LocalLobby?.LobbyID.Value);
+        bool canQuit = string.IsNullOrEmpty(_localLobby?.LobbyID.Value);
         StartCoroutine(LeaveBeforeQuit());
         return canQuit;
     }
@@ -396,12 +391,12 @@ public class GameManager : MonoBehaviour
 
     void ForceLeaveAttempt()
     {
-        if (!string.IsNullOrEmpty(m_LocalLobby?.LobbyID.Value))
+        if (!string.IsNullOrEmpty(_localLobby?.LobbyID.Value))
         {
 #pragma warning disable 4014
             // LobbyManager.LeaveLobbyAsync();
 #pragma warning restore 4014
-            m_LocalLobby = null;
+            _localLobby = null;
         }
     }
 

@@ -2,13 +2,11 @@ using DG.Tweening;
 using Logic.Connection;
 using NetCodeTT.Authentication;
 using NetCodeTT.Lobby;
-using Saver;
-using Unity.Services.Core;
 using UnityEngine;
 
 public class ApplicationController : MonoBehaviour
 {
-    [SerializeField] private WelcomeWindow _welcomeWindow;
+    [SerializeField] public WelcomeWindow _welcomeWindow;
     public static ApplicationController Instance { get; private set; }
     public LobbyManager LobbyManager { get; private set; }
     public IAuth AuthenticationManager { get; private set; }
@@ -27,32 +25,40 @@ public class ApplicationController : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(this);
         BindManagers();
-        DOTween.Init();
     }
 
     private void BindManagers()
     {
         ConnectionManager = gameObject.AddComponent<ConnectionManager>();
-        ConnectionManager.Init();
         AuthenticationManager = new AuthenticationManager();
         LobbyManager = gameObject.AddComponent<LobbyManager>();
-        GameManager = new GameManager();
-        Debug.Log($"Binded managers");
+        GameManager = gameObject.AddComponent<GameManager>();
     }
 
-    private async void Start()
+    private void Start()
     {
-        await UnityServices.InitializeAsync();
-        Debug.Log(UnityServices.State);
-        AuthenticationManager.SetupEvents();
-        await AuthenticationManager.SignInAnonymouslyAsync();
-        if (string.IsNullOrEmpty(LocalSaver.GetPlayerNickname()))
-            _welcomeWindow.ShowWindow();
+        DOTween.Init();
+        ConnectionManager.Init();
+        AuthenticationManager.Init();
+        GameManager.Init();
+
+        Subscribe();
+    }
+
+    private void Subscribe()
+    {
+        Application.wantsToQuit += OnWantToQuit;
+    }
+
+    private bool OnWantToQuit()
+    {
+        return GameManager.OnWantToQuit();
     }
     
     private void OnApplicationQuit()
     {
         LobbyManager.LeaveLobby();
         StopAllCoroutines();
+        DOTween.KillAll();
     }
 }

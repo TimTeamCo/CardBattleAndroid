@@ -8,6 +8,13 @@ namespace NetCodeTT.Authentication
 {
     public class AuthenticationManager : IAuth
     {
+        public async void Init()
+        {
+            await UnityServices.InitializeAsync();
+            SetupEvents();
+            await SignInAnonymouslyAsync();
+        }
+        
         public async Task SignInAnonymouslyAsync()
         {
             try

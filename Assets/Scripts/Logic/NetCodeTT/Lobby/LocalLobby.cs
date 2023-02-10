@@ -4,7 +4,7 @@ using System.Text;
 using Logic.Infrastructure;
 using UnityEngine;
 
-[Flags] // Some UI elements will want to specify multiple states in which to be active, so this is Flags.
+[Flags]
 public enum LobbyState
 {
     Lobby = 1,

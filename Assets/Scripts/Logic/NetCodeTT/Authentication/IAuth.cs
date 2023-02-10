@@ -5,5 +5,6 @@ namespace NetCodeTT.Authentication
     public interface IAuth
     {
         Task SignInAnonymouslyAsync();
+        void SetupEvents();
     }
 }

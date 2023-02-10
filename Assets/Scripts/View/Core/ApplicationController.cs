@@ -3,7 +3,6 @@ using Logic.Connection;
 using NetCodeTT.Authentication;
 using NetCodeTT.Lobby;
 using Saver;
-using Unity.Services.Authentication;
 using Unity.Services.Core;
 using UnityEngine;
 
@@ -11,10 +10,11 @@ public class ApplicationController : MonoBehaviour
 {
     [SerializeField] private WelcomeWindow _welcomeWindow;
     public static ApplicationController Instance { get; private set; }
-    public ILobby LobbyManager { get; private set; }
+    public LobbyManager LobbyManager { get; private set; }
     public IAuth AuthenticationManager { get; private set; }
-    
     public IConnection ConnectionManager { get; private set; }
+    
+    public GameManager GameManager { get; private set; }
     
     private void Awake()
     {
@@ -36,6 +36,7 @@ public class ApplicationController : MonoBehaviour
         ConnectionManager.Init();
         AuthenticationManager = new AuthenticationManager();
         LobbyManager = gameObject.AddComponent<LobbyManager>();
+        GameManager = new GameManager();
         Debug.Log($"Binded managers");
     }
 
@@ -43,33 +44,12 @@ public class ApplicationController : MonoBehaviour
     {
         await UnityServices.InitializeAsync();
         Debug.Log(UnityServices.State);
-        SetupEvents();
+        AuthenticationManager.SetupEvents();
         await AuthenticationManager.SignInAnonymouslyAsync();
         if (string.IsNullOrEmpty(LocalSaver.GetPlayerNickname()))
             _welcomeWindow.ShowWindow();
     }
-
-    private void SetupEvents()
-    {
-        AuthenticationService.Instance.SignedIn += () =>
-        {
-            // Shows how to get a playerID
-            Debug.Log($"SetupEvents PlayerID: {AuthenticationService.Instance.PlayerId}");
-
-            // Shows how to get an access token
-            Debug.Log($"Access Token: {AuthenticationService.Instance.AccessToken}");
-        };
-
-        AuthenticationService.Instance.SignInFailed += (err) => { Debug.LogError(err); };
-
-        AuthenticationService.Instance.SignedOut += () => { Debug.Log("Player signed out."); };
-
-        AuthenticationService.Instance.Expired += () =>
-        {
-            Debug.Log("Player session could not be refreshed and expired.");
-        };
-    }
-
+    
     private void OnApplicationQuit()
     {
         LobbyManager.LeaveLobby();

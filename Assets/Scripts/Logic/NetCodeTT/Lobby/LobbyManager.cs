@@ -3,18 +3,21 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Logic.Game;
 using Unity.Services.Authentication;
 using Unity.Services.Lobbies;
-using Unity.Services.Lobbies.Models;
 using UnityEngine;
 
 namespace NetCodeTT.Lobby
 {
+    using Unity.Services.Lobbies.Models;
+
     public class LobbyManager : MonoBehaviour, ILobby
     {
         private IEnumerator _heartbeatLobbyCoroutine;
         private ConcurrentQueue<string> _createdLobbyIds = new ConcurrentQueue<string>();
-        private string _lobbyID;
+        public string _lobbyID;
+        public bool isClient;
 
         public async void CreateLobby(Action<string> result)
         {
@@ -22,8 +25,19 @@ namespace NetCodeTT.Lobby
             int maxPlayers = 2;
             CreateLobbyOptions options = new CreateLobbyOptions();
             options.IsPrivate = false;
+            isClient = false;
             
-            Unity.Services.Lobbies.Models.Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, options);
+            //Create a lobby with standard, non-indexed data
+            options.Data = new Dictionary<string, DataObject>()
+            {
+                {
+                    "HostData", new DataObject(
+                        visibility: DataObject.VisibilityOptions.Member, 
+                        value: "Timur Pro")
+                },
+            };
+            
+            Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, options);
 
             _createdLobbyIds.Enqueue(lobby.Id);
             _lobbyID = lobby.Id;
@@ -32,7 +46,7 @@ namespace NetCodeTT.Lobby
             StartCoroutine(_heartbeatLobbyCoroutine);
             Debug.Log($"LobbyName {lobbyName} lobby.Id {lobby.Id}");
             result.Invoke($"Lobby created {lobbyName}");
-
+            
             /* Sample
             string lobbyName = "new lobby";
             int maxPlayers = 2;
@@ -116,7 +130,7 @@ namespace NetCodeTT.Lobby
                         var lobby = lobbies.Results[i];
                         await GetLobby(lobby.Id, result =>
                         {
-                            if (result != String.Empty) 
+                            if (result != null) 
                                 return;
                         });
                     }
@@ -174,6 +188,18 @@ namespace NetCodeTT.Lobby
 
                 var lobby = await LobbyService.Instance.QuickJoinLobbyAsync(options);
                 _lobbyID = lobby.Id;
+                UpdateLobbyOptions updateLobbyOptions = new UpdateLobbyOptions();
+                updateLobbyOptions.Data = new Dictionary<string, DataObject>()
+                {
+                    {
+                        "ClientData", new DataObject(
+                            visibility: DataObject.VisibilityOptions.Member, 
+                            value: "PTN PNH")
+                    }
+                };
+                isClient = true;
+                await LobbyService.Instance.UpdateLobbyAsync(_lobbyID, updateLobbyOptions);
+
                 result.Invoke($"Joined into lobby {lobby.Name}");
             }
             catch (LobbyServiceException e)
@@ -409,17 +435,17 @@ namespace NetCodeTT.Lobby
             }
         }
 
-        public async Task GetLobby(string lobbyId, Action<string> result)
+        public async Task GetLobby(string lobbyId, Action<Unity.Services.Lobbies.Models.Lobby> lobbyRes)
         {
             try
             {
                 var lobby = await LobbyService.Instance.GetLobbyAsync(lobbyId);
-                result.Invoke(lobby.Id);
+                lobbyRes.Invoke(lobby);
             }
             catch (LobbyServiceException e)
             {
                 Debug.LogError(e);
-                result.Invoke(String.Empty);
+                lobbyRes.Invoke(null);
             }
         }
 
@@ -434,5 +460,165 @@ namespace NetCodeTT.Lobby
                 yield return delay;
             }
         }
+        
+        //copy realization from sample
+        
+        public Lobby CurrentLobby => _currentLobby;
+        private Lobby _currentLobby;
+        private Task _heartBeatTask;
+
+        #region Rate Limiting
+
+        public enum RequestType
+        {
+            Query = 0,
+            Join,
+            QuickJoin,
+            Host
+        }
+
+        public bool InLobby()
+        {
+            if (_currentLobby == null)
+            {
+                Debug.LogWarning("LobbyManager not currently in a lobby. Did you CreateLobbyAsync or JoinLobbyAsync?");
+                return false;
+            }
+
+            return true;
+        }
+
+        public ServiceRateLimiter GetRateLimit(RequestType type)
+        {
+            if (type == RequestType.Join)
+                return m_JoinCooldown;
+            else if (type == RequestType.QuickJoin)
+                return m_QuickJoinCooldown;
+            else if (type == RequestType.Host)
+                return m_CreateCooldown;
+            return m_QueryCooldown;
+        }
+        
+        // Rate Limits are posted here: https://docs.unity.com/lobby/rate-limits.html
+        ServiceRateLimiter m_QueryCooldown = new ServiceRateLimiter(1, 1f);
+        ServiceRateLimiter m_CreateCooldown = new ServiceRateLimiter(2, 6f);
+        ServiceRateLimiter m_JoinCooldown = new ServiceRateLimiter(2, 6f);
+        ServiceRateLimiter m_QuickJoinCooldown = new ServiceRateLimiter(1, 10f);
+        ServiceRateLimiter m_GetLobbyCooldown = new ServiceRateLimiter(1, 1f);
+        ServiceRateLimiter m_DeleteLobbyCooldown = new ServiceRateLimiter(2, 1f);
+        ServiceRateLimiter m_UpdateLobbyCooldown = new ServiceRateLimiter(5, 5f);
+        ServiceRateLimiter m_UpdatePlayerCooldown = new ServiceRateLimiter(5, 5f);
+        ServiceRateLimiter m_LeaveLobbyOrRemovePlayer = new ServiceRateLimiter(5, 1);
+        ServiceRateLimiter _heartBeatCooldown = new ServiceRateLimiter(5, 30);
+
+        #endregion
+        
+        Dictionary<string, PlayerDataObject> CreateInitialPlayerData(LocalPlayer user)
+        {
+            Dictionary<string, PlayerDataObject> data = new Dictionary<string, PlayerDataObject>();
+
+            var displayNameObject = new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, user.DisplayName.Value);
+            data.Add("DisplayName", displayNameObject);
+            return data;
+        }
+        
+        public async Task<Lobby> CreateLobbyAsync(int maxPlayers, bool isPrivate, LocalPlayer localUser)
+        {
+            if (m_CreateCooldown.IsCoolingDown)
+            {
+                Debug.LogWarning("Create Lobby hit the rate limit.");
+                return null;
+            }
+
+            await m_CreateCooldown.QueueUntilCooldown();
+
+            try
+            {
+                string uasId = AuthenticationService.Instance.PlayerId;
+
+                CreateLobbyOptions createOptions = new CreateLobbyOptions
+                {
+                    IsPrivate = isPrivate,
+                    Player = new Player(uasId, data: CreateInitialPlayerData(localUser))
+                };
+                
+                string lobbyName = await GenerateLobbyName();
+                _currentLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, createOptions);
+                Debug.Log($"[Lobby] Lobby created {_currentLobby.Name}");
+                StartHeartBeat();
+
+                return _currentLobby;
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Lobby Create failed:\n{ex}");
+                return null;
+            }
+        }
+
+        ///<summary>
+        /// sample show differents for lobby filter
+        /// List<QueryFilter> LobbyColorToFilters(LobbyColor limitToColor)
+        /// {
+        ///     List<QueryFilter> filters = new List<QueryFilter>();
+        ///     if (limitToColor == LobbyColor.Orange)
+        ///         filters.Add(new QueryFilter(QueryFilter.FieldOptions.N1, ((int)LobbyColor.Orange).ToString(),
+        ///             QueryFilter.OpOptions.EQ));
+        ///     else if (limitToColor == LobbyColor.Green)
+        ///         filters.Add(new QueryFilter(QueryFilter.FieldOptions.N1, ((int)LobbyColor.Green).ToString(),
+        ///             QueryFilter.OpOptions.EQ));
+        ///     else if (limitToColor == LobbyColor.Blue)
+        ///         filters.Add(new QueryFilter(QueryFilter.FieldOptions.N1, ((int)LobbyColor.Blue).ToString(),
+        ///             QueryFilter.OpOptions.EQ));
+        ///     return filters;
+        /// }
+        /// </summary>
+        
+        // List<QueryFilter> LobbyColorToFilters(LobbyColor limitToColor)
+        // {
+        //     List<QueryFilter> filters = new List<QueryFilter>();
+        //     if (limitToColor == LobbyColor.Orange)
+        //         filters.Add(new QueryFilter(QueryFilter.FieldOptions.N1, ((int)LobbyColor.Orange).ToString(),
+        //             QueryFilter.OpOptions.EQ));
+        //     else if (limitToColor == LobbyColor.Green)
+        //         filters.Add(new QueryFilter(QueryFilter.FieldOptions.N1, ((int)LobbyColor.Green).ToString(),
+        //             QueryFilter.OpOptions.EQ));
+        //     else if (limitToColor == LobbyColor.Blue)
+        //         filters.Add(new QueryFilter(QueryFilter.FieldOptions.N1, ((int)LobbyColor.Blue).ToString(),
+        //             QueryFilter.OpOptions.EQ));
+        //     return filters;
+        // }
+        
+        #region HeartBeat
+
+        //Since the LobbyManager maintains the "connection" to the lobby, we will continue to heartbeat until host leaves.
+        async Task SendHeartbeatPingAsync()
+        {
+            if (InLobby() == false) return;
+            
+            if (_heartBeatCooldown.IsCoolingDown) return;
+            
+            await _heartBeatCooldown.QueueUntilCooldown();
+
+            await LobbyService.Instance.SendHeartbeatPingAsync(_currentLobby.Id);
+        }
+
+        void StartHeartBeat()
+        {
+#pragma warning disable 4014
+            _heartBeatTask = HeartBeatLoop();
+#pragma warning restore 4014
+        }
+
+        async Task HeartBeatLoop()
+        {
+            while (_currentLobby != null)
+            {
+                await SendHeartbeatPingAsync();
+                await Task.Delay(8000);
+            }
+        }
+
+        #endregion
     }
 }

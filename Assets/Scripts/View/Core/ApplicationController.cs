@@ -2,11 +2,13 @@ using DG.Tweening;
 using Logic.Connection;
 using NetCodeTT.Authentication;
 using NetCodeTT.Lobby;
+using Saver;
 using Unity.Services.Core;
 using UnityEngine;
 
 public class ApplicationController : MonoBehaviour
 {
+    [SerializeField] private WelcomeWindow _welcomeWindow;
     public static ApplicationController Instance { get; private set; }
     public LobbyManager LobbyManager { get; private set; }
     public IAuth AuthenticationManager { get; private set; }
@@ -44,6 +46,8 @@ public class ApplicationController : MonoBehaviour
         Debug.Log(UnityServices.State);
         AuthenticationManager.SetupEvents();
         await AuthenticationManager.SignInAnonymouslyAsync();
+        if (string.IsNullOrEmpty(LocalSaver.GetPlayerNickname()))
+            _welcomeWindow.ShowWindow();
     }
     
     private void OnApplicationQuit()

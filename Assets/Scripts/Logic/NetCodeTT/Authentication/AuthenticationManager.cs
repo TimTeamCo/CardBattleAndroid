@@ -24,7 +24,6 @@ namespace NetCodeTT.Authentication
         
                 // Shows how to get the playerID
                 Debug.Log($"SignInAnonymouslyAsync PlayerID: {AuthenticationService.Instance.PlayerId}");
-                SceneManager.LoadScene(1);
             }
             catch (AuthenticationException ex)
             {

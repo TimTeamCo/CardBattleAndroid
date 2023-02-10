@@ -3,6 +3,7 @@ using Logic.Connection;
 using NetCodeTT.Authentication;
 using NetCodeTT.Lobby;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ApplicationController : MonoBehaviour
 {
@@ -11,8 +12,9 @@ public class ApplicationController : MonoBehaviour
     public LobbyManager LobbyManager { get; private set; }
     public IAuth AuthenticationManager { get; private set; }
     public IConnection ConnectionManager { get; private set; }
-    
     public GameManager GameManager { get; private set; }
+
+    private bool isEntry = true;
     
     private void Awake()
     {
@@ -48,6 +50,16 @@ public class ApplicationController : MonoBehaviour
     private void Subscribe()
     {
         Application.wantsToQuit += OnWantToQuit;
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "MainMenu" && isEntry)
+        {
+            isEntry = false;
+            GameManager.onApplicationEntry?.Invoke();
+        }
     }
 
     private bool OnWantToQuit()

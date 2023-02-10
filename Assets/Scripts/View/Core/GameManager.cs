@@ -7,6 +7,7 @@ using NetCodeTT.Lobby;
 using Saver;
 using Unity.Services.Authentication;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [Flags]
 public enum GameState
@@ -18,6 +19,7 @@ public enum GameState
 
 public class GameManager : MonoBehaviour
 {
+    public Action onApplicationEntry;
     public LocalLobby LocalLobby => _localLobby;
     public Action<GameState> onGameStateChanged;
     public LocalLobbyList LobbyList { get; private set; } = new ();
@@ -32,6 +34,7 @@ public class GameManager : MonoBehaviour
     LobbyColor m_lobbyColorFilter;
 
     private LobbyManager _lobbyManager;
+    
     #region Setup
 
     public void Init()
@@ -53,6 +56,7 @@ public class GameManager : MonoBehaviour
         _localUser = new LocalPlayer("", 0, false, "No name yet");
         _localLobby = new LocalLobby {LocalLobbyState = {Value = LobbyState.Lobby}};
         AuthenticatePlayer();
+        LoadMenuScene();
     }
 
     void AuthenticatePlayer()
@@ -64,6 +68,11 @@ public class GameManager : MonoBehaviour
     }
 
     #endregion
+
+    public void LoadMenuScene()
+    {
+        SceneManager.LoadScene(1);
+    }
     
     /// <summary>Rather than a setter, this is usable in-editor. It won't accept an enum, however.</summary>
     public void SetLobbyColorFilter(int color)

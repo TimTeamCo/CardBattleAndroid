@@ -172,7 +172,7 @@ namespace NetCodeTT.Lobby
             }
         }
 
-        public async void QuickJoin(Action<string> result)
+        public async void QuickJoin()
         {
             try
             {
@@ -199,16 +199,12 @@ namespace NetCodeTT.Lobby
                 };
                 isClient = true;
                 await LobbyService.Instance.UpdateLobbyAsync(_lobbyID, updateLobbyOptions);
-
-                result.Invoke($"Joined into lobby {lobby.Name}");
             }
             catch (LobbyServiceException e)
             {
                 Debug.LogError(e);
-                result.Invoke($"Can't join into lobby :(");
                 CreateLobby(res =>
                 {
-                    result.Invoke($"{res}");
                 });
             }
             

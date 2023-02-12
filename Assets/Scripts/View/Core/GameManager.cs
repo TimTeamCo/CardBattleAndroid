@@ -20,6 +20,8 @@ public enum GameState
 public class GameManager : MonoBehaviour
 {
     public Action onApplicationEntry;
+    public Action onPressStartButton;
+    public Action onExitSearchingButton;
     public LocalLobby LocalLobby => _localLobby;
     public Action<GameState> onGameStateChanged;
     public LocalLobbyList LobbyList { get; private set; } = new ();

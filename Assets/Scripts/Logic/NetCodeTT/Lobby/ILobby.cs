@@ -15,7 +15,7 @@ namespace NetCodeTT.Lobby
         
         void JoinLobbyByLobbyCode(string lobbyCode);
         
-        void QuickJoin(Action<string> result);
+        void QuickJoin();
         
         void DeleteAllCreatedLobbies();
         

@@ -8,11 +8,24 @@ public class PetPanelView : MonoBehaviour
 
     private void Awake()
     {
-        ApplicationController.Instance.GameManager.onApplicationEntry += OnApplicationEntry;
+        var gameManager = ApplicationController.Instance.GameManager;
+        gameManager.onApplicationEntry += OnApplicationEntry;
+        gameManager.onPressStartButton += OnSearchingBattle;
+        gameManager.onExitSearchingButton += OnExitSearchingBattle;
     }
 
     private void OnApplicationEntry()
     {
         _petDialog.text = $"Hi {LocalSaver.GetPlayerNickname()}!";
+    }
+    
+    private void OnSearchingBattle()
+    {
+        _petDialog.text = $"Searching battle...";
+    }
+    
+    private void OnExitSearchingBattle()
+    {
+        _petDialog.text = $"I love you!";
     }
 }

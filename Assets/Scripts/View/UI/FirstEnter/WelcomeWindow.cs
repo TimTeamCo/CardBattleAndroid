@@ -15,5 +15,6 @@ public class WelcomeWindow : MonoBehaviour
     {
         LocalSaver.SetPlayerNickname(_input.text);
         gameObject.SetActive(false);
+        ApplicationController.Instance.GameManager.CreateLocalData();
     }
 }

@@ -26,11 +26,11 @@ namespace Logic.Connection
 
             if (request.result == UnityWebRequest.Result.Success)
             {
-                HaveInternet.Invoke();
+                HaveInternet?.Invoke();
             }
             else
             {
-                NoInternet.Invoke();
+                NoInternet?.Invoke();
             }
             
             yield return new WaitForSeconds(10f);

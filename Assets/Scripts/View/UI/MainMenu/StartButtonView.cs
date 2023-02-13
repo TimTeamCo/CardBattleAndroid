@@ -68,12 +68,10 @@ public class StartButtonView : MonoBehaviour
         _middleCircle.transform.localEulerAngles = Vector3.zero;
         _bottomCircle.transform.localEulerAngles = Vector3.zero;
         _upCircle.transform.localEulerAngles = Vector3.zero;
-        ApplicationController.Instance.LobbyManager.LeaveLobby();
     }
 
     private void StartSearchAnimation()
     {
-        ApplicationController.Instance.LobbyManager.QuickJoin();
         _searchSequence = DOTween.Sequence();
         _searchSequence.Append(_middleCircle.transform.DORotate(new Vector3(0, 0,
                 _middleCircle.transform.localRotation.z + 25f), 0.25f, RotateMode.FastBeyond360).SetRelative(true).SetEase(Ease.Linear))

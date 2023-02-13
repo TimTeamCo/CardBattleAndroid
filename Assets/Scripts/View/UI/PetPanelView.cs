@@ -12,6 +12,12 @@ public class PetPanelView : MonoBehaviour
         gameManager.onApplicationEntry += OnApplicationEntry;
         gameManager.onPressStartButton += OnSearchingBattle;
         gameManager.onExitSearchingButton += OnExitSearchingBattle;
+        gameManager.onJoinIntoLobby += OnJoinIntoLobby;
+    }
+
+    private void OnJoinIntoLobby()
+    {
+        _petDialog.text = $"Wait until I find your opponent...";
     }
 
     private void OnApplicationEntry()

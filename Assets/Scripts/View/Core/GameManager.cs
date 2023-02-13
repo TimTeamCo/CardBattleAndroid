@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     public Action onApplicationEntry;
     public Action onPressStartButton;
     public Action onExitSearchingButton;
+    public Action onJoinIntoLobby;
     public LocalLobby LocalLobby => _localLobby;
     public Action<GameState> onGameStateChanged;
     public LocalLobbyList LobbyList { get; private set; } = new ();
@@ -51,6 +52,7 @@ public class GameManager : MonoBehaviour
         }
 
         _lobbyManager = ApplicationController.Instance.LobbyManager;
+        Subscribe();
     }
 
     public void CreateLocalData()
@@ -68,9 +70,42 @@ public class GameManager : MonoBehaviour
         _localUser.ID.Value = localId;
         _localUser.DisplayName.Value = LocalSaver.GetPlayerNickname();
     }
-
+    
     #endregion
 
+    #region Subscribe
+
+    private void Subscribe()
+    {
+        onPressStartButton = OnPressStartButton;
+        onExitSearchingButton = OnExitSearchingButton;
+    }
+
+    private void OnExitSearchingButton()
+    {
+        SetLocalUserStatus(PlayerStatus.Menu);
+        _lobbyManager.LeaveLobby();
+    }
+
+    private async void OnPressStartButton()
+    {
+        var lobby = await _lobbyManager.QuickJoin(_localUser); 
+        if (lobby != null)
+        {
+            LobbyConverters.RemoteToLocal(lobby, _localLobby);
+            onJoinIntoLobby?.Invoke();
+            Debug.Log($"[Tim] _localUser.IsHost {_localUser.IsHost.Value }");
+            await JoinLobby();
+        }
+        else
+        {
+            SetGameState(GameState.Menu);
+        }
+    }
+
+    #endregion
+    
+    
     public void LoadMenuScene()
     {
         SceneManager.LoadScene(1);
@@ -180,7 +215,7 @@ public class GameManager : MonoBehaviour
     {
         if (_localLobby.PlayerCount < 1)
             return;
-        _localLobby.LocalLobbyColor.Value = (LobbyColor) color;
+        // _localLobby.LocalLobbyColor.Value = (LobbyColor) color;
         SendLocalLobbyData();
     }
 
@@ -303,7 +338,7 @@ public class GameManager : MonoBehaviour
             // LeaveLobby();
         // }
 
-        onGameStateChanged.Invoke(LocalGameState);
+        onGameStateChanged?.Invoke(LocalGameState);
     }
 
     void SetCurrentLobbies(IEnumerable<LocalLobby> lobbies)
@@ -334,6 +369,7 @@ public class GameManager : MonoBehaviour
     {
         //Trigger UI Even when same value
         _localUser.IsHost.ForceSet(false);
+        Debug.Log($"[Tim] _localUser.IsHost {_localUser.IsHost.Value }");
         await BindLobby();
     }
 
@@ -363,8 +399,8 @@ public class GameManager : MonoBehaviour
 
     void SetLobbyView()
     {
-        Debug.Log($"Setting Lobby user state {GameState.Lobby}");
-        SetGameState(GameState.Lobby);
+        Debug.Log($"Setting Lobby user state {PlayerStatus.Lobby}");
+        // SetGameState(GameState.Menu);
         SetLocalUserStatus(PlayerStatus.Lobby);
     }
 

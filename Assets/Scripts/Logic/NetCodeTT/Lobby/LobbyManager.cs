@@ -4,15 +4,13 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
-using Unity.Services.Lobbies;
 using UnityEngine;
 
 namespace NetCodeTT.Lobby
 {
     using Unity.Services.Lobbies.Models;
     using Unity.Services.Lobbies;
-
-
+    
     public class LobbyManager : MonoBehaviour, ILobby
     {
         private IEnumerator _heartbeatLobbyCoroutine;

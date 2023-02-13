@@ -3,108 +3,101 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Logic.Game;
 using Unity.Services.Authentication;
-using Unity.Services.Lobbies;
 using UnityEngine;
 
 namespace NetCodeTT.Lobby
 {
     using Unity.Services.Lobbies.Models;
-
+    using Unity.Services.Lobbies;
+    
     public class LobbyManager : MonoBehaviour, ILobby
     {
         private IEnumerator _heartbeatLobbyCoroutine;
         private ConcurrentQueue<string> _createdLobbyIds = new ConcurrentQueue<string>();
         public string _lobbyID;
         public bool isClient;
+        Lobby _currentLobby;
+        // LobbyEventCallbacks m_LobbyEventCallbacks = new LobbyEventCallbacks();
 
-        public async void CreateLobby(Action<string> result)
+
+        public async Task<Lobby> QuickJoin(LocalPlayer localUser)
         {
-            string lobbyName = await GenerateLobbyName();
-            int maxPlayers = 2;
-            CreateLobbyOptions options = new CreateLobbyOptions();
-            options.IsPrivate = false;
-            isClient = false;
-            
-            //Create a lobby with standard, non-indexed data
-            options.Data = new Dictionary<string, DataObject>()
+            //We dont want to queue a quickjoin
+            if (m_QuickJoinCooldown.IsCoolingDown)
             {
-                {
-                    "HostData", new DataObject(
-                        visibility: DataObject.VisibilityOptions.Member, 
-                        value: "Timur Pro")
-                },
-            };
-            
-            Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, options);
+                Debug.LogWarning("Quick Join Lobby hit the rate limit.");
+                return null;
+            }
 
-            _createdLobbyIds.Enqueue(lobby.Id);
-            _lobbyID = lobby.Id;
-            _heartbeatLobbyCoroutine = HeartbeatLobbyCoroutine(lobby.Id, 15);
+            await m_QuickJoinCooldown.QueueUntilCooldown();
+            string uasId = AuthenticationService.Instance.PlayerId;
             
-            StartCoroutine(_heartbeatLobbyCoroutine);
-            Debug.Log($"LobbyName {lobbyName} lobby.Id {lobby.Id}");
-            result.Invoke($"Lobby created {lobbyName}");
-            
-            /* Sample
-            string lobbyName = "new lobby";
-            int maxPlayers = 2;
-            CreateLobbyOptions options = new CreateLobbyOptions();
-            options.IsPrivate = false;
-
-            //Create a lobby with standard, non-indexed data
-            options.Data = new Dictionary<string, DataObject>()
+            var joinRequest = new QuickJoinLobbyOptions
             {
-                {
-                    "ExamplePublicLobbyData", new DataObject(
-                        visibility: DataObject.VisibilityOptions.Public, // Visible publicly.
-                        value: "ExamplePublicLobbyData")
-                },
+                Player = new Player(id: uasId, data: CreateInitialPlayerData(localUser))
             };
 
-            // Create a lobby with indexed string data
-            options.Data = new Dictionary<string, DataObject>()
+            Lobby loby;
+            try
             {
+                loby = await LobbyService.Instance.QuickJoinLobbyAsync(joinRequest);
+                if (loby != null)
                 {
-                    "GameMode", new DataObject(
-                        visibility: DataObject.VisibilityOptions.Public, // Visible publicly.
-                        value: "Conquest",
-                        index: DataObject.IndexOptions.S1)
-                },
-            };
-
-            // Create a lobby with indexed numeric data
-            options.Data = new Dictionary<string, DataObject>()
+                    return _currentLobby = loby;
+                }
+            }
+            catch (Exception e)
             {
+                loby = await CreateLobby(localUser);
+                return _currentLobby = loby;
+                throw;
+            }
+            
+            return _currentLobby;
+        }
+
+        public async Task<Lobby> CreateLobby(LocalPlayer localUser)
+        {
+            if (m_CreateCooldown.IsCoolingDown)
+            {
+                Debug.LogWarning("Create Lobby hit the rate limit.");
+                return null;
+            }
+            
+            await m_CreateCooldown.QueueUntilCooldown();
+            
+            try
+            {
+                string uasId = AuthenticationService.Instance.PlayerId;
+
+                CreateLobbyOptions createOptions = new CreateLobbyOptions
                 {
-                    "MinimumSkillLevel", new DataObject(
-                        visibility: DataObject.VisibilityOptions.Public, // Visible publicly.
-                        value: "25",
-                        index: DataObject.IndexOptions.N1)
-                },
-            };
+                    IsPrivate = false,
+                    Player = new Player(id: uasId, data: CreateInitialPlayerData(localUser))
+                };
+                
+                string lobbyName = await GenerateLobbyName();
+                int maxPlayers = 2;
 
-            // Create a lobby with player data for the host
-            options.Player = new Player(
-                id: AuthenticationService.Instance.PlayerId,
-                data: new Dictionary<string, PlayerDataObject>()
+                try
                 {
-                    {
-                        "ExampleMemberPlayerData", new PlayerDataObject(
-                            visibility: PlayerDataObject.VisibilityOptions
-                                .Member, // Visible only to members of the lobby.
-                            value: "ExampleMemberPlayerData")
-                    }
-                });
+                    _currentLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, createOptions);
+                    StartHeartBeat();
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError(e);
+                    throw;
+                }
 
-            Unity.Services.Lobbies.Models.Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, options);
-
-            _createdLobbyIds.Enqueue(lobby.Id);
-            _heartbeatLobbyCoroutine = HeartbeatLobbyCoroutine(lobby.Id, 15);
-            // Heartbeat the lobby every 15 seconds.
-            StartCoroutine(_heartbeatLobbyCoroutine);
-            */
+                return _currentLobby;
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Lobby Create failed:\n{ex}");
+                return null;
+            }
         }
 
         private async Task<string> GenerateLobbyName()
@@ -147,7 +140,171 @@ namespace NetCodeTT.Lobby
 
             return lobbyName;
         }
+/*
+        public async Task BindLocalLobbyToRemote(string lobbyID, LocalLobby localLobby)
+        {
+            m_LobbyEventCallbacks.LobbyChanged += async changes =>
+            {
+                if (changes.LobbyDeleted)
+                {
+                    await LeaveLobbyAsync();
+                    return;
+                }
 
+                //Lobby Fields
+                if (changes.Name.Changed)
+                    localLobby.LobbyName.Value = changes.Name.Value;
+                if (changes.HostId.Changed)
+                    localLobby.HostID.Value = changes.HostId.Value;
+                if (changes.IsPrivate.Changed)
+                    localLobby.Private.Value = changes.IsPrivate.Value;
+                if (changes.IsLocked.Changed)
+                    localLobby.Locked.Value = changes.IsLocked.Value;
+                if (changes.AvailableSlots.Changed)
+                    localLobby.AvailableSlots.Value = changes.AvailableSlots.Value;
+                if (changes.MaxPlayers.Changed)
+                    localLobby.MaxPlayerCount.Value = changes.MaxPlayers.Value;
+
+                if (changes.LastUpdated.Changed)
+                    localLobby.LastUpdated.Value = changes.LastUpdated.Value.ToFileTimeUtc();
+
+                //Custom Lobby Fields
+                if (changes.Data.Changed)
+                    LobbyChanged();
+
+                if (changes.PlayerJoined.Changed)
+                    PlayersJoined();
+
+                if (changes.PlayerLeft.Changed)
+                    PlayersLeft();
+
+                if (changes.PlayerData.Changed)
+                    PlayerDataChanged();
+
+                void LobbyChanged()
+                {
+                    foreach (var change in changes.Data.Value)
+                    {
+                        var changedValue = change.Value;
+                        var changedKey = change.Key;
+
+                        if (changedValue.Removed)
+                        {
+                            RemoveCustomLobbyData(changedKey);
+                        }
+
+                        if (changedValue.Changed)
+                        {
+                            ParseCustomLobbyData(changedKey, changedValue.Value);
+                        }
+                    }
+
+                    void RemoveCustomLobbyData(string changedKey)
+                    {
+                        if (changedKey == key_RelayCode)
+                            localLobby.RelayCode.Value = "";
+                    }
+
+                    void ParseCustomLobbyData(string changedKey, DataObject playerDataObject)
+                    {
+                        if (changedKey == key_RelayCode)
+                            localLobby.RelayCode.Value = playerDataObject.Value;
+
+                        if (changedKey == key_LobbyState)
+                            localLobby.LocalLobbyState.Value = (LobbyState)int.Parse(playerDataObject.Value);
+
+                        if (changedKey == key_LobbyColor)
+                            localLobby.LocalLobbyColor.Value = (LobbyColor)int.Parse(playerDataObject.Value);
+                    }
+                }
+
+                void PlayersJoined()
+                {
+                    foreach (var playerChanges in changes.PlayerJoined.Value)
+                    {
+                        Player joinedPlayer = playerChanges.Player;
+
+                        var id = joinedPlayer.Id;
+                        var index = playerChanges.PlayerIndex;
+                        var isHost = localLobby.HostID.Value == id;
+
+                        var newPlayer = new LocalPlayer(id, index, isHost);
+
+                        foreach (var dataEntry in joinedPlayer.Data)
+                        {
+                            var dataObject = dataEntry.Value;
+                            ParseCustomPlayerData(newPlayer, dataEntry.Key, dataObject.Value);
+                        }
+
+                        localLobby.AddPlayer(index, newPlayer);
+                    }
+                }
+
+                void PlayersLeft()
+                {
+                    foreach (var leftPlayerIndex in changes.PlayerLeft.Value)
+                    {
+                        localLobby.RemovePlayer(leftPlayerIndex);
+                    }
+                }
+
+                void PlayerDataChanged()
+                {
+                    foreach (var lobbyPlayerChanges in changes.PlayerData.Value)
+                    {
+                        var playerIndex = lobbyPlayerChanges.Key;
+                        var localPlayer = localLobby.GetLocalPlayer(playerIndex);
+                        if (localPlayer == null)
+                            continue;
+                        var playerChanges = lobbyPlayerChanges.Value;
+                        if (playerChanges.ConnectionInfoChanged.Changed)
+                        {
+                            var connectionInfo = playerChanges.ConnectionInfoChanged.Value;
+                            Debug.Log(
+                                $"ConnectionInfo for player {playerIndex} changed to {connectionInfo}");
+                        }
+
+                        if (playerChanges.LastUpdatedChanged.Changed) { }
+
+                        //There are changes on the Player
+                        if (playerChanges.ChangedData.Changed)
+                        {
+                            foreach (var playerChange in playerChanges.ChangedData.Value)
+                            {
+                                var changedValue = playerChange.Value;
+
+                                //There are changes on some of the changes in the player list of changes
+
+                                if (changedValue.Changed)
+                                {
+                                    if (changedValue.Removed)
+                                    {
+                                        Debug.LogWarning("This Sample does not remove Player Values currently.");
+                                        continue;
+                                    }
+
+                                    var playerDataObject = changedValue.Value;
+                                    ParseCustomPlayerData(localPlayer, playerChange.Key, playerDataObject.Value);
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            m_LobbyEventCallbacks.LobbyEventConnectionStateChanged += lobbyEventConnectionState =>
+            {
+                Debug.Log($"Lobby ConnectionState Changed to {lobbyEventConnectionState}");
+            };
+
+            m_LobbyEventCallbacks.KickedFromLobby += () =>
+            {
+                Debug.Log("Left Lobby");
+                Dispose();
+            };
+            await LobbyService.Instance.SubscribeToLobbyEventsAsync(lobbyID, m_LobbyEventCallbacks);
+        }
+*/
         public async void JoinLobbyByID(string lobbyID)
         {
             try
@@ -170,71 +327,6 @@ namespace NetCodeTT.Lobby
             {
                 Debug.LogError(e);
             }
-        }
-
-        public async void QuickJoin(Action<string> result)
-        {
-            try
-            {
-                QuickJoinLobbyOptions options = new QuickJoinLobbyOptions();
-
-                // options.Filter = new List<QueryFilter>()
-                // {
-                //     new QueryFilter(
-                //         field: QueryFilter.FieldOptions.MaxPlayers,
-                //         op: QueryFilter.OpOptions.GE,
-                //         value: "10")
-                // };
-
-                var lobby = await LobbyService.Instance.QuickJoinLobbyAsync(options);
-                _lobbyID = lobby.Id;
-                UpdateLobbyOptions updateLobbyOptions = new UpdateLobbyOptions();
-                updateLobbyOptions.Data = new Dictionary<string, DataObject>()
-                {
-                    {
-                        "ClientData", new DataObject(
-                            visibility: DataObject.VisibilityOptions.Member, 
-                            value: "PTN PNH")
-                    }
-                };
-                isClient = true;
-                await LobbyService.Instance.UpdateLobbyAsync(_lobbyID, updateLobbyOptions);
-
-                result.Invoke($"Joined into lobby {lobby.Name}");
-            }
-            catch (LobbyServiceException e)
-            {
-                Debug.LogError(e);
-                result.Invoke($"Can't join into lobby :(");
-                CreateLobby(res =>
-                {
-                    result.Invoke($"{res}");
-                });
-            }
-            
-            /* Sample
-            try
-            {
-                // Quick-join a random lobby with a maximum capacity of 10 or more players.
-                QuickJoinLobbyOptions options = new QuickJoinLobbyOptions();
-
-                options.Filter = new List<QueryFilter>()
-                {
-                    new QueryFilter(
-                        field: QueryFilter.FieldOptions.MaxPlayers,
-                        op: QueryFilter.OpOptions.GE,
-                        value: "10")
-                };
-
-                var lobby = await LobbyService.Instance.QuickJoinLobbyAsync(options);
-
-                // ...
-            }
-            catch (LobbyServiceException e)
-            {
-                Debug.LogError(e);
-            }
-            */
         }
 
         public void DeleteAllCreatedLobbies()
@@ -450,21 +542,10 @@ namespace NetCodeTT.Lobby
         }
 
 
-        private IEnumerator HeartbeatLobbyCoroutine(string lobbyId, float waitTimeSeconds)
-        {
-            var delay = new WaitForSecondsRealtime(waitTimeSeconds);
-
-            while (true)
-            {
-                LobbyService.Instance.SendHeartbeatPingAsync(lobbyId);
-                yield return delay;
-            }
-        }
-        
         //copy realization from sample
         
         public Lobby CurrentLobby => _currentLobby;
-        private Lobby _currentLobby;
+        // private Lobby _currentLobby;
         private Task _heartBeatTask;
 
         #region Rate Limiting

@@ -55,7 +55,7 @@ public class LocalLobby
 
     public CallbackValue<int> MaxPlayerCount = new CallbackValue<int>();
 
-    public CallbackValue<LobbyColor> LocalLobbyColor = new CallbackValue<LobbyColor>();
+    // public CallbackValue<LobbyColor> LocalLobbyColor = new CallbackValue<LobbyColor>();
 
     public CallbackValue<long> LastUpdated = new CallbackValue<long>();
 
@@ -74,7 +74,7 @@ public class LocalLobby
         LobbyCode.Value = "";
         Locked.Value = false;
         Private.Value = false;
-        LocalLobbyColor.Value = LobbyColor.None;
+        // LocalLobbyColor.Value = LobbyColor.None;
         AvailableSlots.Value = 4;
         MaxPlayerCount.Value = 4;
         onUserJoined = null;
@@ -138,8 +138,8 @@ public class LocalLobby
         sb.AppendLine(LocalLobbyState.Value.ToString());
         sb.Append("Lobby LocalLobbyState Last Edit: ");
         sb.AppendLine(new DateTime(LastUpdated.Value).ToString());
-        sb.Append("LocalLobbyColor: ");
-        sb.AppendLine(LocalLobbyColor.Value.ToString());
+        // sb.Append("LocalLobbyColor: ");
+        // sb.AppendLine(LocalLobbyColor.Value.ToString());
         sb.Append("RelayCode: ");
         sb.AppendLine(RelayCode.Value);
 

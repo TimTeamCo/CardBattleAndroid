@@ -9,13 +9,13 @@ namespace NetCodeTT.Lobby
     
     public interface ILobby
     {
-        void CreateLobby(Action<string> result);
+        Task<Lobby> CreateLobby(LocalPlayer localUser);
         
         void JoinLobbyByID(string lobbyID);
         
         void JoinLobbyByLobbyCode(string lobbyCode);
         
-        void QuickJoin(Action<string> result);
+        Task<Lobby> QuickJoin(LocalPlayer localUser);
         
         void DeleteAllCreatedLobbies();
         

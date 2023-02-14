@@ -38,7 +38,7 @@ namespace NetCodeTT.Lobby
                 return data;
             data.Add(key_Displayname, user.DisplayName.Value);
             data.Add(key_Userstatus, ((int)user.UserStatus.Value).ToString());
-            // data.Add(key_Emote, ((int)user.Emote.Value).ToString());
+            data.Add(key_Pet, ((int)user.Pet.Value).ToString());
             return data;
         }
 
@@ -111,7 +111,7 @@ namespace NetCodeTT.Lobby
                     localPlayer.Index.Value = index;
                     localPlayer.IsHost.Value = isHost;
                     localPlayer.DisplayName.Value = displayName;
-                    // localPlayer.Emote.Value = emote;
+                    localPlayer.Pet.Value = pet;
                     localPlayer.UserStatus.Value = userStatus;
                 }
 

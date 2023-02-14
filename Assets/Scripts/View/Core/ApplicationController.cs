@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class ApplicationController : MonoBehaviour
 {
     [SerializeField] public WelcomeWindow _welcomeWindow;
+    [SerializeField] public Countdown _countdown;
     public static ApplicationController Instance { get; private set; }
     public LobbyManager LobbyManager { get; private set; }
     public IAuth AuthenticationManager { get; private set; }
@@ -15,6 +16,11 @@ public class ApplicationController : MonoBehaviour
     public GameManager GameManager { get; private set; }
 
     private bool isEntry = true;
+
+    public void Test()
+    {
+        GameManager.SetLobbyCountdown();
+    }
     
     private void Awake()
     {
@@ -26,6 +32,7 @@ public class ApplicationController : MonoBehaviour
         
         Instance = this;
         DontDestroyOnLoad(this);
+        DontDestroyOnLoad(_countdown);
         BindManagers();
     }
 

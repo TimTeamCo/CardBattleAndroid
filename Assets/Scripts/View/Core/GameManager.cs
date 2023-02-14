@@ -27,12 +27,21 @@ public class GameManager : MonoBehaviour
     public LocalLobbyList LobbyList { get; private set; } = new ();
     public GameState LocalGameState { get; private set; }
     
-    LocalPlayer _localUser;
-    LocalLobby _localLobby;
-
-    LobbyColor m_lobbyColorFilter;
-
+    private LocalPlayer _localUser;
+    private LocalLobby _localLobby;
     private LobbyManager _lobbyManager;
+    private Countdown _countdown;
+
+    // LobbyColor m_lobbyColorFilter;
+
+    #region Test
+
+    public void SetLobbyCountdown()
+    {
+        _localLobby.LocalLobbyState.Value = LobbyState.CountDown;
+    }
+
+    #endregion
     
     #region Setup
 
@@ -48,6 +57,7 @@ public class GameManager : MonoBehaviour
         }
 
         _lobbyManager = ApplicationController.Instance.LobbyManager;
+        _countdown = ApplicationController.Instance._countdown;
         Subscribe();
     }
 
@@ -143,6 +153,11 @@ public class GameManager : MonoBehaviour
         SendLocalUserData();
     }
     
+    async void SendLocalUserData()
+    {
+        await _lobbyManager.UpdatePlayerDataAsync(LobbyConverters.LocalToRemoteUserData(_localUser));
+    }
+    
     private async Task JoinLobby()
     {
         //Trigger UI Even when same value
@@ -171,14 +186,22 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Countdown Cancelled.");
         //TODO countdown
-        // m_countdown.CancelCountDown();
+        _countdown.CancelCountDown();
     }
     
     void BeginCountDown()
     {
         Debug.Log("Beginning Countdown.");
         //TODO countdown
-        // m_countdown.StartCountDown();
+        _countdown.StartCountDown();
+    }
+    
+    public void FinishedCountDown()
+    {
+        _localUser.UserStatus.Value = PlayerStatus.InGame;
+        _localLobby.LocalLobbyState.Value = LobbyState.InGame;
+        //TODO Start Network Game
+        // m_setupInGame.StartNetworkedGame(m_LocalLobby, m_LocalUser);
     }
     
     void SetLobbyView()
@@ -231,10 +254,10 @@ public class GameManager : MonoBehaviour
     #region UnUsed
     
     /// <summary>Rather than a setter, this is usable in-editor. It won't accept an enum, however.</summary>
-    public void SetLobbyColorFilter(int color)
-    {
-        m_lobbyColorFilter = (LobbyColor) color;
-    }
+    // public void SetLobbyColorFilter(int color)
+    // {
+        // m_lobbyColorFilter = (LobbyColor) color;
+    // }
 
     public async Task<LocalPlayer> AwaitLocalUserInitialization()
     {
@@ -243,41 +266,41 @@ public class GameManager : MonoBehaviour
         return _localUser;
     }
 
-    public async void CreateLobby(string name, bool isPrivate, int maxPlayers = 4)
-    {
-        try
-        {
+    // public async void CreateLobby(string name, bool isPrivate, int maxPlayers = 4)
+    // {
+        // try
+        // {
             // var lobby = await LobbyManager.CreateLobbyAsync(
                 // name,
                 // maxPlayers,
                 // isPrivate, m_LocalUser);
 
             // LobbyConverters.RemoteToLocal(lobby, m_LocalLobby);
-            await CreateLobby();
-        }
-        catch (Exception exception)
-        {
+            // await CreateLobby();
+        // }
+        // catch (Exception exception)
+        // {
             // SetGameState(GameState.JoinMenu);
-            Debug.LogError($"Error creating lobby : {exception} ");
-        }
-    }
+            // Debug.LogError($"Error creating lobby : {exception} ");
+        // }
+    // }
 
-    public async void JoinLobby(string lobbyID, string lobbyCode)
-    {
-        try
-        {
+    // public async void JoinLobby(string lobbyID, string lobbyCode)
+    // {
+        // try
+        // {
             // var lobby = await LobbyManager.JoinLobbyAsync(lobbyID, lobbyCode,
                 // m_LocalUser);
 
             // LobbyConverters.RemoteToLocal(lobby, m_LocalLobby);
-            await JoinLobby();
-        }
-        catch (Exception exception)
-        {
+            // await JoinLobby();
+        // }
+        // catch (Exception exception)
+        // {
             // SetGameState(GameState.JoinMenu);
-            Debug.LogError($"Error joining lobby : {exception} ");
-        }
-    }
+            // Debug.LogError($"Error joining lobby : {exception} ");
+        // }
+    // }
 
     public async void QueryLobbies()
     {
@@ -291,19 +314,19 @@ public class GameManager : MonoBehaviour
         // SetCurrentLobbies(LobbyConverters.QueryToLocalList(qr));
     }
 
-    public async void QuickJoin()
-    {
+    // public async void QuickJoin()
+    // {
         // var lobby = await LobbyManager.QuickJoinLobbyAsync(m_LocalUser, m_lobbyColorFilter);
         // if (lobby != null)
-        {
+        // {
             // LobbyConverters.RemoteToLocal(lobby, m_LocalLobby);
-            await JoinLobby();
-        }
+            // await JoinLobby();
+        // }
         // else
-        {
+        // {
             // SetGameState(GameState.JoinMenu);
-        }
-    }
+        // }
+    // }
 
     public void SetLocalUserName(string name)
     {
@@ -339,25 +362,19 @@ public class GameManager : MonoBehaviour
         // await LobbyManager.UpdateLobbyDataAsync(LobbyConverters.LocalToRemoteLobbyData(m_LocalLobby));
     }
 
-    async void SendLocalUserData()
-    {
-        // await LobbyManager.UpdatePlayerDataAsync(LobbyConverters.LocalToRemoteUserData(m_LocalUser));
-    }
+    // public void UIChangeMenuState(GameState state)
+    // {
+        // var isQuittingGame = LocalGameState == GameState.Lobby && _localLobby.LocalLobbyState.Value == LobbyState.InGame;
 
-    public void UIChangeMenuState(GameState state)
-    {
-        var isQuittingGame = LocalGameState == GameState.Lobby &&
-                             _localLobby.LocalLobbyState.Value == LobbyState.InGame;
-
-        if (isQuittingGame)
-        {
+        // if (isQuittingGame)
+        // {
             //If we were in-game, make sure we stop by the lobby first
-            state = GameState.Lobby;
-            ClientQuitGame();
-        }
+            // state = GameState.Lobby;
+            // ClientQuitGame();
+        // }
 
-        SetGameState(state);
-    }
+        // SetGameState(state);
+    // }
 
     public void HostSetRelayCode(string code)
     {
@@ -380,13 +397,6 @@ public class GameManager : MonoBehaviour
             SendLocalLobbyData();
         }
     }
-    
-    public void FinishedCountDown()
-    {
-        _localUser.UserStatus.Value = PlayerStatus.InGame;
-        _localLobby.LocalLobbyState.Value = LobbyState.InGame;
-        // m_setupInGame.StartNetworkedGame(m_LocalLobby, m_LocalUser);
-    }
 
     public void BeginGame()
     {
@@ -398,23 +408,23 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ClientQuitGame()
-    {
-        EndGame();
+    // public void ClientQuitGame()
+    // {
+        // EndGame();
         // m_setupInGame?.OnGameEnd();
-    }
+    // }
 
-    public void EndGame()
-    {
-        if (_localUser.IsHost.Value)
-        {
-            _localLobby.LocalLobbyState.Value = LobbyState.Lobby;
-            _localLobby.Locked.Value = false;
-            SendLocalLobbyData();
-        }
+    // public void EndGame()
+    // {
+        // if (_localUser.IsHost.Value)
+        // {
+            // _localLobby.LocalLobbyState.Value = LobbyState.Lobby;
+            // _localLobby.Locked.Value = false;
+            // SendLocalLobbyData();
+        // }
 
-        SetLobbyView();
-    }
+        // SetLobbyView();
+    // }
 
     void SetCurrentLobbies(IEnumerable<LocalLobby> lobbies)
     {
@@ -426,19 +436,19 @@ public class GameManager : MonoBehaviour
         LobbyList.QueryState.Value = LobbyQueryState.Fetched;
     }
 
-    async Task CreateLobby()
-    {
-        _localUser.IsHost.Value = true;
-        _localLobby.onUserReadyChange = OnPlayersReady;
-        try
-        {
-            await BindLobby();
-        }
-        catch (Exception exception)
-        {
-            Debug.LogError($"Couldn't join Lobby: {exception}");
-        }
-    }
+    // async Task CreateLobby()
+    // {
+        // _localUser.IsHost.Value = true;
+        // _localLobby.onUserReadyChange = OnPlayersReady;
+        // try
+        // {
+            // await BindLobby();
+        // }
+        // catch (Exception exception)
+        // {
+            // Debug.LogError($"Couldn't join Lobby: {exception}");
+        // }
+    // }
     
     IEnumerator RetryConnection(Action doConnection, string lobbyId)
     {

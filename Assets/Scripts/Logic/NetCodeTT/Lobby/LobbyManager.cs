@@ -323,6 +323,37 @@ namespace NetCodeTT.Lobby
                 player.DisplayName.Value = playerDataValue;
         }
         
+        public async Task UpdatePlayerDataAsync(Dictionary<string, string> data)
+        {
+            if (!InLobby())
+                return;
+
+            string playerId = AuthenticationService.Instance.PlayerId;
+            Dictionary<string, PlayerDataObject> dataCurr = new Dictionary<string, PlayerDataObject>();
+            foreach (var dataNew in data)
+            {
+                PlayerDataObject dataObj = new PlayerDataObject(visibility: PlayerDataObject.VisibilityOptions.Member,
+                    value: dataNew.Value);
+                if (dataCurr.ContainsKey(dataNew.Key))
+                    dataCurr[dataNew.Key] = dataObj;
+                else
+                    dataCurr.Add(dataNew.Key, dataObj);
+            }
+
+            if (m_UpdatePlayerCooldown.TaskQueued)
+                return;
+            await m_UpdatePlayerCooldown.QueueUntilCooldown();
+
+            UpdatePlayerOptions updateOptions = new UpdatePlayerOptions
+            {
+                Data = dataCurr,
+                AllocationId = null,
+                ConnectionInfo = null
+            };
+            
+            _currentLobby = await LobbyService.Instance.UpdatePlayerAsync(_currentLobby.Id, playerId, updateOptions);
+        }
+        
         public async Task LeaveLobbyAsync()
         {
             await m_LeaveLobbyOrRemovePlayer.QueueUntilCooldown();

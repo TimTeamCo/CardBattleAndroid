@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Logic.Game;
 using NetCodeTT.Lobby;
 using Saver;
 using Unity.Services.Authentication;
@@ -28,9 +27,6 @@ public class GameManager : MonoBehaviour
     public LocalLobbyList LobbyList { get; private set; } = new ();
     public GameState LocalGameState { get; private set; }
     
-    // [SerializeField] SetupInGame m_setupInGame;
-    // [SerializeField] Countdown m_countdown;
-
     LocalPlayer _localUser;
     LocalLobby _localLobby;
 
@@ -110,6 +106,129 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(1);
     }
+    
+    void SetGameState(GameState state)
+    {
+        var isLeavingLobby = state == GameState.Menu && LocalGameState == GameState.Lobby;
+        LocalGameState = state;
+
+        Debug.Log($"Switching Game State to : {LocalGameState}");
+
+        if (isLeavingLobby)
+        { 
+            LeaveLobby();
+        }
+
+        onGameStateChanged?.Invoke(LocalGameState);
+    }
+    
+    public void LeaveLobby()
+    {
+        _localUser.ResetState();
+#pragma warning disable 4014
+        _lobbyManager.LeaveLobbyAsync();
+#pragma warning restore 4014
+        ResetLocalLobby();
+    }
+    
+    void ResetLocalLobby()
+    {
+        _localLobby.ResetLobby();
+        _localLobby.RelayServer = null;
+    }
+    
+    public void SetLocalUserStatus(PlayerStatus status)
+    {
+        _localUser.UserStatus.Value = status;
+        SendLocalUserData();
+    }
+    
+    private async Task JoinLobby()
+    {
+        //Trigger UI Even when same value
+        _localUser.IsHost.ForceSet(false);
+        Debug.Log($"[Tim] _localUser.IsHost {_localUser.IsHost.Value }");
+        await BindLobby();
+    }
+    
+    private async Task BindLobby()
+    {
+        await LobbyManager.BindLocalLobbyToRemote(_localLobby.LobbyID.Value, _localLobby);
+        _localLobby.LocalLobbyState.onChanged += OnLobbyStateChanged;
+        SetLobbyView();
+    }
+    
+    //TODO 10 sec countdown for start game
+    private void OnLobbyStateChanged(LobbyState state)
+    {
+        if (state == LobbyState.Lobby)
+            CancelCountDown();
+        if (state == LobbyState.CountDown)
+            BeginCountDown();
+    }
+    
+    void CancelCountDown()
+    {
+        Debug.Log("Countdown Cancelled.");
+        //TODO countdown
+        // m_countdown.CancelCountDown();
+    }
+    
+    void BeginCountDown()
+    {
+        Debug.Log("Beginning Countdown.");
+        //TODO countdown
+        // m_countdown.StartCountDown();
+    }
+    
+    void SetLobbyView()
+    {
+        Debug.Log($"Setting Lobby user state {PlayerStatus.Lobby}");
+        SetGameState(GameState.Menu);
+        SetLocalUserStatus(PlayerStatus.Lobby);
+    }
+    
+    #region Teardown
+
+    public bool OnWantToQuit()
+    {
+        bool canQuit = string.IsNullOrEmpty(_localLobby?.LobbyID.Value);
+        StartCoroutine(LeaveBeforeQuit());
+        return canQuit;
+    }
+
+    /// <summary>
+    /// In builds, if we are in a lobby and try to send a Leave request on application quit, it won't go through if we're quitting on the same frame.
+    /// So, we need to delay just briefly to let the request happen (though we don't need to wait for the result).
+    /// </summary>
+    IEnumerator LeaveBeforeQuit()
+    {
+        ForceLeaveAttempt();
+        yield return null;
+        Application.Quit();
+    }
+
+    void ForceLeaveAttempt()
+    {
+        if (!string.IsNullOrEmpty(_localLobby?.LobbyID.Value))
+        {
+#pragma warning disable 4014
+            _lobbyManager.LeaveLobbyAsync();
+#pragma warning restore 4014
+            _localLobby = null;
+        }
+    }
+
+    void OnDestroy()
+    {
+        ForceLeaveAttempt();
+        _lobbyManager.Dispose();
+    }
+
+    #endregion
+
+    //TODO Remove down unused element
+    #region UnUsed
     
     /// <summary>Rather than a setter, this is usable in-editor. It won't accept an enum, however.</summary>
     public void SetLobbyColorFilter(int color)
@@ -199,18 +318,12 @@ public class GameManager : MonoBehaviour
         SendLocalUserData();
     }
 
-    // public void SetLocalUserEmote(EmoteType emote)
-    // {
-        // m_LocalUser.Emote.Value = emote;
-        // SendLocalUserData();
-    // }
-
-    public void SetLocalUserStatus(PlayerStatus status)
+    public void SetLocalUserEmote(EmoteType emote)
     {
-        _localUser.UserStatus.Value = status;
+        // _localUser.Emote.Value = emote; 
         SendLocalUserData();
     }
-
+    
     public void SetLocalLobbyColor(int color)
     {
         if (_localLobby.PlayerCount < 1)
@@ -267,27 +380,7 @@ public class GameManager : MonoBehaviour
             SendLocalLobbyData();
         }
     }
-
-    void OnLobbyStateChanged(LobbyState state)
-    {
-        if (state == LobbyState.Lobby)
-            CancelCountDown();
-        if (state == LobbyState.CountDown)
-            BeginCountDown();
-    }
-
-    void BeginCountDown()
-    {
-        Debug.Log("Beginning Countdown.");
-        // m_countdown.StartCountDown();
-    }
-
-    void CancelCountDown()
-    {
-        Debug.Log("Countdown Cancelled.");
-        // m_countdown.CancelCountDown();
-    }
-
+    
     public void FinishedCountDown()
     {
         _localUser.UserStatus.Value = PlayerStatus.InGame;
@@ -323,24 +416,6 @@ public class GameManager : MonoBehaviour
         SetLobbyView();
     }
 
-    
-
-    void SetGameState(GameState state)
-    {
-        // var isLeavingLobby = (state == GameState.Menu || state == GameState.JoinMenu) &&
-                             // LocalGameState == GameState.Lobby;
-        LocalGameState = state;
-
-        Debug.Log($"Switching Game State to : {LocalGameState}");
-
-        // if (isLeavingLobby)
-        // {
-            // LeaveLobby();
-        // }
-
-        onGameStateChanged?.Invoke(LocalGameState);
-    }
-
     void SetCurrentLobbies(IEnumerable<LocalLobby> lobbies)
     {
         var newLobbyDict = new Dictionary<string, LocalLobby>();
@@ -364,31 +439,7 @@ public class GameManager : MonoBehaviour
             Debug.LogError($"Couldn't join Lobby: {exception}");
         }
     }
-
-    async Task JoinLobby()
-    {
-        //Trigger UI Even when same value
-        _localUser.IsHost.ForceSet(false);
-        Debug.Log($"[Tim] _localUser.IsHost {_localUser.IsHost.Value }");
-        await BindLobby();
-    }
-
-    async Task BindLobby()
-    {
-        // await LobbyManager.BindLocalLobbyToRemote(m_LocalLobby.LobbyID.Value, m_LocalLobby);
-        _localLobby.LocalLobbyState.onChanged += OnLobbyStateChanged;
-        SetLobbyView();
-    }
-
-    public void LeaveLobby()
-    {
-        _localUser.ResetState();
-#pragma warning disable 4014
-        // LobbyManager.LeaveLobbyAsync();
-#pragma warning restore 4014
-        ResetLocalLobby();
-    }
-
+    
     IEnumerator RetryConnection(Action doConnection, string lobbyId)
     {
         yield return new WaitForSeconds(5);
@@ -396,56 +447,6 @@ public class GameManager : MonoBehaviour
            ) // Ensure we didn't leave the lobby during this waiting period.
             doConnection?.Invoke();
     }
-
-    void SetLobbyView()
-    {
-        Debug.Log($"Setting Lobby user state {PlayerStatus.Lobby}");
-        // SetGameState(GameState.Menu);
-        SetLocalUserStatus(PlayerStatus.Lobby);
-    }
-
-    void ResetLocalLobby()
-    {
-        _localLobby.ResetLobby();
-        _localLobby.RelayServer = null;
-    }
-
-    #region Teardown
-
-    /// <summary>
-    /// In builds, if we are in a lobby and try to send a Leave request on application quit, it won't go through if we're quitting on the same frame.
-    /// So, we need to delay just briefly to let the request happen (though we don't need to wait for the result).
-    /// </summary>
-    IEnumerator LeaveBeforeQuit()
-    {
-        ForceLeaveAttempt();
-        yield return null;
-        Application.Quit();
-    }
-
-    public bool OnWantToQuit()
-    {
-        bool canQuit = string.IsNullOrEmpty(_localLobby?.LobbyID.Value);
-        StartCoroutine(LeaveBeforeQuit());
-        return canQuit;
-    }
-
-    void OnDestroy()
-    {
-        ForceLeaveAttempt();
-        // LobbyManager.Dispose();
-    }
-
-    void ForceLeaveAttempt()
-    {
-        if (!string.IsNullOrEmpty(_localLobby?.LobbyID.Value))
-        {
-#pragma warning disable 4014
-            // LobbyManager.LeaveLobbyAsync();
-#pragma warning restore 4014
-            _localLobby = null;
-        }
-    }
-
+    
     #endregion
 }

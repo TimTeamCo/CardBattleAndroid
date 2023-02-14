@@ -75,8 +75,8 @@ public class LocalLobby
         Locked.Value = false;
         Private.Value = false;
         // LocalLobbyColor.Value = LobbyColor.None;
-        AvailableSlots.Value = 4;
-        MaxPlayerCount.Value = 4;
+        AvailableSlots.Value = 2;
+        MaxPlayerCount.Value = 2;
         onUserJoined = null;
         onUserLeft = null;
     }

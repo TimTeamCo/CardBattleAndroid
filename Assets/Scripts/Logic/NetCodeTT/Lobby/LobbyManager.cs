@@ -13,13 +13,14 @@ namespace NetCodeTT.Lobby
     
     public class LobbyManager : MonoBehaviour, ILobby
     {
-        private IEnumerator _heartbeatLobbyCoroutine;
-        private ConcurrentQueue<string> _createdLobbyIds = new ConcurrentQueue<string>();
         public string _lobbyID;
         public bool isClient;
-        Lobby _currentLobby;
-        // LobbyEventCallbacks m_LobbyEventCallbacks = new LobbyEventCallbacks();
-
+        private IEnumerator _heartbeatLobbyCoroutine;
+        private ConcurrentQueue<string> _createdLobbyIds = new ConcurrentQueue<string>();
+        private Lobby _currentLobby;
+        private LobbyEventCallbacks m_LobbyEventCallbacks = new LobbyEventCallbacks();
+        private const string key_RelayCode = nameof(LocalLobby.RelayCode);
+        private const string key_LobbyState = nameof(LocalLobby.LocalLobbyState);
 
         public async Task<Lobby> QuickJoin(LocalPlayer localUser)
         {
@@ -140,7 +141,7 @@ namespace NetCodeTT.Lobby
 
             return lobbyName;
         }
-/*
+
         public async Task BindLocalLobbyToRemote(string lobbyID, LocalLobby localLobby)
         {
             m_LobbyEventCallbacks.LobbyChanged += async changes =>
@@ -213,8 +214,8 @@ namespace NetCodeTT.Lobby
                         if (changedKey == key_LobbyState)
                             localLobby.LocalLobbyState.Value = (LobbyState)int.Parse(playerDataObject.Value);
 
-                        if (changedKey == key_LobbyColor)
-                            localLobby.LocalLobbyColor.Value = (LobbyColor)int.Parse(playerDataObject.Value);
+                        // if (changedKey == key_LobbyColor)
+                            // localLobby.LocalLobbyColor.Value = (LobbyColor)int.Parse(playerDataObject.Value);
                     }
                 }
 
@@ -304,7 +305,106 @@ namespace NetCodeTT.Lobby
             };
             await LobbyService.Instance.SubscribeToLobbyEventsAsync(lobbyID, m_LobbyEventCallbacks);
         }
-*/
+        
+        public async Task LeaveLobbyAsync()
+        {
+            await m_LeaveLobbyOrRemovePlayer.QueueUntilCooldown();
+            if (InLobby() == false)
+                return;
+            string playerId = AuthenticationService.Instance.PlayerId;
+
+            await LobbyService.Instance.RemovePlayerAsync(_currentLobby.Id, playerId);
+            _currentLobby = null;
+        }
+        
+        #region Rate Limiting
+
+        public enum RequestType
+        {
+            Query = 0,
+            Join,
+            QuickJoin,
+            Host
+        }
+
+        public bool InLobby()
+        {
+            if (_currentLobby == null)
+            {
+                Debug.LogWarning("Player not currently in a lobby.");
+                return false;
+            }
+
+            return true;
+        }
+
+        //TODO not use GetRateLimit?
+        public ServiceRateLimiter GetRateLimit(RequestType type)
+        {
+            if (type == RequestType.Join)
+                return m_JoinCooldown;
+            else if (type == RequestType.QuickJoin)
+                return m_QuickJoinCooldown;
+            else if (type == RequestType.Host)
+                return m_CreateCooldown;
+            return m_QueryCooldown;
+        }
+        
+        // Rate Limits are posted here: https://docs.unity.com/lobby/rate-limits.html
+        ServiceRateLimiter m_QueryCooldown = new ServiceRateLimiter(1, 1f);
+        ServiceRateLimiter m_CreateCooldown = new ServiceRateLimiter(2, 6f);
+        ServiceRateLimiter m_JoinCooldown = new ServiceRateLimiter(2, 6f);
+        ServiceRateLimiter m_QuickJoinCooldown = new ServiceRateLimiter(1, 10f);
+        ServiceRateLimiter m_GetLobbyCooldown = new ServiceRateLimiter(1, 1f);
+        ServiceRateLimiter m_DeleteLobbyCooldown = new ServiceRateLimiter(2, 1f);
+        ServiceRateLimiter m_UpdateLobbyCooldown = new ServiceRateLimiter(5, 5f);
+        ServiceRateLimiter m_UpdatePlayerCooldown = new ServiceRateLimiter(5, 5f);
+        ServiceRateLimiter m_LeaveLobbyOrRemovePlayer = new ServiceRateLimiter(5, 1);
+        ServiceRateLimiter _heartBeatCooldown = new ServiceRateLimiter(5, 30);
+
+        #endregion
+        
+        #region HeartBeat
+
+        //Since the LobbyManager maintains the "connection" to the lobby, we will continue to heartbeat until host leaves.
+        async Task SendHeartbeatPingAsync()
+        {
+            if (InLobby() == false) return;
+            
+            if (_heartBeatCooldown.IsCoolingDown) return;
+            
+            await _heartBeatCooldown.QueueUntilCooldown();
+
+            await LobbyService.Instance.SendHeartbeatPingAsync(_currentLobby.Id);
+        }
+
+        void StartHeartBeat()
+        {
+#pragma warning disable 4014
+            _heartBeatTask = HeartBeatLoop();
+#pragma warning restore 4014
+        }
+
+        async Task HeartBeatLoop()
+        {
+            while (_currentLobby != null)
+            {
+                await SendHeartbeatPingAsync();
+                await Task.Delay(8000);
+            }
+        }
+
+        #endregion
+        
+        public void Dispose()
+        {
+            _currentLobby = null;
+            m_LobbyEventCallbacks = new LobbyEventCallbacks();
+        }
+        
+        //TODO Unused down
+        #region UnUsed
+
         public async void JoinLobbyByID(string lobbyID)
         {
             try
@@ -548,52 +648,6 @@ namespace NetCodeTT.Lobby
         // private Lobby _currentLobby;
         private Task _heartBeatTask;
 
-        #region Rate Limiting
-
-        public enum RequestType
-        {
-            Query = 0,
-            Join,
-            QuickJoin,
-            Host
-        }
-
-        public bool InLobby()
-        {
-            if (_currentLobby == null)
-            {
-                Debug.LogWarning("LobbyManager not currently in a lobby. Did you CreateLobbyAsync or JoinLobbyAsync?");
-                return false;
-            }
-
-            return true;
-        }
-
-        public ServiceRateLimiter GetRateLimit(RequestType type)
-        {
-            if (type == RequestType.Join)
-                return m_JoinCooldown;
-            else if (type == RequestType.QuickJoin)
-                return m_QuickJoinCooldown;
-            else if (type == RequestType.Host)
-                return m_CreateCooldown;
-            return m_QueryCooldown;
-        }
-        
-        // Rate Limits are posted here: https://docs.unity.com/lobby/rate-limits.html
-        ServiceRateLimiter m_QueryCooldown = new ServiceRateLimiter(1, 1f);
-        ServiceRateLimiter m_CreateCooldown = new ServiceRateLimiter(2, 6f);
-        ServiceRateLimiter m_JoinCooldown = new ServiceRateLimiter(2, 6f);
-        ServiceRateLimiter m_QuickJoinCooldown = new ServiceRateLimiter(1, 10f);
-        ServiceRateLimiter m_GetLobbyCooldown = new ServiceRateLimiter(1, 1f);
-        ServiceRateLimiter m_DeleteLobbyCooldown = new ServiceRateLimiter(2, 1f);
-        ServiceRateLimiter m_UpdateLobbyCooldown = new ServiceRateLimiter(5, 5f);
-        ServiceRateLimiter m_UpdatePlayerCooldown = new ServiceRateLimiter(5, 5f);
-        ServiceRateLimiter m_LeaveLobbyOrRemovePlayer = new ServiceRateLimiter(5, 1);
-        ServiceRateLimiter _heartBeatCooldown = new ServiceRateLimiter(5, 30);
-
-        #endregion
-        
         Dictionary<string, PlayerDataObject> CreateInitialPlayerData(LocalPlayer user)
         {
             Dictionary<string, PlayerDataObject> data = new Dictionary<string, PlayerDataObject>();
@@ -669,36 +723,6 @@ namespace NetCodeTT.Lobby
         //             QueryFilter.OpOptions.EQ));
         //     return filters;
         // }
-        
-        #region HeartBeat
-
-        //Since the LobbyManager maintains the "connection" to the lobby, we will continue to heartbeat until host leaves.
-        async Task SendHeartbeatPingAsync()
-        {
-            if (InLobby() == false) return;
-            
-            if (_heartBeatCooldown.IsCoolingDown) return;
-            
-            await _heartBeatCooldown.QueueUntilCooldown();
-
-            await LobbyService.Instance.SendHeartbeatPingAsync(_currentLobby.Id);
-        }
-
-        void StartHeartBeat()
-        {
-#pragma warning disable 4014
-            _heartBeatTask = HeartBeatLoop();
-#pragma warning restore 4014
-        }
-
-        async Task HeartBeatLoop()
-        {
-            while (_currentLobby != null)
-            {
-                await SendHeartbeatPingAsync();
-                await Task.Delay(8000);
-            }
-        }
 
         #endregion
     }

@@ -16,18 +16,20 @@ public class LocalPlayer
     public CallbackValue<bool> IsHost = new CallbackValue<bool>(false);
     public CallbackValue<string> DisplayName = new CallbackValue<string>("");
     public CallbackValue<PlayerStatus> UserStatus = new CallbackValue<PlayerStatus>((PlayerStatus) 8);
+    public CallbackValue<PetType> Pet = new CallbackValue<PetType>(PetType.Cat1);
     public CallbackValue<string> ID = new CallbackValue<string>("");
     public CallbackValue<int> Index = new CallbackValue<int>(0);
 
     public DateTime LastUpdated;
 
     public LocalPlayer(string id, int index, bool isHost, string displayName = default,
-        PlayerStatus status = default)
+        PetType pet = default, PlayerStatus status = default)
     {
         ID.Value = id;
         IsHost.Value = isHost;
         Index.Value = index;
         DisplayName.Value = displayName;
+        Pet.Value = pet;
         UserStatus.Value = status;
     }
 

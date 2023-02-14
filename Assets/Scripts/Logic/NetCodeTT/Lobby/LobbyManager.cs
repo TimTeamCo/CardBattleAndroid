@@ -21,6 +21,10 @@ namespace NetCodeTT.Lobby
         private LobbyEventCallbacks m_LobbyEventCallbacks = new LobbyEventCallbacks();
         private const string key_RelayCode = nameof(LocalLobby.RelayCode);
         private const string key_LobbyState = nameof(LocalLobby.LocalLobbyState);
+        const string key_Pet = nameof(LocalPlayer.Pet);
+        const string key_Userstatus = nameof(LocalPlayer.UserStatus);
+        const string key_Displayname = nameof(LocalPlayer.DisplayName);
+
 
         public async Task<Lobby> QuickJoin(LocalPlayer localUser)
         {
@@ -303,7 +307,20 @@ namespace NetCodeTT.Lobby
                 Debug.Log("Left Lobby");
                 Dispose();
             };
+            
             await LobbyService.Instance.SubscribeToLobbyEventsAsync(lobbyID, m_LobbyEventCallbacks);
+        }
+        
+        void ParseCustomPlayerData(LocalPlayer player, string dataKey, string playerDataValue)
+        {
+            if (dataKey == key_Pet)
+            {
+                player.Pet.Value = (PetType) int.Parse(playerDataValue);
+            }
+            else if (dataKey == key_Userstatus)
+                player.UserStatus.Value = (PlayerStatus)int.Parse(playerDataValue);
+            else if (dataKey == key_Displayname)
+                player.DisplayName.Value = playerDataValue;
         }
         
         public async Task LeaveLobbyAsync()

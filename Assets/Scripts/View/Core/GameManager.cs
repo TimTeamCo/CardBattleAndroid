@@ -153,7 +153,7 @@ public class GameManager : MonoBehaviour
     
     private async Task BindLobby()
     {
-        await LobbyManager.BindLocalLobbyToRemote(_localLobby.LobbyID.Value, _localLobby);
+        await _lobbyManager.BindLocalLobbyToRemote(_localLobby.LobbyID.Value, _localLobby);
         _localLobby.LocalLobbyState.onChanged += OnLobbyStateChanged;
         SetLobbyView();
     }

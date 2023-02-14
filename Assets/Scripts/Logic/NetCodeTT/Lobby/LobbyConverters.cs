@@ -18,7 +18,7 @@ namespace NetCodeTT.Lobby
 
         const string key_Displayname = nameof(LocalPlayer.DisplayName);
         const string key_Userstatus = nameof(LocalPlayer.UserStatus);
-        // const string key_Emote = nameof(LocalPlayer.Emote);
+        const string key_Pet = nameof(LocalPlayer.Pet);
 
         public static Dictionary<string, string> LocalToRemoteLobbyData(LocalLobby lobby)
         {
@@ -91,9 +91,9 @@ namespace NetCodeTT.Lobby
                 var displayName = player.Data?.ContainsKey(key_Displayname) == true
                     ? player.Data[key_Displayname].Value
                     : default;
-                // var emote = player.Data?.ContainsKey(key_Emote) == true
-                    // ? (EmoteType)int.Parse(player.Data[key_Emote].Value)
-                    // : EmoteType.None;
+                var pet = player.Data?.ContainsKey(key_Pet) == true
+                    ? (PetType)int.Parse(player.Data[key_Pet].Value)
+                    : PetType.Cat1;
                 var userStatus = player.Data?.ContainsKey(key_Userstatus) == true
                     ? (PlayerStatus)int.Parse(player.Data[key_Userstatus].Value)
                     : PlayerStatus.Lobby;
@@ -102,7 +102,7 @@ namespace NetCodeTT.Lobby
 
                 if (localPlayer == null)
                 {
-                    localPlayer = new LocalPlayer(id, index, isHost, displayName, userStatus);
+                    localPlayer = new LocalPlayer(id, index, isHost, displayName, pet, userStatus);
                     localLobby.AddPlayer(index, localPlayer);
                 }
                 else

@@ -97,6 +97,7 @@ public class LocalLobby
         user.UserStatus.onChanged += OnUserChangedStatus;
         onUserJoined?.Invoke(user);
         Debug.Log($"Added User: {user.DisplayName.Value} - {user.ID.Value} to slot {index + 1}/{PlayerCount}");
+        Debug.Log($"[Tim] Lobby Info {ToString()}");
     }
 
     public void RemovePlayer(int playerIndex)

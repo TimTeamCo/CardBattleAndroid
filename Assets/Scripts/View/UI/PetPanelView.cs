@@ -5,6 +5,7 @@ using UnityEngine;
 public class PetPanelView : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _petDialog;
+    private LocalLobby _localLobby;
 
     private void Awake()
     {
@@ -13,6 +14,23 @@ public class PetPanelView : MonoBehaviour
         gameManager.onPressStartButton += OnSearchingBattle;
         gameManager.onExitSearchingButton += OnExitSearchingBattle;
         gameManager.onJoinIntoLobby += OnJoinIntoLobby;
+        _localLobby = ApplicationController.Instance.GameManager.LocalLobby;
+        _localLobby.onUserReadyChange += OnUserReadyChange;
+        _localLobby.onUserJoined += OnUserJoined;
+    }
+
+    private void OnUserReadyChange(int obj)
+    {
+        if (obj == 1)
+        {
+            _petDialog.text = $"Cool! Wait second ready status";
+        }
+    }
+
+    private void OnUserJoined(LocalPlayer localPlayer)
+    {
+        if (_localLobby.PlayerCount != 2) return;
+        _petDialog.text = $"Ready?\nPush Start";
     }
 
     private void OnJoinIntoLobby()

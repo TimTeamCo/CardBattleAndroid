@@ -13,11 +13,11 @@ namespace NetCodeTT.Lobby
     
     public class LobbyManager : MonoBehaviour, ILobby
     {
-        public string _lobbyID;
         public bool isClient;
+        public string _lobbyID;
+        private Lobby _currentLobby;
         private IEnumerator _heartbeatLobbyCoroutine;
         private ConcurrentQueue<string> _createdLobbyIds = new ConcurrentQueue<string>();
-        private Lobby _currentLobby;
         private LobbyEventCallbacks m_LobbyEventCallbacks = new LobbyEventCallbacks();
         private const string key_RelayCode = nameof(LocalLobby.RelayCode);
         private const string key_LobbyState = nameof(LocalLobby.LocalLobbyState);
@@ -166,7 +166,13 @@ namespace NetCodeTT.Lobby
                 if (changes.IsLocked.Changed)
                     localLobby.Locked.Value = changes.IsLocked.Value;
                 if (changes.AvailableSlots.Changed)
+                {
                     localLobby.AvailableSlots.Value = changes.AvailableSlots.Value;
+                    if (localLobby.AvailableSlots.Value == 0)
+                    {
+                        Debug.Log($"[Tim] Full lobby");
+                    }
+                }
                 if (changes.MaxPlayers.Changed)
                     localLobby.MaxPlayerCount.Value = changes.MaxPlayers.Value;
 
@@ -310,7 +316,7 @@ namespace NetCodeTT.Lobby
             
             await LobbyService.Instance.SubscribeToLobbyEventsAsync(lobbyID, m_LobbyEventCallbacks);
         }
-        
+
         void ParseCustomPlayerData(LocalPlayer player, string dataKey, string playerDataValue)
         {
             if (dataKey == key_Pet)
@@ -352,6 +358,44 @@ namespace NetCodeTT.Lobby
             };
             
             _currentLobby = await LobbyService.Instance.UpdatePlayerAsync(_currentLobby.Id, playerId, updateOptions);
+        }
+        
+        public async Task UpdateLobbyDataAsync(Dictionary<string, string> data)
+        {
+            if (!InLobby())
+                return;
+
+            Dictionary<string, DataObject> dataCurr = _currentLobby.Data ?? new Dictionary<string, DataObject>();
+
+            var shouldLock = false;
+            foreach (var dataNew in data)
+            {
+                /*
+                // Special case: We want to be able to filter on our color data, so we need to supply an arbitrary index to retrieve later. Uses N# for numerics, instead of S# for strings.
+                DataObject.IndexOptions index = dataNew.Key == "LocalLobbyColor" ? DataObject.IndexOptions.N1 : 0;
+                DataObject dataObj = new DataObject(DataObject.VisibilityOptions.Public, dataNew.Value,
+                    index); // Public so that when we request the list of lobbies, we can get info about them for filtering.
+                if (dataCurr.ContainsKey(dataNew.Key))
+                    dataCurr[dataNew.Key] = dataObj;
+                else
+                    dataCurr.Add(dataNew.Key, dataObj);
+                */
+
+                //Special Use: Get the state of the Local lobby so we can lock it from appearing in queries if it's not in the "Lobby" LocalLobbyState
+                if (dataNew.Key == "LocalLobbyState")
+                {
+                    Enum.TryParse(dataNew.Value, out LobbyState lobbyState);
+                    shouldLock = lobbyState != LobbyState.Lobby;
+                }
+            }
+
+            //We can still update the latest data to send to the service, but we will not send multiple UpdateLobbySyncCalls
+            if (m_UpdateLobbyCooldown.TaskQueued)
+                return;
+            await m_UpdateLobbyCooldown.QueueUntilCooldown();
+
+            UpdateLobbyOptions updateOptions = new UpdateLobbyOptions { Data = dataCurr, IsLocked = shouldLock };
+            _currentLobby = await LobbyService.Instance.UpdateLobbyAsync(_currentLobby.Id, updateOptions);
         }
         
         public async Task LeaveLobbyAsync()

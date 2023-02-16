@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using Logic.Infrastructure;
 
 [Flags]
@@ -37,5 +38,23 @@ public class LocalPlayer
     {
         IsHost.Value = false;
         UserStatus.Value = PlayerStatus.Menu;
+    }
+    
+    public string ToString()
+    {
+        StringBuilder sb = new StringBuilder("IsHost : ");
+        sb.AppendLine(IsHost.Value.ToString());
+        sb.Append("DisplayName: ");
+        sb.AppendLine(DisplayName.Value);
+        sb.Append("UserStatus: ");
+        sb.AppendLine(UserStatus.Value.ToString());
+        sb.Append("Pet: ");
+        sb.AppendLine(Pet.Value.ToString());
+        sb.Append("ID: ");
+        sb.AppendLine(ID.Value.ToString());
+        sb.Append("Index: ");
+        sb.AppendLine(Index.Value.ToString());
+
+        return sb.ToString();
     }
 }

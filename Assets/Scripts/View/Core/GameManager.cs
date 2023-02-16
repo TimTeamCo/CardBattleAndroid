@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     public Action onExitSearchingButton;
     public Action onJoinIntoLobby;
     public LocalLobby LocalLobby => _localLobby;
+    public LocalPlayer LocalPlayer => _localUser;
     public Action<GameState> onGameStateChanged;
     public LocalLobbyList LobbyList { get; private set; } = new ();
     public GameState LocalGameState { get; private set; }
@@ -100,8 +101,15 @@ public class GameManager : MonoBehaviour
         {
             LobbyConverters.RemoteToLocal(lobby, _localLobby);
             onJoinIntoLobby?.Invoke();
-            Debug.Log($"[Tim] _localUser.IsHost {_localUser.IsHost.Value }");
-            await JoinLobby();
+            if (_localUser.IsHost.Value)
+            {
+                _localLobby.onUserReadyChange = OnPlayersReady;
+                await JoinLobby(true);
+            }
+            else
+            {
+                await JoinLobby(false);
+            }
         }
         else
         {
@@ -158,12 +166,31 @@ public class GameManager : MonoBehaviour
         await _lobbyManager.UpdatePlayerDataAsync(LobbyConverters.LocalToRemoteUserData(_localUser));
     }
     
-    private async Task JoinLobby()
+    private async Task JoinLobby(bool likeHost)
     {
         //Trigger UI Even when same value
-        _localUser.IsHost.ForceSet(false);
-        Debug.Log($"[Tim] _localUser.IsHost {_localUser.IsHost.Value }");
+        _localUser.IsHost.ForceSet(likeHost);
         await BindLobby();
+    }
+    
+    //Only Host needs to listen to this and change state.
+    private void OnPlayersReady(int readyCount)
+    {
+        if (readyCount == _localLobby.PlayerCount && _localLobby.LocalLobbyState.Value != LobbyState.CountDown)
+        {
+            _localLobby.LocalLobbyState.Value = LobbyState.CountDown;
+            SendLocalLobbyData();
+        }
+        else if (_localLobby.LocalLobbyState.Value == LobbyState.CountDown)
+        {
+            _localLobby.LocalLobbyState.Value = LobbyState.Lobby;
+            SendLocalLobbyData();
+        }
+    }
+    
+    private async void SendLocalLobbyData()
+    {
+        await _lobbyManager.UpdateLobbyDataAsync(LobbyConverters.LocalToRemoteLobbyData(_localLobby));
     }
     
     private async Task BindLobby()
@@ -172,8 +199,7 @@ public class GameManager : MonoBehaviour
         _localLobby.LocalLobbyState.onChanged += OnLobbyStateChanged;
         SetLobbyView();
     }
-    
-    //TODO 10 sec countdown for start game
+
     private void OnLobbyStateChanged(LobbyState state)
     {
         if (state == LobbyState.Lobby)
@@ -185,14 +211,12 @@ public class GameManager : MonoBehaviour
     void CancelCountDown()
     {
         Debug.Log("Countdown Cancelled.");
-        //TODO countdown
         _countdown.CancelCountDown();
     }
     
     void BeginCountDown()
     {
         Debug.Log("Beginning Countdown.");
-        //TODO countdown
         _countdown.StartCountDown();
     }
     
@@ -357,11 +381,6 @@ public class GameManager : MonoBehaviour
 
     bool updatingLobby;
 
-    async void SendLocalLobbyData()
-    {
-        // await LobbyManager.UpdateLobbyDataAsync(LobbyConverters.LocalToRemoteLobbyData(m_LocalLobby));
-    }
-
     // public void UIChangeMenuState(GameState state)
     // {
         // var isQuittingGame = LocalGameState == GameState.Lobby && _localLobby.LocalLobbyState.Value == LobbyState.InGame;
@@ -382,21 +401,7 @@ public class GameManager : MonoBehaviour
         SendLocalLobbyData();
     }
 
-    //Only Host needs to listen to this and change state.
-    void OnPlayersReady(int readyCount)
-    {
-        if (readyCount == _localLobby.PlayerCount &&
-            _localLobby.LocalLobbyState.Value != LobbyState.CountDown)
-        {
-            _localLobby.LocalLobbyState.Value = LobbyState.CountDown;
-            SendLocalLobbyData();
-        }
-        else if (_localLobby.LocalLobbyState.Value == LobbyState.CountDown)
-        {
-            _localLobby.LocalLobbyState.Value = LobbyState.Lobby;
-            SendLocalLobbyData();
-        }
-    }
+    
 
     public void BeginGame()
     {

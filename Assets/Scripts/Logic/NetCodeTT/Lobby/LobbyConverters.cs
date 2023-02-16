@@ -104,6 +104,7 @@ namespace NetCodeTT.Lobby
                 {
                     localPlayer = new LocalPlayer(id, index, isHost, displayName, pet, userStatus);
                     localLobby.AddPlayer(index, localPlayer);
+                    Debug.Log($"[Tim] localPlayer {localPlayer.DisplayName.Value}");
                 }
                 else
                 {

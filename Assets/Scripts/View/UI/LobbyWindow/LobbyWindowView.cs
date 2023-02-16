@@ -19,6 +19,7 @@ public class LobbyWindowView : MonoBehaviour
     public void Start()
     {
         _canvasGroup.interactable = false;
+        _canvasGroup.blocksRaycasts = false;
         _localLobby = ApplicationController.Instance.GameManager.LocalLobby;
         _localLobby.onUserJoined += OnUserJoined;
         _localLobby.onUserLeft += OnUserLeft;
@@ -41,6 +42,7 @@ public class LobbyWindowView : MonoBehaviour
     {
         _canvasGroup.alpha = 1;
         _canvasGroup.interactable = true;
+        _canvasGroup.blocksRaycasts = true;
     }
 
     public void HideLobby()

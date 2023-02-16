@@ -248,6 +248,7 @@ namespace NetCodeTT.Lobby
                         }
 
                         localLobby.AddPlayer(index, newPlayer);
+                        Debug.Log($"[Tim] newPlayer {newPlayer.DisplayName.Value}");
                     }
                 }
 

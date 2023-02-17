@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class ApplicationController : MonoBehaviour
 {
+    [SerializeField] public AudioController AudioController;
     [SerializeField] public WelcomeWindow _welcomeWindow;
     public static ApplicationController Instance { get; private set; }
     public LobbyManager LobbyManager { get; private set; }

@@ -937,6 +937,8 @@ GameObject:
   - component: {fileID: 545873254}
   - component: {fileID: 545873257}
   - component: {fileID: 545873256}
+  - component: {fileID: 545873259}
+  - component: {fileID: 545873258}
   - component: {fileID: 545873255}
   m_Layer: 5
   m_Name: Button
@@ -1010,9 +1012,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1373265167}
-        m_TargetAssemblyTypeName: MainMenuWindow, Assembly-CSharp
-        m_MethodName: LevelUp
+      - m_Target: {fileID: 545873258}
+        m_TargetAssemblyTypeName: SoundSFX, Assembly-CSharp
+        m_MethodName: StartButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1060,6 +1062,116 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 545873253}
   m_CullTransparentMesh: 1
+--- !u!114 &545873258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 545873253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52be7f6279e8d704b96f04361754e77a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myFx: {fileID: 545873259}
+  ButtonClickSound: {fileID: 8300000, guid: c4e7f91b409ab6a48b85fe620ba93396, type: 3}
+--- !u!82 &545873259
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 545873253}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 8482788134403693162, guid: 4ff9eeac40091604792ed5b9424ddbee, type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 0.525
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &561551018
 GameObject:
   m_ObjectHideFlags: 0
@@ -1265,7 +1377,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 8482788134403693162, guid: 4ff9eeac40091604792ed5b9424ddbee, type: 2}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -1375,6 +1487,10 @@ MonoBehaviour:
   _middleCircle: {fileID: 1172315140}
   _upCircle: {fileID: 298891221}
   _hamsterDialog: {fileID: 1833545053}
+  _startButtonAudioSource: {fileID: 564619436}
+  _startMatchEffect: {fileID: 8300000, guid: 82c24562af91ebf4190f2e90e5173885, type: 3}
+  _searchingLoopEffect: {fileID: 8300000, guid: d973a32162c7ad3498ec13728a1d7c92, type: 3}
+  _foundMatchEffect: {fileID: 8300000, guid: 37d9088053bd7264b8c47dba6882db78, type: 3}
 --- !u!114 &564619439
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -2,18 +2,20 @@ using DG.Tweening;
 using Logic.Connection;
 using NetCodeTT.Authentication;
 using NetCodeTT.Lobby;
-using Unity.Services.Authentication;
-using Unity.Services.Core;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ApplicationController : MonoBehaviour
 {
     [SerializeField] public AudioController AudioController;
+    [SerializeField] public WelcomeWindow _welcomeWindow;
     public static ApplicationController Instance { get; private set; }
-    public ILobby LobbyManager { get; private set; }
+    public LobbyManager LobbyManager { get; private set; }
     public IAuth AuthenticationManager { get; private set; }
-    
     public IConnection ConnectionManager { get; private set; }
+    public GameManager GameManager { get; private set; }
+
+    private bool isEntry = true;
     
     private void Awake()
     {
@@ -26,50 +28,50 @@ public class ApplicationController : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(this);
         BindManagers();
-        DOTween.Init();
     }
 
     private void BindManagers()
     {
         ConnectionManager = gameObject.AddComponent<ConnectionManager>();
-        ConnectionManager.Init();
         AuthenticationManager = new AuthenticationManager();
         LobbyManager = gameObject.AddComponent<LobbyManager>();
-        Debug.Log($"Binded managers");
+        GameManager = gameObject.AddComponent<GameManager>();
     }
 
-    private async void Start()
+    private void Start()
     {
-        await UnityServices.InitializeAsync();
-        Debug.Log(UnityServices.State);
-        SetupEvents();
-        await AuthenticationManager.SignInAnonymouslyAsync();
+        DOTween.Init();
+        ConnectionManager.Init();
+        AuthenticationManager.Init();
+        GameManager.Init();
+
+        Subscribe();
     }
 
-    private void SetupEvents()
+    private void Subscribe()
     {
-        AuthenticationService.Instance.SignedIn += () =>
-        {
-            // Shows how to get a playerID
-            Debug.Log($"SetupEvents PlayerID: {AuthenticationService.Instance.PlayerId}");
-
-            // Shows how to get an access token
-            Debug.Log($"Access Token: {AuthenticationService.Instance.AccessToken}");
-        };
-
-        AuthenticationService.Instance.SignInFailed += (err) => { Debug.LogError(err); };
-
-        AuthenticationService.Instance.SignedOut += () => { Debug.Log("Player signed out."); };
-
-        AuthenticationService.Instance.Expired += () =>
-        {
-            Debug.Log("Player session could not be refreshed and expired.");
-        };
+        Application.wantsToQuit += OnWantToQuit;
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "MainMenu" && isEntry)
+        {
+            isEntry = false;
+            GameManager.onApplicationEntry?.Invoke();
+        }
+    }
+
+    private bool OnWantToQuit()
+    {
+        return GameManager.OnWantToQuit();
+    }
+    
     private void OnApplicationQuit()
     {
         LobbyManager.LeaveLobby();
         StopAllCoroutines();
+        DOTween.KillAll();
     }
 }

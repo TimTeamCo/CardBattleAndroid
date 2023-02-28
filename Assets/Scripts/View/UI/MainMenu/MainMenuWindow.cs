@@ -1,6 +1,4 @@
 using DG.Tweening;
-using TMPro;
-using Unity.Services.Authentication;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,12 +10,6 @@ public class MainMenuWindow : MonoBehaviour
     [SerializeField] private InventoryButtonView _inventoryButtonView;
     [SerializeField] private RectTransform _xpRect;
     [SerializeField] private RectTransform _dustRect;
-    [SerializeField] private TextMeshProUGUI _hamsterDialog;
-
-    private void Start()
-    {
-        _hamsterDialog.text = $"Hi {AuthenticationService.Instance.PlayerId} !";
-    }
 
     private void OnEnable()
     {

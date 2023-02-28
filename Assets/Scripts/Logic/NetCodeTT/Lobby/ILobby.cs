@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Logic.Game;
 
 namespace NetCodeTT.Lobby
 {
@@ -9,13 +8,17 @@ namespace NetCodeTT.Lobby
     
     public interface ILobby
     {
-        void CreateLobby(Action<string> result);
+        Task<Lobby> QuickJoin(LocalPlayer localUser);
+        
+        Task<Lobby> CreateLobby(LocalPlayer localUser);
+
+        bool IsHostUser();
+
+        Task LeaveLobbyAsync();
         
         void JoinLobbyByID(string lobbyID);
         
         void JoinLobbyByLobbyCode(string lobbyCode);
-        
-        void QuickJoin(Action<string> result);
         
         void DeleteAllCreatedLobbies();
         
@@ -33,7 +36,7 @@ namespace NetCodeTT.Lobby
 
         void LeaveLobby();
 
-        Task GetLobby(string lobbyId, Action<Lobby> lobbyRes);
+        Task<Lobby> GetLobbyAsync(string lobbyId = null);
 
         Task<Lobby> CreateLobbyAsync(int maxPlayers, bool isPrivate, LocalPlayer localUser);
     }

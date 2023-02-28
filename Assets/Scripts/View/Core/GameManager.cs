@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     public Action onPressStartButton;
     public Action onExitSearchingButton;
     public Action onJoinIntoLobby;
+    public Action<PetType> onPetChange;
     public LocalLobby LocalLobby => _localLobby;
     public LocalPlayer LocalPlayer => _localUser;
     public Action<GameState> onGameStateChanged;
@@ -35,19 +36,13 @@ public class GameManager : MonoBehaviour
 
     // LobbyColor m_lobbyColorFilter;
 
-    #region Test
-
-    public void SetLobbyCountdown()
-    {
-        _localLobby.LocalLobbyState.Value = LobbyState.CountDown;
-    }
-
-    #endregion
-    
     #region Setup
 
     public void Init()
     {
+        _lobbyManager = ApplicationController.Instance.LobbyManager;
+        _countdown = ApplicationController.Instance._countdown;
+        
         if (String.IsNullOrEmpty(LocalSaver.GetPlayerNickname()))
         {
             ApplicationController.Instance._welcomeWindow.ShowWindow();
@@ -56,15 +51,13 @@ public class GameManager : MonoBehaviour
         {
             CreateLocalData();
         }
-
-        _lobbyManager = ApplicationController.Instance.LobbyManager;
-        _countdown = ApplicationController.Instance._countdown;
+        
         Subscribe();
     }
 
     public void CreateLocalData()
     {
-        _localUser = new LocalPlayer("", 0, false, "No name yet");
+        _localUser = new LocalPlayer("",  false, "No name yet");
         _localLobby = new LocalLobby {LocalLobbyState = {Value = LobbyState.Lobby}};
         AuthenticatePlayer();
         LoadMenuScene();
@@ -75,7 +68,8 @@ public class GameManager : MonoBehaviour
         var localId = AuthenticationService.Instance.PlayerId;
 
         _localUser.ID.Value = localId;
-        _localUser.DisplayName.Value = LocalSaver.GetPlayerNickname();
+        _localUser.PlayerName.Value = LocalSaver.GetPlayerNickname();
+        SendLocalUserData();
     }
     
     #endregion
@@ -84,8 +78,8 @@ public class GameManager : MonoBehaviour
 
     private void Subscribe()
     {
-        onPressStartButton = OnPressStartButton;
-        onExitSearchingButton = OnExitSearchingButton;
+        onPressStartButton += OnPressStartButton;
+        onExitSearchingButton += OnExitSearchingButton;
     }
 
     private void OnExitSearchingButton()
@@ -96,20 +90,29 @@ public class GameManager : MonoBehaviour
 
     private async void OnPressStartButton()
     {
-        var lobby = await _lobbyManager.QuickJoin(_localUser); 
+        var lobby = await _lobbyManager.QuickJoin(_localUser);
+        bool isHost = _lobbyManager.IsHostUser();
         if (lobby != null)
         {
             LobbyConverters.RemoteToLocal(lobby, _localLobby);
             onJoinIntoLobby?.Invoke();
-            if (_localUser.IsHost.Value)
+            if (isHost)
             {
+                _localUser.IsHost.Value = true;
+                Debug.Log($"LocalUser Is Host");
                 _localLobby.onUserReadyChange = OnPlayersReady;
                 await JoinLobby(true);
             }
             else
             {
+                _localUser.IsHost.Value = false;
+                Debug.Log($"LocalUser Isn't Host");
+                
+                //send update lobby info to host
+                SendLocalLobbyData();
                 await JoinLobby(false);
             }
+
         }
         else
         {
@@ -158,12 +161,18 @@ public class GameManager : MonoBehaviour
     public void SetLocalUserStatus(PlayerStatus status)
     {
         _localUser.UserStatus.Value = status;
+        Debug.Log($"Change PlayerStatus to {status}");
         SendLocalUserData();
     }
     
     async void SendLocalUserData()
     {
+        if (_localUser == null)
+        {
+            return;
+        }
         await _lobbyManager.UpdatePlayerDataAsync(LobbyConverters.LocalToRemoteUserData(_localUser));
+        Debug.Log($"Send Local User Data");
     }
     
     private async Task JoinLobby(bool likeHost)
@@ -176,7 +185,8 @@ public class GameManager : MonoBehaviour
     //Only Host needs to listen to this and change state.
     private void OnPlayersReady(int readyCount)
     {
-        if (readyCount == _localLobby.PlayerCount && _localLobby.LocalLobbyState.Value != LobbyState.CountDown)
+        Debug.Log($"On Players Ready we have:\n ready Count = {readyCount}\n _localLobby.PlayerCount = {_localLobby.MaxPlayerCount.Value}\n _localLobby.LocalLobbyState.Value = {_localLobby.LocalLobbyState.Value}");
+        if (readyCount == _localLobby.MaxPlayerCount.Value && _localLobby.LocalLobbyState.Value != LobbyState.CountDown)
         {
             _localLobby.LocalLobbyState.Value = LobbyState.CountDown;
             SendLocalLobbyData();
@@ -197,15 +207,20 @@ public class GameManager : MonoBehaviour
     {
         await _lobbyManager.BindLocalLobbyToRemote(_localLobby.LobbyID.Value, _localLobby);
         _localLobby.LocalLobbyState.onChanged += OnLobbyStateChanged;
+        // _localLobby.UpdatePlayer(LocalPlayer);
         SetLobbyView();
     }
 
     private void OnLobbyStateChanged(LobbyState state)
     {
+        Debug.Log($"LobbyState change to {state}");
         if (state == LobbyState.Lobby)
             CancelCountDown();
         if (state == LobbyState.CountDown)
+        {
+            SetGameState(GameState.Lobby); 
             BeginCountDown();
+        }
     }
     
     void CancelCountDown()
@@ -230,9 +245,16 @@ public class GameManager : MonoBehaviour
     
     void SetLobbyView()
     {
-        Debug.Log($"Setting Lobby user state {PlayerStatus.Lobby}");
         SetGameState(GameState.Menu);
         SetLocalUserStatus(PlayerStatus.Lobby);
+    }
+    
+    public void SetLocalPet(PetType pet)
+    {
+        _localUser.Pet.Value = pet;
+        onPetChange?.Invoke(pet);
+        SendLocalUserData();
+        Debug.Log($"SetLocalPet: Pet - {_localUser.Pet.Value}");
     }
     
     #region Teardown
@@ -352,25 +374,7 @@ public class GameManager : MonoBehaviour
         // }
     // }
 
-    public void SetLocalUserName(string name)
-    {
-        if (string.IsNullOrWhiteSpace(name))
-        {
-            // LogHandlerSettings.Instance.SpawnErrorPopup(
-                // "Empty Name not allowed."); // Lobby error type, then HTTP error type.
-            return;
-        }
 
-        _localUser.DisplayName.Value = name;
-        SendLocalUserData();
-    }
-
-    public void SetLocalUserEmote(EmoteType emote)
-    {
-        // _localUser.Emote.Value = emote; 
-        SendLocalUserData();
-    }
-    
     public void SetLocalLobbyColor(int color)
     {
         if (_localLobby.PlayerCount < 1)

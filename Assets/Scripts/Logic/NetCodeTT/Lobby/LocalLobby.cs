@@ -91,14 +91,27 @@ public class LocalLobby
         return PlayerCount > index ? m_LocalPlayers[index] : null;
     }
 
-    public void AddPlayer(int index, LocalPlayer user)
+    public void AddPlayer(LocalPlayer user)
     {
-        m_LocalPlayers.Insert(index, user);
+        m_LocalPlayers.Add(user);
         user.UserStatus.onChanged += OnUserChangedStatus;
         onUserJoined?.Invoke(user);
-        Debug.Log($"Added User: {user.DisplayName.Value} - {user.ID.Value} to slot {index + 1}/{PlayerCount}");
-        Debug.Log($"[Tim] Lobby Info {ToString()}");
+        Debug.Log($"Add User To Local Lobby {user.PlayerName.Value} - {user.ID.Value}" +
+                  $"\n Lobby Info {ToString()}");
     }
+    
+    // public void UpdatePlayer(LocalPlayer user)
+    // {
+    //     Debug.Log($"Update Player in Local Lobby {user.PlayerName.Value}");
+    //     for (int i = 0; i < m_LocalPlayers.Count; i++)
+    //     {
+    //         if (m_LocalPlayers[i].ID.Value == user.ID.Value)
+    //         {
+    //             m_LocalPlayers.Remove(m_LocalPlayers[i]);
+    //             AddPlayer(user);
+    //         }
+    //     }
+    // }
 
     public void RemovePlayer(int playerIndex)
     {
@@ -139,8 +152,12 @@ public class LocalLobby
         sb.AppendLine(LocalLobbyState.Value.ToString());
         sb.Append("Lobby LocalLobbyState Last Edit: ");
         sb.AppendLine(new DateTime(LastUpdated.Value).ToString());
-        // sb.Append("LocalLobbyColor: ");
-        // sb.AppendLine(LocalLobbyColor.Value.ToString());
+        sb.Append("Lobby Players: ");
+        sb.AppendLine(LocalPlayers[0].ID.Value + LocalPlayers[0].PlayerName.Value + LocalPlayers[0].Pet.Value);
+        if (LocalPlayers.Count > 1)
+        {
+            sb.AppendLine(LocalPlayers[1].ID.Value + LocalPlayers[1].PlayerName.Value + LocalPlayers[1].Pet.Value);
+        }
         sb.Append("RelayCode: ");
         sb.AppendLine(RelayCode.Value);
 

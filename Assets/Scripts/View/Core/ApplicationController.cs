@@ -18,11 +18,21 @@ public class ApplicationController : MonoBehaviour
 
     private bool isEntry = true;
 
-    public void Test()
+    #region CheatPanel
+
+    //Cheat button for dev and qa
+    public void Debug1()
     {
-        GameManager.SetLobbyCountdown();
     }
     
+    //Cheat button for dev and qa
+    public void Debug2()
+    {
+        LobbyManager.PrintPlayers();
+    }
+
+    #endregion
+
     private void Awake()
     {
         if (Instance != null && Instance != this)

@@ -15,21 +15,19 @@ public enum PlayerStatus
 public class LocalPlayer
 {
     public CallbackValue<bool> IsHost = new CallbackValue<bool>(false);
-    public CallbackValue<string> DisplayName = new CallbackValue<string>("");
+    public CallbackValue<string> PlayerName = new CallbackValue<string>("");
     public CallbackValue<PlayerStatus> UserStatus = new CallbackValue<PlayerStatus>((PlayerStatus) 8);
     public CallbackValue<PetType> Pet = new CallbackValue<PetType>(PetType.Cat1);
     public CallbackValue<string> ID = new CallbackValue<string>("");
-    public CallbackValue<int> Index = new CallbackValue<int>(0);
 
     public DateTime LastUpdated;
 
-    public LocalPlayer(string id, int index, bool isHost, string displayName = default,
+    public LocalPlayer(string id, bool isHost, string displayName = default,
         PetType pet = default, PlayerStatus status = default)
     {
         ID.Value = id;
         IsHost.Value = isHost;
-        Index.Value = index;
-        DisplayName.Value = displayName;
+        PlayerName.Value = displayName;
         Pet.Value = pet;
         UserStatus.Value = status;
     }
@@ -45,15 +43,13 @@ public class LocalPlayer
         StringBuilder sb = new StringBuilder("IsHost : ");
         sb.AppendLine(IsHost.Value.ToString());
         sb.Append("DisplayName: ");
-        sb.AppendLine(DisplayName.Value);
+        sb.AppendLine(PlayerName.Value);
         sb.Append("UserStatus: ");
         sb.AppendLine(UserStatus.Value.ToString());
         sb.Append("Pet: ");
         sb.AppendLine(Pet.Value.ToString());
         sb.Append("ID: ");
         sb.AppendLine(ID.Value.ToString());
-        sb.Append("Index: ");
-        sb.AppendLine(Index.Value.ToString());
 
         return sb.ToString();
     }

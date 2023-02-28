@@ -52,7 +52,6 @@ public class StartButtonView : MonoBehaviour
     {
         StopAnimation();
         ApplicationController.Instance.GameManager.SetLocalUserStatus(PlayerStatus.Ready);
-        
     }
 
     private void OnClickSearchButton()

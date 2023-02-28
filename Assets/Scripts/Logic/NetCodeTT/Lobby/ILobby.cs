@@ -11,7 +11,9 @@ namespace NetCodeTT.Lobby
         Task<Lobby> QuickJoin(LocalPlayer localUser);
         
         Task<Lobby> CreateLobby(LocalPlayer localUser);
-        
+
+        bool IsHostUser();
+
         Task LeaveLobbyAsync();
         
         void JoinLobbyByID(string lobbyID);
@@ -34,7 +36,7 @@ namespace NetCodeTT.Lobby
 
         void LeaveLobby();
 
-        Task GetLobby(string lobbyId, Action<Lobby> lobbyRes);
+        Task<Lobby> GetLobbyAsync(string lobbyId = null);
 
         Task<Lobby> CreateLobbyAsync(int maxPlayers, bool isPrivate, LocalPlayer localUser);
     }

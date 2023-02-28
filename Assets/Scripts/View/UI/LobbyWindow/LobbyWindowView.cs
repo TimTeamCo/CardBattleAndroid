@@ -13,8 +13,6 @@ public class LobbyWindowView : MonoBehaviour
     LocalLobby _localLobby;
     LocalPlayer _localPlayer;
     LocalPlayer _opponent;
-    public string UserId { get; set; }
-    public string OpponentUserId { get; set; }
 
     public void Start()
     {
@@ -30,6 +28,7 @@ public class LobbyWindowView : MonoBehaviour
     {
         if (obj == LobbyState.CountDown)
         {
+            Debug.Log("Show Lobby View");
             ShowLobby();
         }
         else
@@ -49,31 +48,34 @@ public class LobbyWindowView : MonoBehaviour
     {
         _canvasGroup.alpha = 0;
         _canvasGroup.interactable = false;
+        _canvasGroup.blocksRaycasts = false;
     }
 
     private void OnUserLeft(int obj)
     {
-        SynchPlayerUI();
+        SyncPlayerUI();
     }
 
     private void OnUserJoined(LocalPlayer obj)
     {
-        SynchPlayerUI();
+        Debug.Log($"Lobby Window User Joined {obj.PlayerName.Value}");
+        SyncPlayerUI();
     }
 
-    private void SynchPlayerUI()
+    private void SyncPlayerUI()
     {
+        var myPlayer = ApplicationController.Instance.GameManager.LocalPlayer;
         ResetUI();
         for (int i = 0; i < _localLobby.PlayerCount; i++)
         {
             var player = _localLobby.GetLocalPlayer(i);
-            if (player == null)
+            if (player.ID.Value == myPlayer.ID.Value)
             {
-                SetOpponentUser(player);
+                SetPlayerUser(player);
             }
             else
             {
-                SetPlayerUser(player);
+                SetOpponentUser(player);
             }
         }
     }
@@ -81,31 +83,27 @@ public class LobbyWindowView : MonoBehaviour
     private void SetOpponentUser(LocalPlayer opponent)
     {
         _opponent = opponent;
-        OpponentUserId = _opponent.ID.Value;
-        Debug.Log($"[Tim] player is host {opponent.IsHost.Value}");
+        Debug.Log($"Set opponent in view \n name - {opponent.PlayerName.Value}\n host {opponent.IsHost.Value}\n pet {opponent.Pet.Value} ");
         SetOpponentPet(opponent.Pet.Value);
-        Debug.Log($"[Tim] player UserStatus {opponent.UserStatus.Value}");
-        SetOpponentDisplayName(_opponent.DisplayName.Value);
+        SetOpponentDisplayName(_opponent.PlayerName.Value);
         SubscribeToOpponentUpdates();
     }
-    
-    public void SetPlayerUser(LocalPlayer localPlayer)
+
+    private void SetPlayerUser(LocalPlayer localPlayer)
     {
         _localPlayer = localPlayer;
-        UserId = localPlayer.ID.Value;
-        Debug.Log($"[Tim] player is host {localPlayer.IsHost.Value}");
+        Debug.Log($"Set player in view \n name - {localPlayer.PlayerName.Value}\n host {localPlayer.IsHost.Value}\n pet {localPlayer.Pet.Value} ");
         SetPlayerPet(localPlayer.Pet.Value);
-        Debug.Log($"[Tim] player UserStatus {localPlayer.UserStatus.Value}");
-        SetPlayerDisplayName(_localPlayer.DisplayName.Value);
+        SetPlayerDisplayName(_localPlayer.PlayerName.Value);
         SubscribeToPlayerUpdates();
     }
 
-    public void ResetUI()
+    private void ResetUI()
     {
         if (_localPlayer == null)
             return;
-        UserId = null;
-        OpponentUserId = null;
+        SetPlayerDisplayName("");
+        SetOpponentDisplayName("");
         SetPlayerPet(PetType.Cat1);
         SetOpponentPet(PetType.Cat1);
         UnsubscribeToPlayerUpdates();
@@ -118,19 +116,23 @@ public class LobbyWindowView : MonoBehaviour
     {
         _localPlayer.Pet.onChanged += SetPlayerPet;
     }
-    
+
     private void SubscribeToOpponentUpdates()
     {
         _opponent.Pet.onChanged += SetOpponentPet;
     }
-    
+
     private void UnsubscribeToPlayerUpdates()
     {
+        if (_localPlayer == null)
+            return;
         _localPlayer.Pet.onChanged -= SetPlayerPet;
     }
-    
+
     private void UnsubscribeToOpponentUpdates()
     {
+        if (_opponent == null)
+            return;
         _opponent.Pet.onChanged -= SetOpponentPet;
     }
 
@@ -145,15 +147,15 @@ public class LobbyWindowView : MonoBehaviour
     }
 
     private void SetPlayerPet(PetType petType)
-    {   
+    {
         _playerPet.sprite = PetSprite(petType);
     }
-    
+
     private void SetOpponentPet(PetType petType)
-    {   
+    {
         _opponentPet.sprite = PetSprite(petType);
     }
-    
+
     Sprite PetSprite(PetType type)
     {
         switch (type)
@@ -168,8 +170,10 @@ public class LobbyWindowView : MonoBehaviour
                 return _petIcons[3];
             case PetType.Dog3:
                 return _petIcons[4];
+            case PetType.Frog:
+                return _petIcons[5];
             default:
-                return null;
+                return _petIcons[0];
         }
     }
 }

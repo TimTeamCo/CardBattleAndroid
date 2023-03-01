@@ -2,11 +2,10 @@ using UnityEngine;
 
 public class SoundSFX : MonoBehaviour
 {
-    public AudioSource myFx;
-    public AudioClip ButtonClickSound;
+    public AudioClip SoundAudioClipSFX;
     
-    public void StartButton()
+    public void PlaySFX()
     {
-        myFx.PlayOneShot(ButtonClickSound);
+        ApplicationController.Instance.AudioController.SetSFX(SoundAudioClipSFX);
     }
 }

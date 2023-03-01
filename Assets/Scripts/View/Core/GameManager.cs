@@ -44,7 +44,9 @@ public class GameManager : MonoBehaviour
     {
         if (String.IsNullOrEmpty(LocalSaver.GetPlayerNickname()))
         {
-            ApplicationController.Instance._welcomeWindow.ShowWindow();
+            var windowObject = Instantiate(ApplicationController.Instance._welcomeWindow);
+            var welcomWindow = windowObject.GetComponent<WelcomeWindow>();
+            welcomWindow.ShowWindow();
         }
         else
         {

@@ -16,16 +16,15 @@ namespace NetCodeTT.Lobby
         // const string key_LobbyColor = nameof(LocalLobby.LocalLobbyColor);
         const string key_LastEdit = nameof(LocalLobby.LastUpdated);
 
-        const string key_Displayname = nameof(LocalPlayer.DisplayName);
+        const string key_Playername = nameof(LocalPlayer.PlayerName);
         const string key_Userstatus = nameof(LocalPlayer.UserStatus);
-        // const string key_Emote = nameof(LocalPlayer.Emote);
+        const string key_Pet = nameof(LocalPlayer.Pet);
 
         public static Dictionary<string, string> LocalToRemoteLobbyData(LocalLobby lobby)
         {
             Dictionary<string, string> data = new Dictionary<string, string>();
             data.Add(key_RelayCode, lobby.RelayCode.Value);
             data.Add(key_LobbyState, ((int)lobby.LocalLobbyState.Value).ToString());
-            // data.Add(key_LobbyColor, ((int)lobby.LocalLobbyColor.Value).ToString());
             data.Add(key_LastEdit, lobby.LastUpdated.Value.ToString());
 
             return data;
@@ -36,9 +35,9 @@ namespace NetCodeTT.Lobby
             Dictionary<string, string> data = new Dictionary<string, string>();
             if (user == null || string.IsNullOrEmpty(user.ID.Value))
                 return data;
-            data.Add(key_Displayname, user.DisplayName.Value);
+            data.Add(key_Playername, user.PlayerName.Value);
             data.Add(key_Userstatus, ((int)user.UserStatus.Value).ToString());
-            // data.Add(key_Emote, ((int)user.Emote.Value).ToString());
+            data.Add(key_Pet, ((int)user.Pet.Value).ToString());
             return data;
         }
 
@@ -61,7 +60,6 @@ namespace NetCodeTT.Lobby
 
             localLobby.LobbyID.Value = remoteLobby.Id;
             localLobby.HostID.Value = remoteLobby.HostId;
-            Debug.Log($"[Tim] PlayerId == HostID {AuthenticationService.Instance.PlayerId == localLobby.HostID.Value }");
             localLobby.LobbyName.Value = remoteLobby.Name;
             localLobby.LobbyCode.Value = remoteLobby.LobbyCode;
             localLobby.Private.Value = remoteLobby.IsPrivate;
@@ -88,31 +86,30 @@ namespace NetCodeTT.Lobby
                 var id = player.Id;
                 remotePlayerIDs.Add(id);
                 var isHost = remoteLobby.HostId.Equals(player.Id);
-                var displayName = player.Data?.ContainsKey(key_Displayname) == true
-                    ? player.Data[key_Displayname].Value
+                var displayName = player.Data?.ContainsKey(key_Playername) == true
+                    ? player.Data[key_Playername].Value
                     : default;
-                // var emote = player.Data?.ContainsKey(key_Emote) == true
-                    // ? (EmoteType)int.Parse(player.Data[key_Emote].Value)
-                    // : EmoteType.None;
+                var pet = player.Data?.ContainsKey(key_Pet) == true
+                    ? (PetType)int.Parse(player.Data[key_Pet].Value)
+                    : PetType.Cat1;
                 var userStatus = player.Data?.ContainsKey(key_Userstatus) == true
                     ? (PlayerStatus)int.Parse(player.Data[key_Userstatus].Value)
                     : PlayerStatus.Lobby;
 
-                LocalPlayer localPlayer = localLobby.GetLocalPlayer(index);
+                LocalPlayer user = localLobby.GetLocalPlayer(index);
 
-                if (localPlayer == null)
+                if (user == null)
                 {
-                    localPlayer = new LocalPlayer(id, index, isHost, displayName, userStatus);
-                    localLobby.AddPlayer(index, localPlayer);
+                    user = new LocalPlayer(id, isHost, displayName, pet, userStatus);
+                    localLobby.AddPlayer(user);
                 }
                 else
                 {
-                    localPlayer.ID.Value = id;
-                    localPlayer.Index.Value = index;
-                    localPlayer.IsHost.Value = isHost;
-                    localPlayer.DisplayName.Value = displayName;
-                    // localPlayer.Emote.Value = emote;
-                    localPlayer.UserStatus.Value = userStatus;
+                    user.ID.Value = id;
+                    user.IsHost.Value = isHost;
+                    user.PlayerName.Value = displayName;
+                    user.Pet.Value = pet;
+                    user.UserStatus.Value = userStatus;
                 }
 
                 index++;

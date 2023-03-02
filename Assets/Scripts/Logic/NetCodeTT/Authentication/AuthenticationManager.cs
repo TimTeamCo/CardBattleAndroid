@@ -21,9 +21,6 @@ namespace NetCodeTT.Authentication
             {
                 await AuthenticationService.Instance.SignInAnonymouslyAsync();
                 Debug.Log("Sign in anonymously succeeded!");
-        
-                // Shows how to get the playerID
-                Debug.Log($"SignInAnonymouslyAsync PlayerID: {AuthenticationService.Instance.PlayerId}");
             }
             catch (AuthenticationException ex)
             {
@@ -44,7 +41,7 @@ namespace NetCodeTT.Authentication
             AuthenticationService.Instance.SignedIn += () =>
             {
                 // Shows how to get a playerID
-                Debug.Log($"SetupEvents PlayerID: {AuthenticationService.Instance.PlayerId}");
+                Debug.Log($"PlayerID: {AuthenticationService.Instance.PlayerId}");
 
                 // Shows how to get an access token
                 Debug.Log($"Access Token: {AuthenticationService.Instance.AccessToken}");

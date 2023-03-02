@@ -9,6 +9,7 @@ public class ApplicationController : MonoBehaviour
 {
     [SerializeField] public AudioController AudioController;
     [SerializeField] public GameObject _welcomeWindow;
+    [SerializeField] public Countdown _countdown;
     public static ApplicationController Instance { get; private set; }
     public LobbyManager LobbyManager { get; private set; }
     public IAuth AuthenticationManager { get; private set; }
@@ -16,7 +17,22 @@ public class ApplicationController : MonoBehaviour
     public GameManager GameManager { get; private set; }
 
     private bool isEntry = true;
+
+    #region CheatPanel
+
+    //Cheat button for dev and qa
+    public void Debug1()
+    {
+    }
     
+    //Cheat button for dev and qa
+    public void Debug2()
+    {
+        LobbyManager.PrintPlayers();
+    }
+
+    #endregion
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -27,6 +43,7 @@ public class ApplicationController : MonoBehaviour
         
         Instance = this;
         DontDestroyOnLoad(this);
+        DontDestroyOnLoad(_countdown);
         BindManagers();
     }
 

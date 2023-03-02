@@ -1,10 +1,10 @@
 ﻿//using TTBattle.UI;
 using UnityEngine;
 
-namespace PlayerData
+namespace PlayerDataSO
 {
     [CreateAssetMenu(fileName = "PlayerDataCalculator", menuName = "ScriptableObject/Player/PlayerDataCalculator", order = 1)]
-    public class PlayerDataCalculator : PlayerData
+    public class PlayerDataSoCalculator : PlayerDataSO
     {
         public Color PlayerColor;
         public Sprite PlayerChip;

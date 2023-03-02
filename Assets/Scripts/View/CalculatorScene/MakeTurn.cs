@@ -58,8 +58,8 @@ namespace TTBattle.UI
         {
             if (_newTurnsChecker == 0)
             {
-                _armySelector.playerData.playerArmy.AddBurningDamageToUnits(_armySelector.playerData.MapZone.burnFactor);
-                _armyInferior.playerData.playerArmy.AddBurningDamageToUnits(_armyInferior.playerData.MapZone.burnFactor);
+                _armySelector.playerDataSo.playerArmy.AddBurningDamageToUnits(_armySelector.playerDataSo.MapZone.burnFactor);
+                _armyInferior.playerDataSo.playerArmy.AddBurningDamageToUnits(_armyInferior.playerDataSo.MapZone.burnFactor);
             }
         }
         

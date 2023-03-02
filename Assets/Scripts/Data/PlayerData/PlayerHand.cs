@@ -2,7 +2,7 @@
 using CardSpace;
 using UnityEngine;
 
-namespace PlayerData
+namespace PlayerDataSO
 {
     [CreateAssetMenu(fileName = "PlayerHand", menuName = "ScriptableObject/Player/PlayerHand", order = 1)]
     public class PlayerHand : ScriptableObject

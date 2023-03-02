@@ -14,8 +14,8 @@ public class GameResetButton : MonoBehaviour
 
     private void GameReset()
     {
-        _armyPanelManager.PlayerInferior.playerData.playerArmy.ResetToDefaultValue();
-        _armyPanelManager.PlayerSelector.playerData.playerArmy.ResetToDefaultValue();
+        _armyPanelManager.PlayerInferior.playerDataSo.playerArmy.ResetToDefaultValue();
+        _armyPanelManager.PlayerSelector.playerDataSo.playerArmy.ResetToDefaultValue();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

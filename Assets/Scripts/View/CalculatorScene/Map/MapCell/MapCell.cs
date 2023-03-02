@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Map;
-using PlayerData;
+using PlayerDataSO;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -109,7 +109,7 @@ namespace TTBattle.UI
         {
             IsTaken = true;
             IsAccasible = true;
-            SetCellColorAsPlayers(_map.armyPanelManager.PlayerSelector.playerData);
+            SetCellColorAsPlayers(_map.armyPanelManager.PlayerSelector.playerDataSo);
             foreach (MapCell mapCell in NextCell)
             {
                 mapCell.IsAccasible = true;
@@ -118,7 +118,7 @@ namespace TTBattle.UI
             SetChipSpriteToImage(_map.armyPanelManager.PlayerSelector);
         }
 
-        public void SetCellColorAsPlayers(PlayerDataCalculator player)
+        public void SetCellColorAsPlayers(PlayerDataSoCalculator player)
         {
             _lastColor = player.PlayerColor;
             _lastColor.a = 0.8f;
@@ -152,7 +152,7 @@ namespace TTBattle.UI
 
         public void SetChipSpriteToImage(ArmyPanel armyPanel)
         {
-            Sprite chipSprite = armyPanel.playerData.PlayerChip;
+            Sprite chipSprite = armyPanel.playerDataSo.PlayerChip;
             IndicateImage.sprite = chipSprite;
             IndicateImage.preserveAspect = true;
             IndicateImage.rectTransform.sizeDelta = new Vector2(145, 145);

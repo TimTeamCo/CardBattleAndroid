@@ -9,8 +9,8 @@ namespace TTBattle
     {
         public void Attack(ArmyPanel army1, ArmyPanel army2, TurnsNumerator turnsNumerator)
         {
-            PlayerData.PlayerData playerAttacker = army1.playerData;
-            PlayerData.PlayerData playerDefender = army2.playerData;
+            PlayerDataSO.PlayerDataSO playerAttacker = army1.playerDataSo;
+            PlayerDataSO.PlayerDataSO playerDefender = army2.playerDataSo;
             PlayerSquad attacker = playerAttacker.playerArmy.Squads[army1.UnitDropdown.Value];
             PlayerSquad defender = playerDefender.playerArmy.Squads[army2.UnitDropdown.Value];
 
@@ -33,7 +33,7 @@ namespace TTBattle
         }
 
         private void WarriorLogicBattle(TurnsNumerator turnsNumerator, UnitType defUnitType, PlayerSquad defender,
-            PlayerData.PlayerData playerDefender, PlayerSquad attacker, PlayerData.PlayerData playerAttacker)
+            PlayerDataSO.PlayerDataSO playerDefender, PlayerSquad attacker, PlayerDataSO.PlayerDataSO playerAttacker)
         {
             switch (defUnitType)
             {
@@ -59,7 +59,7 @@ namespace TTBattle
         }
 
         private void SteamerLogicBattle(UnitType defUnitType, PlayerSquad defender,
-            PlayerData.PlayerData playerDefender, PlayerSquad attacker, PlayerData.PlayerData playerAttacker)
+            PlayerDataSO.PlayerDataSO playerDefender, PlayerSquad attacker, PlayerDataSO.PlayerDataSO playerAttacker)
         {
             switch (defUnitType)
             {
@@ -88,7 +88,7 @@ namespace TTBattle
 
 
         private void MageLogicBattle(UnitType defUnitType, TurnsNumerator turnsNumerator, PlayerSquad defender,
-            PlayerData.PlayerData playerDefender, PlayerSquad attacker, PlayerData.PlayerData playerAttacker, ArmyPanel armyDefender, ArmyPanel armyAttacker)
+            PlayerDataSO.PlayerDataSO playerDefender, PlayerSquad attacker, PlayerDataSO.PlayerDataSO playerAttacker, ArmyPanel armyDefender, ArmyPanel armyAttacker)
         {
             StartCoroutine(MageAttack(defUnitType, attacker, defender,
                 playerDefender, playerAttacker, turnsNumerator, armyDefender, armyAttacker));
@@ -111,7 +111,7 @@ namespace TTBattle
         }
 
         private IEnumerator MageAttack(UnitType defUnitType, PlayerSquad attacker, PlayerSquad defender,
-            PlayerData.PlayerData playerDefender, PlayerData.PlayerData playerAttacker, TurnsNumerator turnsNumerator, ArmyPanel armyDefender, ArmyPanel armyAttacker)
+            PlayerDataSO.PlayerDataSO playerDefender, PlayerDataSO.PlayerDataSO playerAttacker, TurnsNumerator turnsNumerator, ArmyPanel armyDefender, ArmyPanel armyAttacker)
         {
             int numerator;
             var mapZone = playerDefender.MapZone;

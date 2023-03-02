@@ -91,7 +91,7 @@ namespace TTBattle.UI
         private void InitializePLayersMapCells(ArmyPanel player)
         {
             //player.playerData.PlayerMapCell = MapCell;
-            player.playerData.MapZone = MapCell.MapZone;
+            player.playerDataSo.MapZone = MapCell.MapZone;
         }
         
         private void SetPlayerInferiorMapCell()
@@ -102,7 +102,7 @@ namespace TTBattle.UI
                     _lastMapCell = MapCell;
                     MapCell = NewMapCell;
                     MapCell.IsTaken = true;
-                    MapCell.SetCellColorAsPlayers(PlayerInferior.playerData);
+                    MapCell.SetCellColorAsPlayers(PlayerInferior.playerDataSo);
                     InitializePLayersMapCells(PlayerInferior);
                     MapCell.SetChipSpriteToImage(PlayerInferior);
                     _lastMapCell.CellIsLeaved();

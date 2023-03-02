@@ -1,4 +1,4 @@
-﻿using PlayerData;
+﻿using PlayerDataSO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -41,9 +41,9 @@ namespace TTBattle.UI
             APCellAtrtibute.color = apCellAttribute > 0 ? _green : _red;
         }
 
-        public void SetBurningDamageText(PlayerDataCalculator playerDataCalculator)
+        public void SetBurningDamageText(PlayerDataSoCalculator playerDataSoCalculator)
         {
-            var burnFactor = playerDataCalculator.MapZone.burnFactor;
+            var burnFactor = playerDataSoCalculator.MapZone.burnFactor;
             if (burnFactor == 0)
             {
                 _fireImage.enabled = false;

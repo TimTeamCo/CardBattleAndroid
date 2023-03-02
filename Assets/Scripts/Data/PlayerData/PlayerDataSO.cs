@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using Army;
+﻿using Army;
 using Map;
 //using TTBattle.UI;
 using UnityEngine;
 
-namespace PlayerData
+namespace PlayerDataSO
 {
     [CreateAssetMenu(fileName = "PlayerData", menuName = "ScriptableObject/Player/Player", order = 0)]
-    public class PlayerData : ScriptableObject
+    public class PlayerDataSO : ScriptableObject
     {
         public string PlayerName;
         public PlayerHand PlayerHand;

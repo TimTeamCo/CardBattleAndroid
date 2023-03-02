@@ -1,7 +1,7 @@
 ﻿using System;
 using Army;
 using Map;
-using PlayerData;
+using PlayerDataSO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,7 +18,7 @@ namespace TTBattle.UI
         [SerializeField] private SquadCard _steamerCard;
         [SerializeField] private SquadCard _mageCard;
         [SerializeField] public DropdownCalculator UnitDropdown;
-        [SerializeField] public PlayerDataCalculator playerData;
+        [SerializeField] public PlayerDataSoCalculator playerDataSo;
         
         private PlayerSquad _warrior;
         private PlayerSquad _steamer;
@@ -36,15 +36,15 @@ namespace TTBattle.UI
 
         public void SetArmyValues()
         {
-            _warrior = playerData.playerArmy.Squads[0];
-            _steamer = playerData.playerArmy.Squads[1];
-            _mage = playerData.playerArmy.Squads[2];
+            _warrior = playerDataSo.playerArmy.Squads[0];
+            _steamer = playerDataSo.playerArmy.Squads[1];
+            _mage = playerDataSo.playerArmy.Squads[2];
             SetTextOfUnitsAmount();
         }
 
         public void ShowPlayerName()
         {
-            _playerName.text = playerData.PlayerName;
+            _playerName.text = playerDataSo.PlayerName;
         }
 
         public void SetTextOfUnitsAmount()
@@ -75,16 +75,16 @@ namespace TTBattle.UI
                 }
             }*/
 
-            _warriorCard.SetBurningDamageText(playerData);
-            _steamerCard.SetBurningDamageText(playerData);
-            _mageCard.SetBurningDamageText(playerData);
+            _warriorCard.SetBurningDamageText(playerDataSo);
+            _steamerCard.SetBurningDamageText(playerDataSo);
+            _mageCard.SetBurningDamageText(playerDataSo);
             SetTextOfUnitsAmount();
         }
 
         private void SetBackgroundColor()
         {
-            _armyPanelImage.color = playerData.PlayerColor;
-            _nameImage.color = playerData.PlayerColor;
+            _armyPanelImage.color = playerDataSo.PlayerColor;
+            _nameImage.color = playerDataSo.PlayerColor;
         }
 
         public void ShowPlayerSelectorNotification(bool value)

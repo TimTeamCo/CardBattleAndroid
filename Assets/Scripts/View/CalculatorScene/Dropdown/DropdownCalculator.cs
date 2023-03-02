@@ -17,7 +17,7 @@ public class DropdownCalculator : MonoBehaviour
     
     private void Awake()
     {
-        _playerArmy = ArmyPanel.playerData.playerArmy;
+        _playerArmy = ArmyPanel.playerDataSo.playerArmy;
     }
 
     private void OnEnable()

@@ -133,7 +133,7 @@ namespace LobbyRelaySample.ngo
         public void StartNetworkedGame(LocalLobby localLobby, LocalPlayer localPlayer)
         {
             m_doesNeedCleanup = true;
-            SetMenuVisibility(false);
+            // SetMenuVisibility(false);
 #pragma warning disable 4014
             CreateNetworkManager(localLobby, localPlayer);
 #pragma warning restore 4014

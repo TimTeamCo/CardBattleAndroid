@@ -239,8 +239,7 @@ public class GameManager : MonoBehaviour
     {
         _localUser.UserStatus.Value = PlayerStatus.InGame;
         _localLobby.LocalLobbyState.Value = LobbyState.InGame;
-        //TODO Start Network Game
-        // m_setupInGame.StartNetworkedGame(m_LocalLobby, m_LocalUser);
+        ApplicationController.Instance._setupInGame.StartNetworkedGame(_localLobby, _localUser);
     }
     
     void SetLobbyView()

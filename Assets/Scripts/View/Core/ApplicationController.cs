@@ -1,4 +1,5 @@
 using DG.Tweening;
+using LobbyRelaySample.ngo;
 using Logic.Connection;
 using NetCodeTT.Authentication;
 using NetCodeTT.Lobby;
@@ -10,6 +11,7 @@ public class ApplicationController : MonoBehaviour
     [SerializeField] public AudioController AudioController;
     [SerializeField] public WelcomeWindow _welcomeWindow;
     [SerializeField] public Countdown _countdown;
+    [SerializeField] public SetupInGame _setupInGame;
     public static ApplicationController Instance { get; private set; }
     public LobbyManager LobbyManager { get; private set; }
     public IAuth AuthenticationManager { get; private set; }

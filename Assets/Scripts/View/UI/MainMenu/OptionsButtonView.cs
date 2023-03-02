@@ -13,7 +13,7 @@ public class OptionsButtonView : MonoBehaviour
         _button.onClick.AddListener(()=>
         {
             OnClickOptionsButton();
-            _soundSfx.StartButton();
+            _soundSfx.PlaySFX();
         });
     }
     

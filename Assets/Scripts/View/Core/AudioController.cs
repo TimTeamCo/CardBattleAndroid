@@ -15,14 +15,41 @@ public class AudioController : MonoBehaviour
     {
         SetClip(_backgroundMusicSource,audioClip, startToPlay, loop);
     }
-    
-    public void SetSFXMainSource(AudioClip audioClip, bool startToPlay = true, bool loop = false)
+
+    public void SetSFX(AudioClip audioClip, bool startToPlay = true, bool loop = false)
     {
+        if (_SFXMainSource.isPlaying)
+        {
+            if (_SFXAdditionalSource.isPlaying)
+            {
+                _SFXAdditionalSource.volume = 0.5f;
+                SetSFXMainSource(audioClip, startToPlay,loop);
+            }
+            else
+            {
+                _SFXMainSource.volume = 0.5f;
+                SetSFXAdditionalSource(audioClip, startToPlay, loop);
+            }
+        }
+        else
+        {
+            if (_SFXAdditionalSource.isPlaying)
+            {
+                _SFXAdditionalSource.volume = 0.5f;
+            }
+            SetSFXMainSource(audioClip, startToPlay,loop);
+        }
+    }
+    
+    private void SetSFXMainSource(AudioClip audioClip, bool startToPlay = true, bool loop = false)
+    {
+        _SFXMainSource.volume = 1;
         SetClip(_SFXMainSource,audioClip, startToPlay, loop);
     }
     
-    public void SetSFXAdditionalSource(AudioClip audioClip, bool startToPlay = true, bool loop = false)
+    private void SetSFXAdditionalSource(AudioClip audioClip, bool startToPlay = true, bool loop = false)
     {
+        _SFXAdditionalSource.volume = 1;
         SetClip(_SFXAdditionalSource,audioClip, startToPlay, loop);
     }
 

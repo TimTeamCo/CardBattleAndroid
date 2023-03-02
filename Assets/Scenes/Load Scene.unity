@@ -516,7 +516,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AudioController: {fileID: 1956551601}
-  _welcomeWindow: {fileID: 257803535}
+  _welcomeWindow: {fileID: 3935069545668794879, guid: 858d77358d3032940914481ff5f2b6af, type: 3}
   _countdown: {fileID: 597851431}
 --- !u!1 &506133474
 GameObject:

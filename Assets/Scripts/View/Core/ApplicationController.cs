@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 public class ApplicationController : MonoBehaviour
 {
     [SerializeField] public AudioController AudioController;
-    [SerializeField] public WelcomeWindow _welcomeWindow;
+    [SerializeField] public GameObject _welcomeWindow;
     [SerializeField] public Countdown _countdown;
     [SerializeField] public SetupInGame _setupInGame;
     public static ApplicationController Instance { get; private set; }

@@ -18,7 +18,7 @@ public class AudioController : MonoBehaviour
     {
         bool clipSeted = false;
 
-        if (_audioSources == null)
+        if (_audioSources.Count == 0)
         {
             AddNewAudioSource(audioClip, startToPlay, loop);
         }

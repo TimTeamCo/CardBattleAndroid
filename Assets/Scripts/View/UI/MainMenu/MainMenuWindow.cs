@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,6 +11,12 @@ public class MainMenuWindow : MonoBehaviour
     [SerializeField] private InventoryButtonView _inventoryButtonView;
     [SerializeField] private RectTransform _xpRect;
     [SerializeField] private RectTransform _dustRect;
+    [SerializeField] private AudioClip _mainTheme;
+
+    private void Awake()
+    {
+        ApplicationController.Instance.AudioController.SetBackgroundMusicSource(_mainTheme, true, true);
+    }
 
     private void OnEnable()
     {

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AudioController : MonoBehaviour
@@ -6,11 +7,44 @@ public class AudioController : MonoBehaviour
     [SerializeField] private AudioSource _SFXMainSource;
     [SerializeField] private AudioSource _SFXAdditionalSource;
 
+    private List<AudioSource> _audioSources = new List<AudioSource>();
+
     private void Awake()
     {
         DontDestroyOnLoad(this);
     }
 
+    public void PlayPriorityClip(AudioClip audioClip, bool startToPlay = true, bool loop = false)
+    {
+        bool clipSeted = false;
+
+        if (_audioSources.Count == 0)
+        {
+            AddNewAudioSource(audioClip, startToPlay, loop);
+        }
+        else
+        {
+            foreach (var audioSource in _audioSources)
+            {
+                if (audioSource.isPlaying)
+                {
+                    continue;
+                }
+                else
+                {
+                    SetClip(audioSource, audioClip, startToPlay, loop);
+                    clipSeted = true;
+                    break;
+                }
+            }
+        }
+
+        if (clipSeted == false)
+        {
+            AddNewAudioSource(audioClip, startToPlay, loop);
+        }
+    }
+    
     public void SetBackgroundMusicSource(AudioClip audioClip, bool startToPlay = true, bool loop = false)
     {
         SetClip(_backgroundMusicSource,audioClip, startToPlay, loop);
@@ -39,6 +73,13 @@ public class AudioController : MonoBehaviour
             }
             SetSFXMainSource(audioClip, startToPlay,loop);
         }
+    }
+
+    private void AddNewAudioSource(AudioClip audioClip, bool startToPlay = true, bool loop = false)
+    {
+        AudioSource audioSource = gameObject.AddComponent<AudioSource>();
+        _audioSources.Add(audioSource);
+        SetClip(audioSource, audioClip, startToPlay, loop);
     }
     
     private void SetSFXMainSource(AudioClip audioClip, bool startToPlay = true, bool loop = false)

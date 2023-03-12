@@ -2516,6 +2516,7 @@ MonoBehaviour:
   _inventoryButtonView: {fileID: 2006640152}
   _xpRect: {fileID: 1175323731}
   _dustRect: {fileID: 1901996215}
+  _mainTheme: {fileID: 8300000, guid: a99dbe369fe9b0d4dbaf3b3817b8da63, type: 3}
 --- !u!1 &1611690858
 GameObject:
   m_ObjectHideFlags: 0
@@ -4297,7 +4298,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8994165760503948524, guid: 76d893785ab32074699ec83a4f92e575, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -140.00003
+      value: -140
       objectReference: {fileID: 0}
     - target: {fileID: 8994165761730436368, guid: 76d893785ab32074699ec83a4f92e575, type: 3}
       propertyPath: m_Name

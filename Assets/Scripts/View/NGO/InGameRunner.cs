@@ -20,8 +20,8 @@ namespace LobbyRelaySample.ngo
         [SerializeField] private Scorer _scorer;
         [SerializeField] private RoundChecker _roundChecker;
         
-        [SerializeField] private SymbolKillVolume m_killVolume = default;
-        [SerializeField] private IntroOutroRunner m_introOutroRunner = default;
+        // [SerializeField] private SymbolKillVolume m_killVolume = default;
+        // [SerializeField] private IntroOutroRunner m_introOutroRunner = default;
         [SerializeField] private NetworkedDataStore m_dataStore = default;
         [SerializeField] private BoxCollider m_collider;
 
@@ -36,9 +36,8 @@ namespace LobbyRelaySample.ngo
         private float m_timeout = 10;
         private bool m_hasConnected = false;
 
-        [SerializeField] private SymbolContainer m_symbolContainerInstance;
-        private PlayerDataSO
-            m_localUserData; // This has an ID that's not necessarily the OwnerClientId, since all clients will see all spawned objects regardless of ownership.
+        // [SerializeField] private SymbolContainer m_symbolContainerInstance;
+        // private PlayerDataSO m_localUserData; // This has an ID that's not necessarily the OwnerClientId, since all clients will see all spawned objects regardless of ownership.
 
         public static InGameRunner Instance
         {
@@ -60,15 +59,15 @@ namespace LobbyRelaySample.ngo
             onGameBeginning = onGameBegin;
             m_onGameEnd = onGameEnd;
             m_canSpawnInGameObjects = null;
-            m_localUserData = new PlayerDataSO(localUser.DisplayName.Value, 0);
+            // m_localUserData = new PlayerDataSO(localUser.DisplayName.Value, 0);
         }
 
         public override void OnNetworkSpawn()
         {
             if (IsHost)
                 FinishInitialize();
-            m_localUserData = new PlayerDataSO(m_localUserData.name, NetworkManager.Singleton.LocalClientId);
-            VerifyConnection_ServerRpc(m_localUserData.id);
+            // m_localUserData = new PlayerDataSO(m_localUserData.name, NetworkManager.Singleton.LocalClientId);
+            // VerifyConnection_ServerRpc(m_localUserData.id);
         }
 
         public override void OnNetworkDespawn()
@@ -78,10 +77,10 @@ namespace LobbyRelaySample.ngo
 
         private void FinishInitialize()
         {
-            m_symbolContainerInstance = Instantiate(m_symbolContainerPrefab);
-            m_symbolContainerInstance.NetworkObject.Spawn();
+            // m_symbolContainerInstance = Instantiate(m_symbolContainerPrefab);
+            // m_symbolContainerInstance.NetworkObject.Spawn();
             ResetPendingSymbolPositions();
-            m_killVolume.Initialize(OnSymbolDeactivated);
+            // m_killVolume.Initialize(OnSymbolDeactivated);
         }
 
         private void ResetPendingSymbolPositions()
@@ -89,9 +88,9 @@ namespace LobbyRelaySample.ngo
             m_pendingSymbolPositions.Clear();
             Rect boxRext = new Rect(m_collider.bounds.min.x, m_collider.bounds.min.y, m_collider.bounds.size.x,
                 m_collider.bounds.size.y);
-            IList<Vector2> points = m_sequenceSelector.GenerateRandomSpawnPoints(boxRext, 2);
-            foreach (Vector2 point in points)
-                m_pendingSymbolPositions.Enqueue(point);
+            // IList<Vector2> points = m_sequenceSelector.GenerateRandomSpawnPoints(boxRext, 2);
+            // foreach (Vector2 point in points)
+                // m_pendingSymbolPositions.Enqueue(point);
         }
 
         /// <summary>
@@ -110,34 +109,34 @@ namespace LobbyRelaySample.ngo
         [ClientRpc]
         private void VerifyConnection_ClientRpc(ulong clientId)
         {
-            if (clientId == m_localUserData.id)
-                VerifyConnectionConfirm_ServerRpc(m_localUserData);
+            // if (clientId == m_localUserData.id)
+                // VerifyConnectionConfirm_ServerRpc(m_localUserData);
         }
 
         /// <summary>
         /// Once the connection is confirmed, spawn a player cursor and check if all players have connected.
         /// </summary>
-        [ServerRpc(RequireOwnership = false)]
-        private void VerifyConnectionConfirm_ServerRpc(PlayerDataSO clientData)
-        {
-            // Note that the client will not receive the cursor object reference, so the cursor must handle initializing itself.
-            PlayerCursor playerCursor = Instantiate(m_playerCursorPrefab);
-            playerCursor.NetworkObject.SpawnWithOwnership(clientData.id);
-            playerCursor.name += clientData.name;
-            m_dataStore.AddPlayer(clientData.id, clientData.name);
-            // The game will begin at this point, or else there's a timeout for booting any unconnected players.
-            bool areAllPlayersConnected = NetworkManager.Singleton.ConnectedClients.Count >= m_expectedPlayerCount;
-            VerifyConnectionConfirm_ClientRpc(clientData.id, areAllPlayersConnected);
-        }
+        // [ServerRpc(RequireOwnership = false)]
+        // private void VerifyConnectionConfirm_ServerRpc(PlayerDataSO clientData)
+        // {
+        //     // Note that the client will not receive the cursor object reference, so the cursor must handle initializing itself.
+        //     // PlayerCursor playerCursor = Instantiate(m_playerCursorPrefab);
+        //     // playerCursor.NetworkObject.SpawnWithOwnership(clientData.id);
+        //     // playerCursor.name += clientData.name;
+        //     m_dataStore.AddPlayer(clientData.id, clientData.name);
+        //     // The game will begin at this point, or else there's a timeout for booting any unconnected players.
+        //     bool areAllPlayersConnected = NetworkManager.Singleton.ConnectedClients.Count >= m_expectedPlayerCount;
+        //     VerifyConnectionConfirm_ClientRpc(clientData.id, areAllPlayersConnected);
+        // }
 
         [ClientRpc]
         private void VerifyConnectionConfirm_ClientRpc(ulong clientId, bool canBeginGame)
         {
-            if (clientId == m_localUserData.id)
-            {
-                m_onConnectionVerified?.Invoke();
-                m_hasConnected = true;
-            }
+            // if (clientId == m_localUserData.id)
+            // {
+                // m_onConnectionVerified?.Invoke();
+                // m_hasConnected = true;
+            // }
 
             if (canBeginGame && m_hasConnected)
             {
@@ -152,16 +151,16 @@ namespace LobbyRelaySample.ngo
         void BeginGame()
         {
             m_canSpawnInGameObjects = true;
-            GameManager.Instance.BeginGame();
+            // GameManager.Instance.BeginGame();
             onGameBeginning?.Invoke();
-            m_introOutroRunner.DoIntro(StartMovingSymbols);
+            // m_introOutroRunner.DoIntro(StartMovingSymbols);
         }
 
         void StartMovingSymbols()
         {
-            m_sequenceSelector.SetTargetsAnimatable();
-            if(IsHost)
-                m_symbolContainerInstance.StartMovingSymbols(); //TODO fix this for
+            // m_sequenceSelector.SetTargetsAnimatable();
+            // if(IsHost)
+                // m_symbolContainerInstance.StartMovingSymbols(); //TODO fix this for
         }
 
         public void Update()
@@ -176,9 +175,9 @@ namespace LobbyRelaySample.ngo
 
             void CheckIfCanSpawnNewSymbol()
             {
-                if (!m_canSpawnInGameObjects.GetValueOrDefault() ||
-                    m_remainingSymbolCount >= SequenceSelector.symbolCount || !IsHost)
-                    return;
+                // if (!m_canSpawnInGameObjects.GetValueOrDefault() ||
+                    // m_remainingSymbolCount >= SequenceSelector.symbolCount || !IsHost)
+                    // return;
                 if (m_pendingSymbolPositions.Count > 0)
                 {
                     m_symbolSpawnTimer -= Time.deltaTime;
@@ -186,21 +185,21 @@ namespace LobbyRelaySample.ngo
                     {
                         m_symbolSpawnTimer = 0.02f; // Space out the object spawning a little to prevent a lag spike.
                         SpawnNewSymbol();
-                        if (m_remainingSymbolCount >= SequenceSelector.symbolCount)
-                            m_canSpawnInGameObjects = false;
+                        // if (m_remainingSymbolCount >= SequenceSelector.symbolCount)
+                            // m_canSpawnInGameObjects = false;
                     }
                 }
             }
 
             void SpawnNewSymbol()
             {
-                int index = SequenceSelector.symbolCount - m_pendingSymbolPositions.Count;
+                // int index = SequenceSelector.symbolCount - m_pendingSymbolPositions.Count;
                 Vector3 pendingPos = m_pendingSymbolPositions.Dequeue();
-                var symbolObj = Instantiate(m_symbolObjectPrefab);
-                symbolObj.NetworkObject.Spawn();
-                symbolObj.name = "Symbol" + index;
-                symbolObj.SetParentAndPosition_Server(m_symbolContainerInstance.NetworkObject, pendingPos);
-                symbolObj.SetSymbolIndex_Server(m_sequenceSelector.GetNextSymbol(index));
+                // var symbolObj = Instantiate(m_symbolObjectPrefab);
+                // symbolObj.NetworkObject.Spawn();
+                // symbolObj.name = "Symbol" + index;
+                // symbolObj.SetParentAndPosition_Server(m_symbolContainerInstance.NetworkObject, pendingPos);
+                // symbolObj.SetSymbolIndex_Server(m_sequenceSelector.GetNextSymbol(index));
                 m_remainingSymbolCount++;
             }
         }
@@ -208,20 +207,20 @@ namespace LobbyRelaySample.ngo
         /// <summary>
         /// Called while on the host to determine if incoming input has scored or not.
         /// </summary>
-        public void OnPlayerInput(ulong playerId, SymbolObject selectedSymbol)
-        {
-            if (selectedSymbol.Clicked)
-                return;
-
-            if (m_sequenceSelector.ConfirmSymbolCorrect(playerId, selectedSymbol.SymbolIndex))
-            {
-                selectedSymbol.ClickedSequence_ServerRpc(playerId);
-                _scorer.ScoreSuccess(playerId);
-                OnSymbolDeactivated();
-            }
-            else
-                _scorer.ScoreFailure(playerId);
-        }
+        // public void OnPlayerInput(ulong playerId, SymbolObject selectedSymbol)
+        // {
+        //     if (selectedSymbol.Clicked)
+        //         return;
+        //
+        //     if (m_sequenceSelector.ConfirmSymbolCorrect(playerId, selectedSymbol.SymbolIndex))
+        //     {
+        //         selectedSymbol.ClickedSequence_ServerRpc(playerId);
+        //         _scorer.ScoreSuccess(playerId);
+        //         OnSymbolDeactivated();
+        //     }
+        //     else
+        //         _scorer.ScoreFailure(playerId);
+        // }
 
         void OnSymbolDeactivated()
         {
@@ -237,7 +236,7 @@ namespace LobbyRelaySample.ngo
         private void WaitForEndingSequence_ClientRpc()
         {
             _scorer.OnGameEnd();
-            m_introOutroRunner.DoOutro(EndGame);
+            // m_introOutroRunner.DoOutro(EndGame);
         }
 
         private void EndGame()

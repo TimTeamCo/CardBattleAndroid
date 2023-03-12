@@ -209,19 +209,24 @@ public class GameManager : MonoBehaviour
     {
         await _lobbyManager.BindLocalLobbyToRemote(_localLobby.LobbyID.Value, _localLobby);
         _localLobby.LocalLobbyState.onChanged += OnLobbyStateChanged;
-        // _localLobby.UpdatePlayer(LocalPlayer);
         SetLobbyView();
     }
 
     private void OnLobbyStateChanged(LobbyState state)
     {
         Debug.Log($"LobbyState change to {state}");
-        if (state == LobbyState.Lobby)
-            CancelCountDown();
-        if (state == LobbyState.CountDown)
+        switch (state)
         {
-            SetGameState(GameState.Lobby); 
-            BeginCountDown();
+            case LobbyState.Lobby:
+                CancelCountDown();
+                break;
+            case LobbyState.CountDown:
+                SetGameState(GameState.Lobby); 
+                BeginCountDown();
+                break;
+            case LobbyState.InGame:
+                _localUser.UserStatus.Value = PlayerStatus.InGame;
+                break;
         }
     }
     
@@ -239,7 +244,6 @@ public class GameManager : MonoBehaviour
     
     public void FinishedCountDown()
     {
-        _localUser.UserStatus.Value = PlayerStatus.InGame;
         _localLobby.LocalLobbyState.Value = LobbyState.InGame;
         ApplicationController.Instance._setupInGame.StartNetworkedGame(_localLobby, _localUser);
     }

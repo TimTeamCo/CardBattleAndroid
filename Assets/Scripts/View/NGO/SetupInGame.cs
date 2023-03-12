@@ -15,17 +15,15 @@ namespace LobbyRelaySample.ngo
     /// </summary>
     public class SetupInGame : MonoBehaviour
     {
-        [SerializeField]
-        GameObject m_IngameRunnerPrefab = default;
-        [SerializeField]
-        private GameObject[] m_disableWhileInGame = default;
+        [SerializeField] GameObject _IngameRunnerPrefab = default;
+        [SerializeField] private GameObject[] m_disableWhileInGame = default;
 
         // private InGameRunner m_inGameRunner;
 
         private bool m_doesNeedCleanup = false;
         private bool m_hasConnectedViaNGO = false;
 
-        private LocalLobby m_lobby;
+        private LocalLobby _localLobby;
 
         private void SetMenuVisibility(bool areVisible)
         {
@@ -39,8 +37,8 @@ namespace LobbyRelaySample.ngo
         /// </summary>
         async Task CreateNetworkManager(LocalLobby localLobby, LocalPlayer localPlayer)
         {
-            m_lobby = localLobby;
-            // m_inGameRunner = Instantiate(m_IngameRunnerPrefab).GetComponentInChildren<InGameRunner>();
+            _localLobby = localLobby;
+            // m_inGameRunner = Instantiate(_IngameRunnerPrefab).GetComponentInChildren<InGameRunner>();
             // m_inGameRunner.Initialize(OnConnectionVerified, m_lobby.PlayerCount, OnGameBegin, OnGameEnd,
                 // localPlayer);
             if (localPlayer.IsHost.Value)
@@ -70,7 +68,7 @@ namespace LobbyRelaySample.ngo
         {
             UnityTransport transport = NetworkManager.Singleton.GetComponentInChildren<UnityTransport>();
 
-            var allocation = await Relay.Instance.CreateAllocationAsync(m_lobby.MaxPlayerCount.Value);
+            var allocation = await Relay.Instance.CreateAllocationAsync(_localLobby.MaxPlayerCount.Value);
             var joincode = await Relay.Instance.GetJoinCodeAsync(allocation.AllocationId);
             // GameManager.Instance.HostSetRelayCode(joincode);
 
@@ -86,7 +84,7 @@ namespace LobbyRelaySample.ngo
         {
             UnityTransport transport = NetworkManager.Singleton.GetComponentInChildren<UnityTransport>();
 
-            var joinAllocation = await Relay.Instance.JoinAllocationAsync(m_lobby.RelayCode.Value);
+            var joinAllocation = await Relay.Instance.JoinAllocationAsync(_localLobby.RelayCode.Value);
             bool isSecure = false;
             var endpoint = GetEndpointForAllocation(joinAllocation.ServerEndpoints,
                 joinAllocation.RelayServer.IpV4, joinAllocation.RelayServer.Port, out isSecure);
@@ -133,6 +131,7 @@ namespace LobbyRelaySample.ngo
         public void StartNetworkedGame(LocalLobby localLobby, LocalPlayer localPlayer)
         {
             m_doesNeedCleanup = true;
+            //TODO Load Game Scene
             // SetMenuVisibility(false);
 #pragma warning disable 4014
             CreateNetworkManager(localLobby, localPlayer);
@@ -161,7 +160,7 @@ namespace LobbyRelaySample.ngo
                     // .transform.parent
                     // .gameObject); // Since this destroys the NetworkManager, that will kick off cleaning up networked objects.
                 SetMenuVisibility(true);
-                m_lobby.RelayCode.Value = "";
+                _localLobby.RelayCode.Value = "";
                 // GameManager.Instance.EndGame();
                 m_doesNeedCleanup = false;
             }

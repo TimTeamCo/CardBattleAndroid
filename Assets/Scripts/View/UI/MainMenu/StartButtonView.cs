@@ -1,4 +1,5 @@
-using DG.Tweening;
+    using System.Collections.Generic;
+    using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,8 +11,11 @@ public class StartButtonView : MonoBehaviour
     [SerializeField] private GameObject _upCircle;
     [SerializeField] private GameObject _triangle;
     [SerializeField] private GameObject _ready;
+    [SerializeField] AudioClip clickSFX;
+    [SerializeField] AudioClip searchSFX;
+
     private bool isSelected;
-    private Sequence _sequence;
+    private List<Sequence> _sequences = new ();
     private LocalLobby _localLobby;
 
     private void Start()
@@ -36,8 +40,8 @@ public class StartButtonView : MonoBehaviour
     {
         _triangle.SetActive(false);
         _ready.SetActive(true);
-        _sequence = DOTween.Sequence();
-        _sequence.Append(_upCircle.transform.DOScale(new Vector3(1.1f, 1.1f, 1.1f), 0.25f))
+        Sequence _readySequence = DOTween.Sequence();
+        _readySequence.Append(_upCircle.transform.DOScale(new Vector3(1.1f, 1.1f, 1.1f), 0.25f))
             .Join(_middleCircle.transform.DOScale(new Vector3(1.1f, 1.1f, 1.1f), 0.25f))
             .Join(_bottomCircle.transform.DOScale(new Vector3(1.1f, 1.1f, 1.1f), 0.25f))
             .Join(_ready.transform.DOScale(new Vector3(1.1f, 1.1f, 1.1f), 0.25f))
@@ -46,10 +50,12 @@ public class StartButtonView : MonoBehaviour
             .Join(_bottomCircle.transform.DOScale(new Vector3(1f, 1f, 1f), 0.25f))
             .Join(_ready.transform.DOScale(new Vector3(1f, 1f, 1f), 0.25f))
             .SetLoops(-1);
+        _sequences.Add(_readySequence);
     }
 
     private void OnClickReadyButton()
     {
+        ApplicationController.Instance.AudioController.SetSFX(clickSFX);
         StopAnimation();
         ApplicationController.Instance.GameManager.SetLocalUserStatus(PlayerStatus.Ready);
     }
@@ -61,37 +67,51 @@ public class StartButtonView : MonoBehaviour
 
     private void AnimateOnClick()
     {
+        if (isSelected)
+        {
+            StopAnimation();
+        }
+        
+        ApplicationController.Instance.AudioController.SetSFX(clickSFX);
         Sequence pressedSequence = DOTween.Sequence();
+        _sequences.Add(pressedSequence);
         pressedSequence.Append(_upCircle.transform.DOScale(new Vector3(1.1f, 1.1f, 1.1f), 0.25f))
             .Append(_middleCircle.transform.DOScale(new Vector3(1.1f, 1.1f, 1.1f), 0.25f))
             .Append(_bottomCircle.transform.DOScale(new Vector3(1.1f, 1.1f, 1.1f), 0.25f))
             .Append(_upCircle.transform.DOScale(new Vector3(1f, 1f, 1f), 0.25f))
             .Join(_middleCircle.transform.DOScale(new Vector3(1f, 1f, 1f), 0.25f))
-            .Join(_bottomCircle.transform.DOScale(new Vector3(1f, 1f, 1f), 0.25f));
-
-        if (isSelected == false)
-        {
-            StartSearchAnimation();
-            ApplicationController.Instance.GameManager.onPressStartButton.Invoke();
-            isSelected = true;
-        }
-        else
-        {
-            StopAnimation();
-            ApplicationController.Instance.GameManager.onExitSearchingButton.Invoke();
-            isSelected = false;
-        }
+            .Join(_bottomCircle.transform.DOScale(new Vector3(1f, 1f, 1f), 0.25f))
+            .AppendCallback(() =>
+            {
+                if (isSelected == false)
+                {
+                    StartSearchAnimation();
+                    ApplicationController.Instance.GameManager.onPressStartButton.Invoke();
+                    isSelected = true;
+                }
+                else
+                {
+                    StopAnimation();
+                    ApplicationController.Instance.GameManager.onExitSearchingButton.Invoke();
+                    isSelected = false;
+                }
+            });
     }
 
     private void StopAnimation()
     {
-        if (_sequence == null)
+        if (_sequences.Count == 0)
         {
             return;
         }
-
-        _sequence.Kill();
-        _sequence = null;
+        else
+        {
+            foreach (var sequence in _sequences)
+            {
+                sequence.Kill();
+                _sequences.Remove(sequence);
+            }
+        }
         ResetButton();
     }
 
@@ -100,17 +120,22 @@ public class StartButtonView : MonoBehaviour
         _middleCircle.transform.localEulerAngles = Vector3.zero;
         _bottomCircle.transform.localEulerAngles = Vector3.zero;
         _upCircle.transform.localEulerAngles = Vector3.zero;
+        ApplicationController.Instance.AudioController.RemoveClip(clickSFX);
+        ApplicationController.Instance.AudioController.RemoveClip(searchSFX);
     }
 
     private void StartSearchAnimation()
     {
-        _sequence = DOTween.Sequence();
-        _sequence.Append(_middleCircle.transform.DORotate(new Vector3(0, 0,
+        Sequence _searchSequence = DOTween.Sequence();
+        _sequences.Add(_searchSequence);
+        _searchSequence
+            .Append(_middleCircle.transform.DORotate(new Vector3(0, 0,
                 _middleCircle.transform.localRotation.z + 25f), 0.25f, RotateMode.FastBeyond360).SetRelative(true).SetEase(Ease.Linear))
             .Append(_bottomCircle.transform.DOLocalRotate(new Vector3(0, 0, 
                 _bottomCircle.transform.localRotation.z - 25f), 0.25f, RotateMode.FastBeyond360).SetRelative(true).SetEase(Ease.Linear))
             .Append(_upCircle.transform.DOLocalRotate(new Vector3(0, 0,
                 _upCircle.transform.localRotation.z - 15f), 0.25f, RotateMode.FastBeyond360).SetRelative(true).SetEase(Ease.Linear))
             .SetLoops(-1, LoopType.Incremental);
+        ApplicationController.Instance.AudioController.SetSFX(searchSFX, true, true);
     }
 }

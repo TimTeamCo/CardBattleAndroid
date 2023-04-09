@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class SoundSFX : MonoBehaviour
 {
-    public AudioClip SoundAudioClipSFX;
+    [SerializeField] private AudioClip SoundAudioClipSFX;
     
     public void PlaySFX()
     {

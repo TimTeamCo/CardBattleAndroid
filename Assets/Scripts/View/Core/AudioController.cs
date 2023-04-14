@@ -56,7 +56,7 @@ public class AudioController : MonoBehaviour
         }
         else
         {
-            Debug.Log($"_audioSources is not playing AudioClip - {audioClip.name}");
+            Debug.LogError($"_audioSources is not playing AudioClip - {audioClip.name}");
         }
     }
     
@@ -102,7 +102,7 @@ public class AudioController : MonoBehaviour
         }
         else
         {
-            Debug.Log($"SFX is not playing AudioClip - {audioClip.name}");
+            Debug.LogError($"SFX is not playing AudioClip - {audioClip.name}");
         }
     }
 

@@ -23,13 +23,13 @@ MonoBehaviour:
   WarriorAttack: 0
   WarriorHealth: 0
   Assasin: -5
-  AssasinAttack: 8
+  AssasinAttack: 16
   AssasinHealth: 0
   Mage: 0
   MageAttack: 0
   MageHealth: 0
   Description: '-5 ASSASSINS
 
-    +8 AT ASN
+    +16 AT ASN
 
 '

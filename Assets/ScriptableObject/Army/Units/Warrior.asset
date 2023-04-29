@@ -15,4 +15,6 @@ MonoBehaviour:
   UnitType: 0
   unitFace: {fileID: 21300000, guid: f24235904bc748d4ab042d0711830314, type: 3}
   Attack: 10
-  Health: 90
+  Health: 70
+  WeakCoeficient: 0.5
+  StrongCoefitient: 1.5

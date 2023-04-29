@@ -20,6 +20,6 @@ MonoBehaviour:
   cardTypeBig: 1
   cardTypeSmall: 0
   AttackEffect: 0
-  HealthEffect: 6
+  HealthEffect: 4
   UnitType: 1
-  Description: +6 HP  FOR ASSASINS
+  Description: +4 HP  FOR STEAMERS

@@ -19,7 +19,7 @@ MonoBehaviour:
   art: {fileID: 0}
   cardTypeBig: 1
   cardTypeSmall: 0
-  AttackEffect: -2
-  HealthEffect: 12
+  AttackEffect: -1
+  HealthEffect: 8
   UnitType: 1
-  Description: +12 HP -2 ATK FOR ASSASINS
+  Description: +8 HP -1 ATK FOR STEAMERS

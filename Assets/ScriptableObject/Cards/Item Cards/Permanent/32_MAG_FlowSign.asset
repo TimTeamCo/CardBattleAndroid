@@ -20,6 +20,6 @@ MonoBehaviour:
   cardTypeBig: 1
   cardTypeSmall: 0
   AttackEffect: 0
-  HealthEffect: 6
+  HealthEffect: 4
   UnitType: 2
-  Description: +6 HP  FOR MAGES
+  Description: +4 HP  FOR MAGES

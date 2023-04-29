@@ -26,10 +26,10 @@ MonoBehaviour:
   AssasinAttack: 0
   AssasinHealth: 0
   Mage: -5
-  MageAttack: 12
+  MageAttack: 24
   MageHealth: 0
   Description: '-5 MAGES
 
-    +12 AT MAG
+    +24 AT MAG
 
 '

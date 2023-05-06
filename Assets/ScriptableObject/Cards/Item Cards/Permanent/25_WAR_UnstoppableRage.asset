@@ -19,7 +19,7 @@ MonoBehaviour:
   art: {fileID: 0}
   cardTypeBig: 1
   cardTypeSmall: 0
-  AttackEffect: 4
-  HealthEffect: -18
+  AttackEffect: 2
+  HealthEffect: -7
   UnitType: 0
-  Description: -18 HP +4 ATK FOR WARRIORS
+  Description: -7 HP +2 ATK FOR WARRIORS

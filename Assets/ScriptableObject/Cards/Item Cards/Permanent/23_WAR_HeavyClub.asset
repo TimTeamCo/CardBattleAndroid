@@ -19,7 +19,7 @@ MonoBehaviour:
   art: {fileID: 21300000, guid: 5c438451e122e7040883b587411c7510, type: 3}
   cardTypeBig: 1
   cardTypeSmall: 0
-  AttackEffect: 2
+  AttackEffect: 1
   HealthEffect: 0
   UnitType: 0
-  Description: ' +2 ATK FOR WARRIORS'
+  Description: ' +1 ATK FOR WARRIORS'

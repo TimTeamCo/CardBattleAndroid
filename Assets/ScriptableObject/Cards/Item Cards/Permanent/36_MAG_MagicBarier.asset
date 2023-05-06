@@ -19,7 +19,7 @@ MonoBehaviour:
   art: {fileID: 0}
   cardTypeBig: 1
   cardTypeSmall: 0
-  AttackEffect: -6
-  HealthEffect: 12
+  AttackEffect: -3
+  HealthEffect: 8
   UnitType: 2
-  Description: +12 HP -6 ATK FOR MAGES
+  Description: +8 HP -3 ATK FOR MAGES

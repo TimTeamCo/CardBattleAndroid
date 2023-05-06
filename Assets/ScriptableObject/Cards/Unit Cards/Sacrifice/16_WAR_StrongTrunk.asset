@@ -21,7 +21,7 @@ MonoBehaviour:
   cardTypeSmall: 4
   Warriors: -5
   WarriorAttack: 0
-  WarriorHealth: 72
+  WarriorHealth: 56
   Assasin: 0
   AssasinAttack: 0
   AssasinHealth: 0
@@ -30,6 +30,6 @@ MonoBehaviour:
   MageHealth: 0
   Description: '-5 WARRIORS
 
-    +72 HP WAR
+    +56 HP WAR
 
 '

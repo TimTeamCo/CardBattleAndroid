@@ -19,6 +19,7 @@ MonoBehaviour:
   - unitType: 0
     buffValue: -10
   - unitType: 1
-    buffValue: 30
+    buffValue: 20
   - unitType: 2
     buffValue: -10
+  neighboringAreas: []

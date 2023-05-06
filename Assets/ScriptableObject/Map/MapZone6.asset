@@ -17,8 +17,9 @@ MonoBehaviour:
   burnFactor: 0
   buffsZone:
   - unitType: 0
-    buffValue: 30
+    buffValue: 20
   - unitType: 1
     buffValue: -10
   - unitType: 2
     buffValue: -10
+  neighboringAreas: []

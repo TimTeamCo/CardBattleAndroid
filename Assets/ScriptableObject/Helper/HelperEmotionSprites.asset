@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 928d13ab7363b9f4d957ca2ea628b100, type: 3}
+  m_Name: HelperEmotionSprites
+  m_EditorClassIdentifier: 
+  HelperEmotions:
+  - HelperEmotionsEnum: 0
+    EmotionSprite: {fileID: 21300000, guid: a19197c4e0ce34f45810277735f62b4d, type: 3}
+  - HelperEmotionsEnum: 1
+    EmotionSprite: {fileID: 21300000, guid: 4cb3a20266140724e8be9593fedcdd66, type: 3}
+  - HelperEmotionsEnum: 2
+    EmotionSprite: {fileID: 21300000, guid: 129d87fd38d254a4a9ddf1829b735742, type: 3}
+  - HelperEmotionsEnum: 3
+    EmotionSprite: {fileID: 21300000, guid: a0c2f98c07f774c428b08de581ff687a, type: 3}
+  - HelperEmotionsEnum: 4
+    EmotionSprite: {fileID: 21300000, guid: de1f6c1459a8e4645b4c59535669ab48, type: 3}
+  - HelperEmotionsEnum: 5
+    EmotionSprite: {fileID: 21300000, guid: accc0b8df2d3c6b4eb4f69bd80c2c7a1, type: 3}
+  - HelperEmotionsEnum: 6
+    EmotionSprite: {fileID: 21300000, guid: f8228c2a9f8d71c4cabf9737f177d79e, type: 3}
+  - HelperEmotionsEnum: 7
+    EmotionSprite: {fileID: 21300000, guid: 542acbef0b173184c8e4865ee623d5e5, type: 3}
+  - HelperEmotionsEnum: 8
+    EmotionSprite: {fileID: 21300000, guid: 61acc50f8d4b22b4dbf5e29b5e95a315, type: 3}
+  - HelperEmotionsEnum: 9
+    EmotionSprite: {fileID: 21300000, guid: 3ef7e221286f7744ba98825f9a657913, type: 3}

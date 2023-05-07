@@ -1,6 +1,7 @@
+using System;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.SearchService;
 using UnityEngine.UI;
 
 public class HelperView : MonoBehaviour
@@ -15,16 +16,10 @@ public class HelperView : MonoBehaviour
         _helperEmotion.sprite = _helperEmotions.GetEmotion(HelperEmotionsEnum.IDLE);
     }
 
-    public void SetEmotion(HelperEmotionsEnum emotionsEnum)
+    public async UniTaskVoid SetNewEmotion(HelperEmotionsEnum emotionType)
     {
-        if (_tween != null)
-        {
-            _tween.Kill();
-        }
-
-        _helperEmotion.sprite = _helperEmotions.GetEmotion(emotionsEnum);
-        
-        _tween = DOVirtual.DelayedCall(3f,
-            delegate {_helperEmotion.sprite = _helperEmotions.GetEmotion(HelperEmotionsEnum.IDLE);});
+        _helperEmotion.sprite = _helperEmotions.GetEmotion(emotionType);
+        await UniTask.Delay(TimeSpan.FromSeconds(3));
+        _helperEmotion.sprite = _helperEmotions.GetEmotion(HelperEmotionsEnum.IDLE);
     }
 }

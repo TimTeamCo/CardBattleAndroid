@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace NetCodeTT.Lobby
 {
@@ -14,7 +15,9 @@ namespace NetCodeTT.Lobby
     
     public class LobbyManager : MonoBehaviour, ILobby
     {
-        public string _lobbyID; //no set - mb do private?
+        public string LobbyID => _currentLobby?.Id;
+        public string LobbyCode => _currentLobby?.LobbyCode;
+        
         private Lobby _currentLobby;
         private bool _isHost;
         private IEnumerator _heartbeatLobbyCoroutine;
@@ -24,6 +27,8 @@ namespace NetCodeTT.Lobby
         const string key_Pet = nameof(LocalPlayer.Pet);
         const string key_Userstatus = nameof(LocalPlayer.UserStatus);
         const string key_Displayname = nameof(LocalPlayer.PlayerName);
+        private const int MaxPlayers = 2;
+        private Coroutine _refreshLobbyCoroutine;
 
         public async Task<Lobby> QuickJoin(LocalPlayer localUser)
         {
@@ -54,6 +59,73 @@ namespace NetCodeTT.Lobby
 
             PrintPlayers();
             return _currentLobby;
+        }
+
+        public async Task<bool> CreateLobby(Dictionary<string, string> data)
+        {
+            //random name 10 numbers xxxxxxxxxx
+            StringBuilder stringBuilder = new StringBuilder();
+            while (stringBuilder.Length < 10)
+            {
+                int num = Random.Range(0, 10);
+                stringBuilder.Append(num);
+            }
+            
+            //lobby options
+            Dictionary<string, PlayerDataObject> playerData = SerializePlayerData(data);
+            Player player = new Player(AuthenticationService.Instance.PlayerId, null, playerData);
+            CreateLobbyOptions lobbyOptions = new CreateLobbyOptions
+            {
+                IsPrivate = false,
+                Player = player,
+            };
+
+            try
+            {
+                _currentLobby = await LobbyService.Instance.CreateLobbyAsync(stringBuilder.ToString(), MaxPlayers, lobbyOptions);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+                return false;
+            }
+            
+            Debug.Log($"Lobby created with lobby id {_currentLobby.Id}");
+            StartHeartBeat();
+            _refreshLobbyCoroutine = StartCoroutine(RefreshLobbyCoroutine(_currentLobby.Id, 1));
+            return true;
+        }
+
+        public async Task<bool> JoinLobby(string lobbyCode, Dictionary<string, string> data)
+        {
+            JoinLobbyByCodeOptions options = new JoinLobbyByCodeOptions
+            {
+                Player = new Player(AuthenticationService.Instance.PlayerId, null, SerializePlayerData(data))
+            };
+
+            try
+            {
+                _currentLobby = await LobbyService.Instance.JoinLobbyByCodeAsync(lobbyCode, options);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+                return false;
+            }
+            
+            _refreshLobbyCoroutine = StartCoroutine(RefreshLobbyCoroutine(_currentLobby.Id, 1));
+            return true;
+        }
+
+        private Dictionary<string,PlayerDataObject> SerializePlayerData(Dictionary<string,string> data)
+        {
+            Dictionary<string, PlayerDataObject> playerData = new Dictionary<string, PlayerDataObject>();
+            foreach (var (key, value) in data)
+            {
+                playerData.Add(key, new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, value));
+            }
+
+            return playerData;
         }
 
         public async Task<Lobby> CreateLobby(LocalPlayer localUser)
@@ -423,7 +495,7 @@ namespace NetCodeTT.Lobby
         {
             if (_currentLobby == null)
             {
-                // Debug.LogWarning("Player not currently in a lobby.");
+                Debug.LogWarning("Player not currently in a lobby.");
                 return false;
             }
 
@@ -442,18 +514,6 @@ namespace NetCodeTT.Lobby
         
         #region HeartBeat
 
-        //Since the LobbyManager maintains the "connection" to the lobby, we will continue to heartbeat until host leaves.
-        async Task SendHeartbeatPingAsync()
-        {
-            if (InLobby() == false) return;
-            
-            if (_heartBeatCooldown.IsCoolingDown) return;
-            
-            await _heartBeatCooldown.QueueUntilCooldown();
-
-            await LobbyService.Instance.SendHeartbeatPingAsync(_currentLobby.Id);
-        }
-
         void StartHeartBeat()
         {
 #pragma warning disable 4014
@@ -470,8 +530,40 @@ namespace NetCodeTT.Lobby
             }
         }
 
+        //Since the LobbyManager maintains the "connection" to the lobby, we will continue to heartbeat until host leaves.
+        async Task SendHeartbeatPingAsync()
+        {
+            if (InLobby() == false) return;
+            
+            if (_heartBeatCooldown.IsCoolingDown) return;
+            
+            await _heartBeatCooldown.QueueUntilCooldown();
+
+            await LobbyService.Instance.SendHeartbeatPingAsync(_currentLobby.Id);
+        }
+
         #endregion
 
+        #region RefreshLobby
+
+        private IEnumerator RefreshLobbyCoroutine(string lobbyId, float waitTimeSeconds)
+        {
+            while (true)
+            {
+                Task<Lobby> task = LobbyService.Instance.GetLobbyAsync(lobbyId);
+                yield return new WaitUntil(() => task.IsCompleted);
+                Lobby newLobby = task.Result;
+                if (newLobby.LastUpdated > _currentLobby.LastUpdated)
+                {
+                    _currentLobby = newLobby;
+                }
+
+                yield return new WaitForSecondsRealtime(waitTimeSeconds);
+            }
+        }
+
+        #endregion
+        
         public async void LeaveLobby()
         {
             try
@@ -479,14 +571,14 @@ namespace NetCodeTT.Lobby
                 //Ensure you sign-in before calling Authentication Instance
                 //See IAuthenticationService interface
                 string playerId = AuthenticationService.Instance.PlayerId;
-                if (playerId == null || _lobbyID == null)
+                if (playerId == null || LobbyID == null)
                 {
                     return;
                 }
 
                 //change Lobby Host previous than exit
                 await MigrateLobbyHost();
-                await LobbyService.Instance.RemovePlayerAsync(_lobbyID, playerId);
+                await LobbyService.Instance.RemovePlayerAsync(LobbyID, playerId);
             }
             catch (LobbyServiceException e)
             {
@@ -839,5 +931,13 @@ namespace NetCodeTT.Lobby
         // }
 
         #endregion
+
+        public void OnApplicationQuit()
+        {
+            if (_currentLobby != null && _currentLobby.HostId == AuthenticationService.Instance.PlayerId)
+            {
+                LobbyService.Instance.DeleteLobbyAsync(_currentLobby.Id);
+            }
+        }
     }
 }

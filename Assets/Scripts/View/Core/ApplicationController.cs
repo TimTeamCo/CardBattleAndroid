@@ -4,6 +4,7 @@ using NetCodeTT.Authentication;
 using NetCodeTT.Lobby;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using View.Core;
 
 public class ApplicationController : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class ApplicationController : MonoBehaviour
     public IAuth AuthenticationManager { get; private set; }
     public IConnection ConnectionManager { get; private set; }
     public GameManager GameManager { get; private set; }
+    public GameLobbyManager GameLobbyManager { get; private set; }
 
     private bool isEntry = true;
 
@@ -53,6 +55,8 @@ public class ApplicationController : MonoBehaviour
         AuthenticationManager = new AuthenticationManager();
         LobbyManager = gameObject.AddComponent<LobbyManager>();
         GameManager = gameObject.AddComponent<GameManager>();
+        GameLobbyManager = gameObject.AddComponent<GameLobbyManager>();
+        GameLobbyManager.Init(LobbyManager);
     }
 
     private void Start()

@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class LobbyWindowView : MonoBehaviour
 {
-    [SerializeField] private CanvasGroup _canvasGroup;
     [SerializeField] private TextMeshProUGUI _playerName;
     [SerializeField] private TextMeshProUGUI _opponentName;
     [SerializeField] private Image _playerPet;
@@ -16,8 +15,6 @@ public class LobbyWindowView : MonoBehaviour
 
     public void Start()
     {
-        _canvasGroup.interactable = false;
-        _canvasGroup.blocksRaycasts = false;
         _localLobby = ApplicationController.Instance.GameManager.LocalLobby;
         _localLobby.onUserJoined += OnUserJoined;
         _localLobby.onUserLeft += OnUserLeft;
@@ -39,16 +36,12 @@ public class LobbyWindowView : MonoBehaviour
     
     private void ShowLobby()
     {
-        _canvasGroup.alpha = 1;
-        _canvasGroup.interactable = true;
-        _canvasGroup.blocksRaycasts = true;
+        gameObject.SetActive(true);
     }
 
     public void HideLobby()
     {
-        _canvasGroup.alpha = 0;
-        _canvasGroup.interactable = false;
-        _canvasGroup.blocksRaycasts = false;
+        gameObject.SetActive(false);
     }
 
     private void OnUserLeft(int obj)

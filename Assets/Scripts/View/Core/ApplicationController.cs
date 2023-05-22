@@ -1,7 +1,7 @@
 using DG.Tweening;
 using Logic.Connection;
 using NetCodeTT.Authentication;
-using NetCodeTT.Lobby;
+using NetCodeTT.Lobbys;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using View.Core;

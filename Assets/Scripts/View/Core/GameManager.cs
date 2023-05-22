@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NetCodeTT.Lobby;
+using NetCodeTT.Lobbys;
 using Saver;
 using Unity.Services.Authentication;
 using UnityEngine;

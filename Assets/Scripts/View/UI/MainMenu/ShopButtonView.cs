@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ShopButtonView : AnimatorButtonView
 {
-    [SerializeField] private CanvasGroup _choosePetCanvas;
+    [SerializeField] private GameObject _petWindow;
     
     private void Start()
     {
@@ -12,12 +12,11 @@ public class ShopButtonView : AnimatorButtonView
     private void OnClickShopButton()
     {
         AnimateOnClick();
+        OpenPetWindow();
     }
 
-    public void OpenPetWindow()
+    private void OpenPetWindow()
     {
-        _choosePetCanvas.alpha = 1;
-        _choosePetCanvas.interactable = true;
-        _choosePetCanvas.blocksRaycasts = true;
+        _petWindow.SetActive(true);
     }
 }

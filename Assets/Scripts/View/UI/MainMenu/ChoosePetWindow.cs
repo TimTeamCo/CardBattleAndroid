@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class ChoosePetWindow : MonoBehaviour
 {
-    [SerializeField] private CanvasGroup _petWindow;
     public void SetPet(int petType)
     {
         switch (petType)
@@ -30,8 +29,6 @@ public class ChoosePetWindow : MonoBehaviour
                 break;
         }
 
-        _petWindow.alpha = 0;
-        _petWindow.interactable = false;
-        _petWindow.blocksRaycasts = false;
+        gameObject.SetActive(false);
     }
 }

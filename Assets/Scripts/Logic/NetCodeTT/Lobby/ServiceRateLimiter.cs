@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace NetCodeTT.Lobby
+namespace NetCodeTT.Lobbys
 {
     //Created to mimic the way rate limits are implemented Here:  https://docs.unity.com/lobby/rate-limits.html
     public class ServiceRateLimiter

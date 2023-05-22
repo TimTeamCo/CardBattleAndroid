@@ -2,7 +2,7 @@
 using Unity.Services.Authentication;
 using UnityEngine;
 
-namespace NetCodeTT.Lobby
+namespace NetCodeTT.Lobbys
 {
     using Unity.Services.Lobbies.Models;
     

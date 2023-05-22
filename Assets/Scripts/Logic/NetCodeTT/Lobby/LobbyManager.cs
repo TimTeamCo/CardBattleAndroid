@@ -8,7 +8,7 @@ using Unity.Services.Authentication;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace NetCodeTT.Lobby
+namespace NetCodeTT.Lobbys
 {
     using Unity.Services.Lobbies.Models;
     using Unity.Services.Lobbies;
@@ -90,7 +90,7 @@ namespace NetCodeTT.Lobby
                 return false;
             }
             
-            Debug.Log($"Lobby created with lobby id {_currentLobby.Id}");
+            Debug.Log($"Lobby created with lobby code {_currentLobby.LobbyCode}");
             StartHeartBeat();
             _refreshLobbyCoroutine = StartCoroutine(RefreshLobbyCoroutine(_currentLobby.Id, 1));
             return true;
@@ -128,6 +128,18 @@ namespace NetCodeTT.Lobby
             return playerData;
         }
 
+        public List<Dictionary<string, PlayerDataObject>> GetPlayersData()
+        {
+            List<Dictionary<string, PlayerDataObject>> data = new List<Dictionary<string, PlayerDataObject>>();
+
+            foreach (var player in _currentLobby.Players)
+            {
+                data.Add(player.Data);
+            }
+
+            return data;
+        }
+        
         public async Task<Lobby> CreateLobby(LocalPlayer localUser)
         {
             if (m_CreateCooldown.IsCoolingDown)
@@ -556,6 +568,7 @@ namespace NetCodeTT.Lobby
                 if (newLobby.LastUpdated > _currentLobby.LastUpdated)
                 {
                     _currentLobby = newLobby;
+                    LobbyEvents.OnLobbyUpdated?.Invoke(_currentLobby);
                 }
 
                 yield return new WaitForSecondsRealtime(waitTimeSeconds);

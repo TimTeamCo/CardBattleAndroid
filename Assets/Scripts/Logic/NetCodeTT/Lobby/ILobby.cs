@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace NetCodeTT.Lobby
+namespace NetCodeTT.Lobbys
 {
     using Unity.Services.Lobbies.Models;
     

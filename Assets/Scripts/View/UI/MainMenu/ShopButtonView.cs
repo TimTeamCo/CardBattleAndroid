@@ -4,9 +4,14 @@ public class ShopButtonView : AnimatorButtonView
 {
     [SerializeField] private GameObject _petWindow;
     
-    private void Start()
+    private void OnEnable()
     {
         _button.onClick.AddListener(OnClickShopButton);
+    }
+    
+    private void OnDisable()
+    {
+        _button.onClick.RemoveListener(OnClickShopButton);
     }
     
     private void OnClickShopButton()

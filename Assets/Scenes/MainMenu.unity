@@ -525,7 +525,7 @@ GameObject:
   - component: {fileID: 390495894}
   - component: {fileID: 390495896}
   m_Layer: 5
-  m_Name: ChoosePetPanel
+  m_Name: ChoosePetWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1248,7 +1248,7 @@ GameObject:
   - component: {fileID: 576468914}
   - component: {fileID: 576468912}
   m_Layer: 5
-  m_Name: LobbyPanel
+  m_Name: LobbyWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1290,6 +1290,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a69b3faf3a808c749a90f758138b95be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerObject: {fileID: 1369598821}
+  _opponentObject: {fileID: 2048781506}
   _playerName: {fileID: 1429425611}
   _opponentName: {fileID: 1415747131}
   _playerPet: {fileID: 1500022850}
@@ -3447,7 +3449,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1369598822
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3585,20 +3587,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1373265162}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6e3246c718c05f4789a9da272f2c6e8, type: 3}
+  m_Script: {fileID: 11500000, guid: bee5c981d8d915f4abe9c61d37577bda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shopButton: {fileID: 971149971}
-  _inventoryButton: {fileID: 2006640146}
-  _hostButton: {fileID: 1173730681}
-  _joinButton: {fileID: 2097092307}
-  _shopButtonView: {fileID: 971149970}
-  _inventoryButtonView: {fileID: 2006640152}
-  _xpRect: {fileID: 1175323731}
-  _dustRect: {fileID: 1901996215}
-  _mainTheme: {fileID: 8300000, guid: a99dbe369fe9b0d4dbaf3b3817b8da63, type: 3}
-  _lobbyCodeText: {fileID: 1178529555}
-  _lobbyCodeInput: {fileID: 485206334}
+  _lobbyWindowView: {fileID: 576468912}
 --- !u!1 &1415747129
 GameObject:
   m_ObjectHideFlags: 0
@@ -4263,6 +4255,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1667937052}
   - component: {fileID: 1667937054}
+  - component: {fileID: 1667937055}
   m_Layer: 5
   m_Name: MainWindow
   m_TagString: Untagged
@@ -4306,6 +4299,29 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1667937051}
   m_CullTransparentMesh: 1
+--- !u!114 &1667937055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1667937051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6e3246c718c05f4789a9da272f2c6e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _shopButton: {fileID: 971149971}
+  _inventoryButton: {fileID: 2006640146}
+  _hostButton: {fileID: 1173730681}
+  _joinButton: {fileID: 2097092307}
+  _shopButtonView: {fileID: 971149970}
+  _inventoryButtonView: {fileID: 2006640152}
+  _xpRect: {fileID: 1175323731}
+  _dustRect: {fileID: 1901996215}
+  _mainTheme: {fileID: 8300000, guid: a99dbe369fe9b0d4dbaf3b3817b8da63, type: 3}
+  _lobbyCodeText: {fileID: 1178529555}
+  _lobbyCodeInput: {fileID: 485206334}
 --- !u!1 &1672056949
 GameObject:
   m_ObjectHideFlags: 0
@@ -5142,6 +5158,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _button: {fileID: 2006640146}
   _animator: {fileID: 2006640151}
+  _lobbyWindowObject: {fileID: 576468910}
 --- !u!1 &2011757768
 GameObject:
   m_ObjectHideFlags: 0
@@ -5423,7 +5440,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2048781507
 RectTransform:
   m_ObjectHideFlags: 0

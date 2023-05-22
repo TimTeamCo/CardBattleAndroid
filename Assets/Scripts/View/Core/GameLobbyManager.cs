@@ -67,5 +67,10 @@ namespace View.Core
             bool succeeded = await _lobbyManager.JoinLobby(lobbyCode, lobbyPlayerData.Serialize());
             return succeeded;
         }
+
+        public List<LobbyPlayerData> GetPlayers()
+        {
+            return _lobbyPlayerDatas;
+        }
     }
 }

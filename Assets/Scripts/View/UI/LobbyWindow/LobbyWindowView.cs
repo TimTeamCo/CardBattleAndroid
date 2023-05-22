@@ -1,9 +1,16 @@
+using System;
+using System.Collections.Generic;
+using PlayerData;
 using TMPro;
+using Unity.Services.Authentication;
 using UnityEngine;
 using UnityEngine.UI;
+using View.Core;
 
-public class LobbyWindowView : MonoBehaviour
+public class LobbyWindowView : MonoBehaviour, IDisposable
 {
+    [SerializeField] private GameObject _playerObject;
+    [SerializeField] private GameObject _opponentObject;
     [SerializeField] private TextMeshProUGUI _playerName;
     [SerializeField] private TextMeshProUGUI _opponentName;
     [SerializeField] private Image _playerPet;
@@ -12,13 +19,46 @@ public class LobbyWindowView : MonoBehaviour
     LocalLobby _localLobby;
     LocalPlayer _localPlayer;
     LocalPlayer _opponent;
+    private LobbyPlayerData _data;
 
-    public void Start()
+    public void Init()
     {
         _localLobby = ApplicationController.Instance.GameManager.LocalLobby;
         _localLobby.onUserJoined += OnUserJoined;
         _localLobby.onUserLeft += OnUserLeft;
         _localLobby.LocalLobbyState.onChanged += OnLobbyStateChanged;
+        LobbyEvents.OnLobbyUpdated += OnLobbyUpdated;
+    }
+
+    private void OnLobbyUpdated()
+    {
+        List<LobbyPlayerData> playerDatas = ApplicationController.Instance.GameLobbyManager.GetPlayers();
+
+        for (int i = 0; i < playerDatas.Count; i++)
+        {
+            if (playerDatas[i].Id == AuthenticationService.Instance.PlayerId)
+            {
+                SetPlayerData(playerDatas[i]);
+            }
+            else
+            {
+                SetOpponentData(playerDatas[i]);
+            }
+        }
+    }
+
+    private void SetPlayerData(LobbyPlayerData playerData)
+    {
+        _data = playerData;
+        _playerObject.SetActive(true);
+        _playerName.text = playerData.Nickname;
+    }
+
+    private void SetOpponentData(LobbyPlayerData playerData)
+    {
+        _data = playerData;
+        _opponentObject.SetActive(true);
+        _opponentName.text = playerData.Nickname;
     }
 
     private void OnLobbyStateChanged(LobbyState obj)
@@ -168,5 +208,13 @@ public class LobbyWindowView : MonoBehaviour
             default:
                 return _petIcons[0];
         }
+    }
+
+    public void Dispose()
+    {
+        _localLobby.onUserJoined -= OnUserJoined;
+        _localLobby.onUserLeft -= OnUserLeft;
+        _localLobby.LocalLobbyState.onChanged -= OnLobbyStateChanged;
+        LobbyEvents.OnLobbyUpdated -= OnLobbyUpdated;
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,7 +9,7 @@ public class OptionsButtonView : MonoBehaviour
     [SerializeField] private SoundSFX _soundSfx;
     private Sequence _optionSequence;
 
-    private void Start()
+    private void OnEnable()
     {
         _button.onClick.AddListener(()=>
         {
@@ -16,7 +17,16 @@ public class OptionsButtonView : MonoBehaviour
             _soundSfx.PlaySFX();
         });
     }
-    
+
+    private void OnDisable()
+    {
+        _button.onClick.RemoveListener(()=>
+        {
+            OnClickOptionsButton();
+            _soundSfx.PlaySFX();
+        });
+    }
+
     private void OnClickOptionsButton()
     {
         if (_optionSequence != null)

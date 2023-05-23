@@ -117,6 +117,28 @@ namespace NetCodeTT.Lobbys
             return true;
         }
 
+        public async Task<bool> UpdatePlayerData(string playerId, Dictionary<string,string> data)
+        {
+            Dictionary<string, PlayerDataObject> playerData = SerializePlayerData(data);
+
+            var options = new UpdatePlayerOptions
+            {
+                Data = playerData
+            };
+            try
+            {
+                _currentLobby = await LobbyService.Instance.UpdatePlayerAsync(_currentLobby.Id, playerId, options);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+                return false;
+            }
+
+            LobbyEvents.OnLobbyUpdated(_currentLobby);
+            return true;
+        }
+        
         private Dictionary<string,PlayerDataObject> SerializePlayerData(Dictionary<string,string> data)
         {
             Dictionary<string, PlayerDataObject> playerData = new Dictionary<string, PlayerDataObject>();

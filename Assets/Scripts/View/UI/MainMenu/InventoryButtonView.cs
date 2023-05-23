@@ -22,6 +22,9 @@ public class InventoryButtonView : AnimatorButtonView
 
     private void OpenLobbyWindow()
     {
-        _lobbyWindowObject.SetActive(true);
+        if (ApplicationController.Instance.LobbyManager.InLobby())
+        {
+            _lobbyWindowObject.SetActive(true);
+        }
     }
 }

@@ -4,6 +4,7 @@ using NetCodeTT.Lobbys;
 using PlayerData;
 using Saver;
 using Unity.Services.Authentication;
+using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
 
@@ -71,6 +72,12 @@ namespace View.Core
         public List<LobbyPlayerData> GetPlayers()
         {
             return _lobbyPlayerDatas;
+        }
+
+        public async Task<bool> SetPlayerReady()
+        {
+            _localUserPlayerData.IsReady = true;
+            return await _lobbyManager.UpdatePlayerData(_localUserPlayerData.Id, _localUserPlayerData.Serialize());
         }
     }
 }

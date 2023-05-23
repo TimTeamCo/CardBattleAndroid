@@ -15,19 +15,43 @@ public class LobbyWindowView : MonoBehaviour, IDisposable
     [SerializeField] private TextMeshProUGUI _opponentName;
     [SerializeField] private Image _playerPet;
     [SerializeField] private Image _opponentPet;
+    [SerializeField] private Image _playerReadyIndicator;
+    [SerializeField] private Image _opponentReadyIndicator;
+    [SerializeField] private Button _readyButton;
     [SerializeField] Sprite[] _petIcons;
     LocalLobby _localLobby;
     LocalPlayer _localPlayer;
     LocalPlayer _opponent;
     private LobbyPlayerData _data;
+    private GameLobbyManager _gameLobbyManager;
 
     public void Init()
     {
         _localLobby = ApplicationController.Instance.GameManager.LocalLobby;
+        _gameLobbyManager = ApplicationController.Instance.GameLobbyManager;
         _localLobby.onUserJoined += OnUserJoined;
         _localLobby.onUserLeft += OnUserLeft;
         _localLobby.LocalLobbyState.onChanged += OnLobbyStateChanged;
         LobbyEvents.OnLobbyUpdated += OnLobbyUpdated;
+        _readyButton.onClick.AddListener(OnReadyClick);
+    }
+    
+    public void Dispose()
+    {
+        _localLobby.onUserJoined -= OnUserJoined;
+        _localLobby.onUserLeft -= OnUserLeft;
+        _localLobby.LocalLobbyState.onChanged -= OnLobbyStateChanged;
+        LobbyEvents.OnLobbyUpdated -= OnLobbyUpdated;
+        _readyButton.onClick.RemoveListener(OnReadyClick);
+    }
+
+    private async void OnReadyClick()
+    {
+        bool succeded = await _gameLobbyManager.SetPlayerReady();
+        if (succeded)
+        {
+            _readyButton.gameObject.SetActive(false);
+        }
     }
 
     private void OnLobbyUpdated()
@@ -52,6 +76,7 @@ public class LobbyWindowView : MonoBehaviour, IDisposable
         _data = playerData;
         _playerObject.SetActive(true);
         _playerName.text = playerData.Nickname;
+        _playerReadyIndicator.gameObject.SetActive(playerData.IsReady);
     }
 
     private void SetOpponentData(LobbyPlayerData playerData)
@@ -59,6 +84,7 @@ public class LobbyWindowView : MonoBehaviour, IDisposable
         _data = playerData;
         _opponentObject.SetActive(true);
         _opponentName.text = playerData.Nickname;
+        _opponentReadyIndicator.gameObject.SetActive(playerData.IsReady);
     }
 
     private void OnLobbyStateChanged(LobbyState obj)
@@ -208,13 +234,5 @@ public class LobbyWindowView : MonoBehaviour, IDisposable
             default:
                 return _petIcons[0];
         }
-    }
-
-    public void Dispose()
-    {
-        _localLobby.onUserJoined -= OnUserJoined;
-        _localLobby.onUserLeft -= OnUserLeft;
-        _localLobby.LocalLobbyState.onChanged -= OnLobbyStateChanged;
-        LobbyEvents.OnLobbyUpdated -= OnLobbyUpdated;
     }
 }

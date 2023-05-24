@@ -43,6 +43,11 @@ public class GameManager : MonoBehaviour
         _lobbyManager = ApplicationController.Instance.LobbyManager;
         _countdown = ApplicationController.Instance._countdown;
         
+        if (String.IsNullOrEmpty(LocalSaver.GetPlayerPet()))
+        {
+            LocalSaver.SetPlayerPet(PetType.Cat1);
+        }
+
         if (String.IsNullOrEmpty(LocalSaver.GetPlayerNickname()))
         {
             var windowObject = Instantiate(ApplicationController.Instance._welcomeWindow);

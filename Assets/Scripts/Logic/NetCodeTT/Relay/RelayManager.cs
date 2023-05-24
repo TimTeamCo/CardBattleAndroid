@@ -24,6 +24,51 @@ namespace NetCodeTT.Relay
         private NetworkConnection clientConnection;
         private bool isRelayServerConnected = false;
         //private UnityTransport unityTransport;
+        private string _joinCode;
+        private string _ip;
+        private int _port;
+
+        private byte[] _connectionData;
+
+        private Guid _allocationId;
+
+        public async Task<string> CreateRelay()
+        {
+            Allocation allocation = await RelayService.Instance.CreateAllocationAsync(2);
+            _joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
+
+            RelayServerEndpoint dtlsEndpoint = allocation.ServerEndpoints.First(conn => conn.ConnectionType == "dtls");
+            _ip = dtlsEndpoint.Host;
+            _port = dtlsEndpoint.Port;
+            _allocationId = allocation.AllocationId;
+            _connectionData = allocation.ConnectionData;
+
+            return _joinCode;
+        }
+
+        public async Task<bool> JoinRelay(string joinCode)
+        {
+            _joinCode = joinCode;
+            JoinAllocation allocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
+            
+            RelayServerEndpoint dtlsEndpoint = allocation.ServerEndpoints.First(conn => conn.ConnectionType == "dtls");
+            _ip = dtlsEndpoint.Host;
+            _port = dtlsEndpoint.Port;
+            _allocationId = allocation.AllocationId;
+            _connectionData = allocation.ConnectionData;
+
+            return true;
+        }
+
+        public string GetAllocationId()
+        {
+            return _allocationId.ToString();
+        }
+
+        public string GetConnectionData()
+        {
+            return _connectionData.ToString();
+        }
 
         // Set utility functions for constructing server data objects
         private static RelayAllocationId ConvertFromAllocationIdBytes(byte[] allocationIdBytes)
@@ -123,7 +168,7 @@ namespace NetCodeTT.Relay
 
             return relayServerData;
         }
-        
+
         public IEnumerator Example_StartingNetworkDriverAsHost() 
         {
             // Request list of valid regions
@@ -185,7 +230,7 @@ namespace NetCodeTT.Relay
             // Bind and listen to the Relay server
             yield return Example_BindAndListenAsHostPlayer(relayServerData);
         }
-        
+
         private IEnumerator Example_BindAndListenAsHostPlayer(RelayServerData relayServerData)
         {
             // Create the NetworkDriver using the Relay server data
@@ -218,7 +263,7 @@ namespace NetCodeTT.Relay
                 }
             }
         }
-        
+
         public IEnumerator Example_StartNetworkDriverAsConnectingPlayer(string relayJoinCode) 
         {
             // Send the join request to the Relay service
@@ -240,7 +285,7 @@ namespace NetCodeTT.Relay
 
             yield return Example_BindAndConnectToHost(relayServerData);
         }
-        
+
         private IEnumerator Example_BindAndConnectToHost(RelayServerData relayServerData)
         {
             // Create the NetworkDriver using the Relay server data
@@ -273,6 +318,7 @@ namespace NetCodeTT.Relay
             JoinCode = await RelayService.Instance.GetJoinCodeAsync(a.AllocationId);
 
         }
+
 
         async void JoinGame()
         {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Unity.Services.Lobbies.Models;
 
 namespace PlayerData
@@ -15,16 +16,24 @@ namespace PlayerData
             set => _isReady = value;
         }
         
+        public PetType Pet
+        {
+            get => _petType;
+            set => _petType = value;
+        }
+        
         private string _id;
         private string _gamerTag;
         private string _nickname;
         private bool _isReady;
+        private PetType _petType;
 
-        public void Init(string id, string gamerTag, string nickname)
+        public void Init(string id, string gamerTag, string nickname, PetType pet)
         {
             _id = id;
             _gamerTag = gamerTag;
             _nickname = nickname;
+            _petType = pet;
         }
 
         public void Init(Dictionary<string, PlayerDataObject> playerData)
@@ -53,6 +62,11 @@ namespace PlayerData
             {
                 _isReady = playerData["IsReady"].Value == "True";
             }
+            
+            if (playerData.ContainsKey("Pet"))
+            {
+                _petType = Enum.Parse<PetType>(playerData["Pet"].Value);
+            }
         }
 
         public Dictionary<string, string> Serialize()
@@ -62,7 +76,8 @@ namespace PlayerData
                 {"Id", _id},
                 {"GamerTag", _gamerTag},
                 {"Nickname", _nickname},
-                {"IsReady", _isReady.ToString()}
+                {"IsReady", _isReady.ToString()},
+                {"Pet", _petType.ToString()}
             };
         }
     }

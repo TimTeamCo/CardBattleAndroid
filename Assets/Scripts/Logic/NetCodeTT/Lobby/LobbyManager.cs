@@ -61,7 +61,7 @@ namespace NetCodeTT.Lobbys
             return _currentLobby;
         }
 
-        public async Task<bool> CreateLobby(Dictionary<string, string> data)
+        public async Task<bool> CreateLobby(Dictionary<string, string> userData, Dictionary<string, string> lobbyData)
         {
             //random name 10 numbers xxxxxxxxxx
             StringBuilder stringBuilder = new StringBuilder();
@@ -72,10 +72,11 @@ namespace NetCodeTT.Lobbys
             }
             
             //lobby options
-            Dictionary<string, PlayerDataObject> playerData = SerializePlayerData(data);
+            Dictionary<string, PlayerDataObject> playerData = SerializePlayerData(userData);
             Player player = new Player(AuthenticationService.Instance.PlayerId, null, playerData);
             CreateLobbyOptions lobbyOptions = new CreateLobbyOptions
             {
+                Data = SerializeLobbyData(lobbyData),
                 IsPrivate = false,
                 Player = player,
             };
@@ -83,6 +84,7 @@ namespace NetCodeTT.Lobbys
             try
             {
                 _currentLobby = await LobbyService.Instance.CreateLobbyAsync(stringBuilder.ToString(), MaxPlayers, lobbyOptions);
+                _isHost = true;
             }
             catch (Exception e)
             {
@@ -117,14 +119,17 @@ namespace NetCodeTT.Lobbys
             return true;
         }
 
-        public async Task<bool> UpdatePlayerData(string playerId, Dictionary<string,string> data)
+        public async Task<bool> UpdatePlayerData(string playerId, Dictionary<string,string> data, string allocationId = default, string conectionData = default)
         {
             Dictionary<string, PlayerDataObject> playerData = SerializePlayerData(data);
 
             var options = new UpdatePlayerOptions
             {
-                Data = playerData
+                Data = playerData,
+                AllocationId = allocationId,
+                ConnectionInfo = conectionData
             };
+            
             try
             {
                 _currentLobby = await LobbyService.Instance.UpdatePlayerAsync(_currentLobby.Id, playerId, options);
@@ -137,6 +142,46 @@ namespace NetCodeTT.Lobbys
 
             LobbyEvents.OnLobbyUpdated(_currentLobby);
             return true;
+        }
+        
+        public async Task<bool> UpdateLobbyData(Dictionary<string,string> data)
+        {
+            Dictionary<string, DataObject> lobbyData = SerializeLobbyData(data);
+
+            var options = new UpdateLobbyOptions
+            {
+                Data = lobbyData
+            };
+            
+            try
+            {
+                _currentLobby = await LobbyService.Instance.UpdateLobbyAsync(_currentLobby.Id, options);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+                return false;
+            }
+
+            LobbyEvents.OnLobbyUpdated(_currentLobby);
+            return true;
+        }
+
+        public string GetHostId()
+        {
+            return _currentLobby.HostId;
+        }
+        
+        
+        private Dictionary<string, DataObject> SerializeLobbyData(Dictionary<string,string> data)
+        {
+            Dictionary<string, DataObject> lobbyData = new Dictionary<string, DataObject>();
+            foreach (var (key, value) in data)
+            {
+                lobbyData.Add(key, new DataObject(DataObject.VisibilityOptions.Member, value));
+            }
+
+            return lobbyData;
         }
         
         private Dictionary<string,PlayerDataObject> SerializePlayerData(Dictionary<string,string> data)
@@ -603,14 +648,14 @@ namespace NetCodeTT.Lobbys
         {
             try
             {
-                //Ensure you sign-in before calling Authentication Instance
-                //See IAuthenticationService interface
                 string playerId = AuthenticationService.Instance.PlayerId;
                 if (playerId == null || LobbyID == null)
                 {
                     return;
                 }
 
+                _isHost = false;
+                
                 //change Lobby Host previous than exit
                 await MigrateLobbyHost();
                 await LobbyService.Instance.RemovePlayerAsync(LobbyID, playerId);
@@ -625,6 +670,11 @@ namespace NetCodeTT.Lobbys
         {
             try
             {
+                if (_currentLobby.Players.Count < 2)
+                {
+                    return;
+                }
+                
                 _currentLobby = await Lobbies.Instance.UpdateLobbyAsync(_currentLobby.Id, new UpdateLobbyOptions
                 {
                     HostId = _currentLobby.Players[1].Id,

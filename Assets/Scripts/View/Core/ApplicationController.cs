@@ -2,6 +2,7 @@ using DG.Tweening;
 using Logic.Connection;
 using NetCodeTT.Authentication;
 using NetCodeTT.Lobbys;
+using NetCodeTT.Relay;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using View.Core;
@@ -13,6 +14,7 @@ public class ApplicationController : MonoBehaviour
     [SerializeField] public Countdown _countdown;
     public static ApplicationController Instance { get; private set; }
     public LobbyManager LobbyManager { get; private set; }
+    public RelayManager RelayManager { get; private set; }
     public IAuth AuthenticationManager { get; private set; }
     public IConnection ConnectionManager { get; private set; }
     public GameManager GameManager { get; private set; }
@@ -56,7 +58,8 @@ public class ApplicationController : MonoBehaviour
         LobbyManager = gameObject.AddComponent<LobbyManager>();
         GameManager = gameObject.AddComponent<GameManager>();
         GameLobbyManager = gameObject.AddComponent<GameLobbyManager>();
-        GameLobbyManager.Init(LobbyManager);
+        RelayManager = new RelayManager();
+        GameLobbyManager.Init(LobbyManager, RelayManager);
     }
 
     private void Start()

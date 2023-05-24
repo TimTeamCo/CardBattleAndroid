@@ -18,12 +18,17 @@ public class LobbyWindowView : MonoBehaviour, IDisposable
     [SerializeField] private Image _playerReadyIndicator;
     [SerializeField] private Image _opponentReadyIndicator;
     [SerializeField] private Button _readyButton;
+    [SerializeField] private Button _exitButton;
+    [SerializeField] private TextMeshProUGUI _countDownText;
     [SerializeField] Sprite[] _petIcons;
     LocalLobby _localLobby;
     LocalPlayer _localPlayer;
     LocalPlayer _opponent;
     private LobbyPlayerData _data;
     private GameLobbyManager _gameLobbyManager;
+    private bool _startTimer;
+    private float _time;
+    private const int CountdownTime = 5;
 
     public void Init()
     {
@@ -33,16 +38,36 @@ public class LobbyWindowView : MonoBehaviour, IDisposable
         _localLobby.onUserLeft += OnUserLeft;
         _localLobby.LocalLobbyState.onChanged += OnLobbyStateChanged;
         LobbyEvents.OnLobbyUpdated += OnLobbyUpdated;
+        LobbyEvents.OnLobbyReady += OnLobbyReady;
         _readyButton.onClick.AddListener(OnReadyClick);
     }
-    
+
     public void Dispose()
     {
         _localLobby.onUserJoined -= OnUserJoined;
         _localLobby.onUserLeft -= OnUserLeft;
         _localLobby.LocalLobbyState.onChanged -= OnLobbyStateChanged;
         LobbyEvents.OnLobbyUpdated -= OnLobbyUpdated;
+        LobbyEvents.OnLobbyReady -= OnLobbyReady;
         _readyButton.onClick.RemoveListener(OnReadyClick);
+    }
+
+    private void Update()
+    {
+        if (!_startTimer) return;
+        
+        _time -= Time.deltaTime;
+        _countDownText.text = $"{_time:0}";
+        if (_time < 0)
+        {
+            _startTimer = false;
+            StartGame();
+        }
+    }
+
+    private async void StartGame()
+    {
+        await _gameLobbyManager.StartGame();
     }
 
     private async void OnReadyClick()
@@ -70,6 +95,12 @@ public class LobbyWindowView : MonoBehaviour, IDisposable
             }
         }
     }
+    
+    private void OnLobbyReady()
+    {
+        _exitButton.gameObject.SetActive(false);
+        StartCountDown();
+    }
 
     private void SetPlayerData(LobbyPlayerData playerData)
     {
@@ -77,6 +108,7 @@ public class LobbyWindowView : MonoBehaviour, IDisposable
         _playerObject.SetActive(true);
         _playerName.text = playerData.Nickname;
         _playerReadyIndicator.gameObject.SetActive(playerData.IsReady);
+        _playerPet.sprite = PetSprite(playerData.Pet);
     }
 
     private void SetOpponentData(LobbyPlayerData playerData)
@@ -85,6 +117,7 @@ public class LobbyWindowView : MonoBehaviour, IDisposable
         _opponentObject.SetActive(true);
         _opponentName.text = playerData.Nickname;
         _opponentReadyIndicator.gameObject.SetActive(playerData.IsReady);
+        _opponentPet.sprite = PetSprite(playerData.Pet);
     }
 
     private void OnLobbyStateChanged(LobbyState obj)
@@ -234,5 +267,12 @@ public class LobbyWindowView : MonoBehaviour, IDisposable
             default:
                 return _petIcons[0];
         }
+    }
+
+    private void StartCountDown()
+    {
+        _startTimer = true;
+        _time = CountdownTime;
+        _countDownText.gameObject.SetActive(true);
     }
 }

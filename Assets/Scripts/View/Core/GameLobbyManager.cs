@@ -77,15 +77,10 @@ namespace View.Core
         public async Task<bool> CreateLobby()
         {
             _lobbyData = new LobbyData();
-            _lobbyData.JoinRelayCode = await _relayManager.CreateRelay();
             
             LobbyPlayerData lobbyPlayerData = new LobbyPlayerData();
             lobbyPlayerData.Init(AuthenticationService.Instance.PlayerId, "HostPlayer", LocalSaver.GetPlayerNickname(), Enum.Parse<PetType>(LocalSaver.GetPlayerPet()));
-            
             bool succeeded = await _lobbyManager.CreateLobby(lobbyPlayerData.Serialize(), _lobbyData.Serialize());
-            string allocationID = _relayManager.GetAllocationId();
-            string conectionData = _relayManager.GetConnectionData();
-            await _lobbyManager.UpdatePlayerData(_localUserPlayerData.Id, _localUserPlayerData.Serialize(), allocationID, conectionData);
             return succeeded;
         }
 
@@ -116,6 +111,13 @@ namespace View.Core
 
         public async Task StartGame()
         {
+            if (IsHost)
+            {
+                _lobbyData.JoinRelayCode = await _relayManager.CreateRelay();
+                string allocationID = _relayManager.GetAllocationId();
+                string conectionData = _relayManager.GetConnectionData();
+                await _lobbyManager.UpdatePlayerData(_localUserPlayerData.Id, _localUserPlayerData.Serialize(), allocationID, conectionData);
+            }
             SceneManager.LoadScene("Battle");
         }
     }
